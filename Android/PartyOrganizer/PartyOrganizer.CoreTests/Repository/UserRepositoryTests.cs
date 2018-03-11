@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace PartyOrganizer.Core.Repository.Tests
 {
+
+    /// <summary>
+    /// Very basic (low quality)Unit Tests atm
+    /// </summary>
     [TestClass()]
     public class UserRepositoryTests
     {
@@ -13,9 +17,9 @@ namespace PartyOrganizer.Core.Repository.Tests
         IUserRepository repository = new UserRepository();
 
         [TestMethod()]
-        public void GetAllTest()
-        {
-            repository.Populate();
+        public void Should_Return_All_Users()
+        {   
+            // currentl there are 3 values
             var expected = 3;
 
             var actual = repository.GetAll().Count();
@@ -24,9 +28,8 @@ namespace PartyOrganizer.Core.Repository.Tests
         }
 
         [TestMethod()]
-        public void GetByIDTest()
+        public void Given_existing_userID_should_return_proper_user()
         {
-            repository.Populate();
             var expected = new User()
             {
                 ID = 123,
@@ -45,10 +48,17 @@ namespace PartyOrganizer.Core.Repository.Tests
             Assert.AreEqual(true, expected.Equals(actual));
         }
 
+
+        [TestMethod()]
+        public void Given_Non_Existing_UserID_Should_Return_Null()
+        {
+            var actual = repository.GetByID(1230);
+            Assert.IsNull(actual);
+        }
+
         [TestMethod()]
         public void GetFriendsTest()
         {
-            repository.Populate();
             var expected1 = 0;
             var expected2 = 3;
 
@@ -62,7 +72,6 @@ namespace PartyOrganizer.Core.Repository.Tests
         [TestMethod()]
         public void AddTest()
         {
-            repository.Populate();
             var count = repository.GetAll().Count();
             var expected = count + 1;
 
@@ -85,7 +94,6 @@ namespace PartyOrganizer.Core.Repository.Tests
         [TestMethod()]
         public void RemoveTest()
         {
-            repository.Populate();
             var count = repository.GetAll().Count();
             var expected = count - 1;
 

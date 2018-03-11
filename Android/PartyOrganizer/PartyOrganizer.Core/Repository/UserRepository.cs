@@ -9,38 +9,7 @@ namespace PartyOrganizer.Core.Repository
     {
         private List<User> users = new List<User>();
 
-        public IEnumerable<User> GetAll()
-        {
-            return users;
-        }
-
-        public User GetByID(int ID)
-        {
-            return users.FirstOrDefault(x => x.ID == ID);
-        }
-
-        public IEnumerable<User> GetFriends(User user)
-        {
-            return user.Friends;
-        }
-
-        public void Add(User entity)
-        {
-            users.Add(entity);
-        }
-
-        public void Remove(User entity)
-        {
-            users.Remove(entity);
-        }
-
-        //only for unit tests purposes, it will be removed in the final ver
-        public void RemoveAll()
-        {
-            users.RemoveAll(null);
-        }
-
-        public void Populate()
+        public UserRepository()
         {
             Add(new User()
             {
@@ -110,6 +79,31 @@ namespace PartyOrganizer.Core.Repository
                 ImagePath = "247320/abstract-user-flat-4.png",
                 Friends = null
             });
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return users;
+        }
+
+        public User GetByID(int ID)
+        {
+            return users.FirstOrDefault(x => x.ID == ID);
+        }
+
+        public IEnumerable<User> GetFriends(User user)
+        {
+            return user.Friends;
+        }
+
+        public void Add(User user)
+        {
+            users.Add(user);
+        }
+
+        public void Remove(User user)
+        {
+            users.Remove(user);
         }
     }
 }

@@ -10,62 +10,7 @@ namespace PartyOrganizer.Core.Repository
     {
         private List<Party> parties = new List<Party>();
         
-
         public PartyRepository()
-        {
-        }
-
-        public void Add(Party entity)
-        {
-            parties.Add(entity);
-        }
-
-        public IEnumerable<Party> GetAll()
-        {
-            return parties;
-        }
-
-        public Party GetByID(int ID)
-        {
-            return parties.FirstOrDefault(x => x.ID == ID);
-        }
-
-        public IEnumerable<Party> GetPartiesOrganizedByUser(User user)
-        {
-            return parties.FindAll(x => x.Admin.Equals(user));
-        }
-
-        public IEnumerable<Party> GetPartiesUserParticipateIn(User user)
-        {
-            /*var result = from p in parties
-                         where p.Participants != null
-                         from part in p.Participants
-                         where part.Equals(user)
-                         select p;   */
-
-            /*var result = parties.Where(x => x.Participants != null)
-                                            .Where(x => x.Participants
-                                            .All(z => !z.Equals(user)));*/
-
-            var result = parties.Where(x => x.Participants != null)
-                                .Where(x => x.Participants
-                                .Any(z => z.Equals(user)));
-
-            return result;
-        }
-
-        public void Remove(Party entity)
-        {
-            parties.Remove(entity);
-        }
-
-        //only for unit tests purposes, it will be removed in the final ver
-        public void RemoveAll()
-        {
-            parties.Clear();
-        }
-
-        public void Populate()
         {
             var admin1 = new User()
             {
@@ -96,7 +41,7 @@ namespace PartyOrganizer.Core.Repository
                 Add(new Party()
                 {
                     ID = i,
-                    ShortDescription = " Short Description about the first party",
+                    ShortDescription = $"Short Description about the {i+1}. party",
                     Description = " Full Description about the first party",
                     Location = " Wrocław, ul. xyz 1337 ",
                     Admin = admin1,
@@ -129,10 +74,11 @@ namespace PartyOrganizer.Core.Repository
                     Date = DateTime.Today
                 });
             }
+
             Add(new Party()
             {
                 ID = 2,
-                ShortDescription = " Short Description about the first party",
+                ShortDescription = "Short Description about the 3. party",
                 Description = " Full Description about the first party",
                 Location = " Wrocław, ul. xyz 1337 ",
                 Admin = admin2,
@@ -141,5 +87,56 @@ namespace PartyOrganizer.Core.Repository
                 Date = DateTime.Today
             });
         }
+
+        public void Add(Party party)
+        {
+            parties.Add(party);
+        }
+
+        public IEnumerable<Party> GetAll()
+        {
+            return parties;
+        }
+
+        public Party GetByID(int ID)
+        {
+            return parties.FirstOrDefault(x => x.ID == ID);
+        }
+
+        public IEnumerable<Party> GetPartiesOrganizedByUser(User user)
+        {
+            return parties.FindAll(x => x.Admin.Equals(user));
+        }
+
+        public IEnumerable<Party> GetPartiesUserParticipateIn(User user)
+        {
+            /*var result = parties.Where(x => x.Participants != null)
+                                  .Where(x => x.Participants
+                                  .All(z => !z.Equals(user)));*/
+
+            /*var result = parties.Where(x => x.Participants != null)
+                                .Where(x => x.Participants
+                                .Any(z => z.Equals(user)));*/
+
+            var result = from p in parties
+                         where p.Participants != null
+                         from participants in p.Participants
+                         where participants.Equals(user)
+                         select p;
+
+            return result;
+        }
+
+        public void Remove(Party party)
+        {
+            parties.Remove(party);
+        }
+
+        //only for unit tests purposes, it will be removed in the final ver
+        public void RemoveAll()
+        {
+            parties.Clear();
+        }
+
     }
 }

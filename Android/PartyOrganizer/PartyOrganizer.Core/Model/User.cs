@@ -9,9 +9,9 @@ namespace PartyOrganizer.Core
 
         public string Name { get; set; }
 
-        public bool Online { get; set; }
-
         public string Surname { get; set; }
+
+        public bool Online { get; set; }
 
         public string Email { get; set; }
 
@@ -24,10 +24,16 @@ namespace PartyOrganizer.Core
         public bool Equals(User other)
         {
             if (other == null) return false;
-            if (this.ID == other.ID || this.Email == other.Email || (this.Name == other.Name && this.Surname == other.Surname && this.PhoneNumber == other.PhoneNumber))
+            if ((this.ID == other.ID || this.Email == other.Email) || 
+                (this.Name == other.Name && this.Surname == other.Surname && this.PhoneNumber == other.PhoneNumber))
                 return true;
             else
                 return false;
+        }
+
+        public override string ToString()
+        {
+            return Name + " " + Surname;
         }
     }
 }

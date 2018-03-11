@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyOrganizer.Core", "Part
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyOrganizer.CoreTests", "PartyOrganizer.CoreTests\PartyOrganizer.CoreTests.csproj", "{A4EFF391-C004-4344-AD0F-88670B64A346}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyOrganizer", "PartyOrganizer\PartyOrganizer.csproj", "{D1F508DD-7B3C-4489-BC46-8A176532D24A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{A4EFF391-C004-4344-AD0F-88670B64A346}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4EFF391-C004-4344-AD0F-88670B64A346}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4EFF391-C004-4344-AD0F-88670B64A346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F508DD-7B3C-4489-BC46-8A176532D24A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F508DD-7B3C-4489-BC46-8A176532D24A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F508DD-7B3C-4489-BC46-8A176532D24A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D1F508DD-7B3C-4489-BC46-8A176532D24A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F508DD-7B3C-4489-BC46-8A176532D24A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F508DD-7B3C-4489-BC46-8A176532D24A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
