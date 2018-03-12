@@ -15,6 +15,7 @@ namespace PartyOrganizer.Core.Model
 {
     public class Party : IEntity<Party>
     {
+        #region Properties
         public int ID { get; set; }
 
         public string ShortDescription { get; set; }
@@ -30,6 +31,9 @@ namespace PartyOrganizer.Core.Model
         public string ImagePath { get; set; }
 
         public DateTime Date { get; set; }
+        #endregion
+
+        #region Methods
 
         public bool Equals(Party other)
         {
@@ -39,5 +43,8 @@ namespace PartyOrganizer.Core.Model
             else
                 return false;
         }
+
+        #endregion
+
     }
 }

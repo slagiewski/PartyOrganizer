@@ -49,6 +49,8 @@ namespace PartyOrganizer.Core.Repository.Tests
         }
 
 
+   
+
         [TestMethod()]
         public void Given_Non_Existing_UserID_Should_Return_Null()
         {
@@ -67,6 +69,27 @@ namespace PartyOrganizer.Core.Repository.Tests
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);
+        }
+
+        [TestMethod()]
+        public void Given_new_user_should_return_proper_string()
+        {
+            var newUser = new User()
+            {
+                ID = 123,
+                Name = "Klaudia",
+                Surname = "Łągiewska",
+                Online = false,
+                Email = "sl@gmail.com",
+                PhoneNumber = "48123423139",
+                ImagePath = "247319/abstract-user-flat-3.png",
+                Friends = null
+            };
+            var expected = "Klaudia Łągiewska";
+
+            var actual = newUser.ToString();
+            // :/
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]

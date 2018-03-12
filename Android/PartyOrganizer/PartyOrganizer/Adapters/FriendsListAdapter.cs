@@ -28,16 +28,17 @@ namespace PartyOrganizer.Adapters
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var friend = friends[position];
-            var imageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath + ".jpg");
+            var avatarImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath + ".jpg");
+            var statusImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath + ".jpg");
 
             if ( convertView == null)
             {
                 convertView = context.LayoutInflater.Inflate(Resource.Layout.FriendRowView, null);
             }
 
-            convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = friend.ToString();
-            convertView.FindViewById<TextView>(Resource.Id.isOnlineTextView).Text = friend.Online ? "Online" : "Offline";
-            convertView.FindViewById<ImageView>(Resource.Id.partyImageView).SetImageBitmap(imageBitmap);
+            convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
+            convertView.FindViewById<ImageView>(Resource.Id.statusImageView).SetImageBitmap(statusImageBitmap);
+            convertView.FindViewById<ImageView>(Resource.Id.friendImageView).SetImageBitmap(avatarImageBitmap);
 
             return convertView;
         }
