@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Model;
@@ -28,7 +22,7 @@ namespace PartyOrganizer.Adapters
 
         public override long GetItemId(int position)
         {
-            return position;
+            return parties[position].ID;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)

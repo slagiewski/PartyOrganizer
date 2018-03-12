@@ -44,20 +44,32 @@ namespace PartyOrganizer
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f040007
+			public const int adminTextView = 2130968583;
+			
 			// aapt resource value: 0x7f040000
-			public const int PartyOrganizerListView = 2130968576;
+			public const int avatarImageView = 2130968576;
+			
+			// aapt resource value: 0x7f040008
+			public const int dateTextView = 2130968584;
 			
 			// aapt resource value: 0x7f040003
-			public const int adminTextView = 2130968579;
-			
-			// aapt resource value: 0x7f040004
-			public const int dateTextView = 2130968580;
-			
-			// aapt resource value: 0x7f040001
-			public const int partyImageView = 2130968577;
+			public const int friendsListView = 2130968579;
 			
 			// aapt resource value: 0x7f040002
-			public const int partyShortDescriptionTextView = 2130968578;
+			public const int isOnlineTextView = 2130968578;
+			
+			// aapt resource value: 0x7f040001
+			public const int nameAndSurnameTextView = 2130968577;
+			
+			// aapt resource value: 0x7f040005
+			public const int partyImageView = 2130968581;
+			
+			// aapt resource value: 0x7f040004
+			public const int partyOrganizerListView = 2130968580;
+			
+			// aapt resource value: 0x7f040006
+			public const int partyShortDescriptionTextView = 2130968582;
 			
 			static Id()
 			{
@@ -73,13 +85,19 @@ namespace PartyOrganizer
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Main = 2130837504;
+			public const int FriendRowView = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int PartyOrganizerView = 2130837505;
+			public const int FriendsView = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int PartyRowView = 2130837506;
+			public const int Main = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int PartyOrganizerView = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int PartyRowView = 2130837508;
 			
 			static Layout()
 			{

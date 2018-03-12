@@ -14,9 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
           <LinearLayout
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -43,7 +40,5 @@
                 android:textSize="9dp"
                 android:gravity="left" />
           </LinearLayout>
-
-        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
