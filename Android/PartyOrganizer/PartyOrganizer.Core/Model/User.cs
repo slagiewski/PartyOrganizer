@@ -13,6 +13,16 @@ namespace PartyOrganizer.Core
 
         public string Surname { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return Name + " " + Surname;
+            }
+        }
+
+        public string Location { get; set; }
+
         public bool Online { get; set; }
 
         public string StatusImagePath

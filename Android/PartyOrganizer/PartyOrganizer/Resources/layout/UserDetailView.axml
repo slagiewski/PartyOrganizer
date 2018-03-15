@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/userFullNameTextView"
+        android:text="UserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/userLocationTextView"
+        android:text="City"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/userEmailTextView"
+        android:text="Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="15dp" />
+</LinearLayout>

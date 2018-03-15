@@ -47,6 +47,9 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f040007
 			public const int adminTextView = 2130968583;
 			
+			// aapt resource value: 0x7f040009
+			public const int avatarImageView = 2130968585;
+			
 			// aapt resource value: 0x7f040008
 			public const int dateTextView = 2130968584;
 			
@@ -70,6 +73,15 @@ namespace PartyOrganizer
 			
 			// aapt resource value: 0x7f040002
 			public const int statusImageView = 2130968578;
+			
+			// aapt resource value: 0x7f04000c
+			public const int userEmailTextView = 2130968588;
+			
+			// aapt resource value: 0x7f04000a
+			public const int userFullNameTextView = 2130968586;
+			
+			// aapt resource value: 0x7f04000b
+			public const int userLocationTextView = 2130968587;
 			
 			static Id()
 			{
@@ -98,6 +110,9 @@ namespace PartyOrganizer
 			
 			// aapt resource value: 0x7f020004
 			public const int PartyRowView = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int UserDetailView = 2130837509;
 			
 			static Layout()
 			{

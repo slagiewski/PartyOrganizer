@@ -16,7 +16,7 @@ using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "FriendsActivity", MainLauncher = true)]
+    [Activity(Label = "FriendsActivity", MainLauncher = false)]
     public class FriendsActivity : Activity
     {
         ListView friendsListView;
