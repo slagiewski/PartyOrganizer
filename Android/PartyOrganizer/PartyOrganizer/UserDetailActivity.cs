@@ -8,7 +8,7 @@ using PartyOrganizer.Utility;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Użytkownik", MainLauncher = true)]
+    [Activity(Label = "Użytkownik", MainLauncher = false)]
     public class UserDetailActivity : Activity
     {
         private ImageView avatarImageView;

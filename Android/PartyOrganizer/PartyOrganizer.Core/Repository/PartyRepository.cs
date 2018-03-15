@@ -42,8 +42,13 @@ namespace PartyOrganizer.Core.Repository
                 {
                     ID = i,
                     ShortDescription = $"Short Description about the {i+1}. party",
-                    Description = " Full Description about the first party",
-                    Location = " Wrocław, ul. xyz 1337 ",
+                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
+                                  " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                  " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +
+                                  " irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
+                                  " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim" +
+                                  " id est laborum.",
+                    Location = "Wrocław, ul. xyz 1337 ",
                     Admin = admin1,
                     Participants = new List<User>
                     {
@@ -79,7 +84,12 @@ namespace PartyOrganizer.Core.Repository
             {
                 ID = 2,
                 ShortDescription = "Short Description about the 3. party",
-                Description = " Full Description about the first party",
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
+                              " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                              " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +
+                              " irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
+                              " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim" +
+                              " id est laborum.",
                 Location = " Wrocław, ul. xyz 1337 ",
                 Admin = admin2,
                 Participants = null,

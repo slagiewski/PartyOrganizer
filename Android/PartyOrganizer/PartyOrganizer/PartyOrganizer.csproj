@@ -60,6 +60,7 @@
     <Compile Include="Adapters\FriendsListAdapter.cs" />
     <Compile Include="Adapters\PartyListAdapter.cs" />
     <Compile Include="FriendsActivity.cs" />
+    <Compile Include="PartyDetailActivity.cs" />
     <Compile Include="PartyOrganizerActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,9 @@
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />
     <AndroidResource Include="Resources\layout\PartyOrganizerView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyDetailView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <None Include="Resources\AboutResources.txt" />
