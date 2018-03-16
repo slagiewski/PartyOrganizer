@@ -8,7 +8,7 @@ using PartyOrganizer.Utility;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Wydarzenie", MainLauncher = true)]
+    [Activity(Label = "Wydarzenie", MainLauncher = false)]
     public class PartyDetailActivity : Activity
     {
         IPartyRepository partyRepository;
@@ -26,7 +26,8 @@ namespace PartyOrganizer
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PartyDetailView);
             partyRepository = new PartyRepository();
-            selectedParty = partyRepository.GetByID(0);
+            var selectedPartyID = Intent.Extras.GetInt("selectedPartyID");
+            selectedParty = partyRepository.GetByID(selectedPartyID);
 
             FindViews();
 
@@ -51,7 +52,7 @@ namespace PartyOrganizer
             partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + selectedParty.Description;
             partyAdminTextView.Text = selectedParty.Admin.FullName;
             partyLocationTextView.Text = selectedParty.Location;
-            partyDateTextView.Text = selectedParty.Date.ToString();
+            partyDateTextView.Text = selectedParty.Date.ToString("dd/MM/yyyy hh:mm"); ;
         }
 
     }

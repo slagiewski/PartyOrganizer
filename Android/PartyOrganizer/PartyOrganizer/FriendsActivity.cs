@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Adapters;
 using PartyOrganizer.Core;
@@ -16,7 +10,7 @@ using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "FriendsActivity", MainLauncher = false)]
+    [Activity(Label = "Znajomi", MainLauncher = false)]
     public class FriendsActivity : Activity
     {
         ListView friendsListView;

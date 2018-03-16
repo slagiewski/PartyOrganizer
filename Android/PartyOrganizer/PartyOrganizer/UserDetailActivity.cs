@@ -26,7 +26,8 @@ namespace PartyOrganizer
             SetContentView(Resource.Layout.UserDetailView);
 
             userRepository = new UserRepository();
-            selectedUser = userRepository.GetByID(0);
+            var selectedUserID = Intent.Extras.GetInt("selectedUserID");
+            selectedUser = userRepository.GetByID(selectedUserID);
 
             FindViews();
 
@@ -35,7 +36,8 @@ namespace PartyOrganizer
 
         private void BindData()
         {
-            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + selectedUser.ImagePath + ".jpg");
+            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" 
+                                                                  + selectedUser.ImagePath + ".jpg");
             avatarImageView.SetImageBitmap(avatarBitmap);
             userFullNameTextView.Text = selectedUser.FullName;
             userLocationTextView.Text = selectedUser.Location;

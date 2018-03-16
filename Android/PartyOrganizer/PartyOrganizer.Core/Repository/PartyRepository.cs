@@ -36,7 +36,7 @@ namespace PartyOrganizer.Core.Repository
                 Friends = null
             };
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Add(new Party()
                 {
@@ -82,8 +82,8 @@ namespace PartyOrganizer.Core.Repository
 
             Add(new Party()
             {
-                ID = 2,
-                ShortDescription = "Short Description about the 3. party",
+                ID = 5,
+                ShortDescription = "Short Description about the 5. party",
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
                               " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
                               " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +

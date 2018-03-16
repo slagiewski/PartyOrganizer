@@ -11,6 +11,7 @@ namespace PartyOrganizer.Adapters
     class PartyListAdapter : BaseAdapter<Party>
     {
         // IEnumerable might affect performance, will test it later how much
+        // Edit: not a good idea
         List<Party> parties;
         Activity context;
 
@@ -37,7 +38,7 @@ namespace PartyOrganizer.Adapters
             }
 
             convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = party.ShortDescription;
-            convertView.FindViewById<TextView>(Resource.Id.dateTextView).Text = party.Date.ToString();
+            convertView.FindViewById<TextView>(Resource.Id.dateTextView).Text = party.Date.ToString("dd/MM/yyyy hh:mm");
             convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Admin.ToString();
             convertView.FindViewById<ImageView>(Resource.Id.partyImageView).SetImageBitmap(imageBitmap);
             
