@@ -5,9 +5,8 @@ namespace PartyOrganizer.Core.Repository.Interfaces
 {
     public interface IPartyRepository : IRepository<Party>
     {
-        IEnumerable<Party> GetPartiesOrganizedByUser(User User);
+        IEnumerable<Party> GetPartiesByUser(User User);
 
-        IEnumerable<Party> GetPartiesUserParticipateIn(User user);
-
+        IEnumerable<Party> GetPartiesWithUser(User user);
     }
 }

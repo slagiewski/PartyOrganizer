@@ -29,14 +29,13 @@ namespace PartyOrganizer.Core
         {
             get
             {
-                if (this.Online)
+                if (Online)
                     return "103027/1293960051.png";
                 else
                     return "169058/red-point.png";
             }
         }
             
-
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }

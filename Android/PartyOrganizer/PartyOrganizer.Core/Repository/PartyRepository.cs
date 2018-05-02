@@ -113,12 +113,12 @@ namespace PartyOrganizer.Core.Repository
             return parties.FirstOrDefault(x => x.ID == ID);
         }
 
-        public IEnumerable<Party> GetPartiesOrganizedByUser(User user)
+        public IEnumerable<Party> GetPartiesByUser(User user)
         {
             return parties.FindAll(x => x.Admin.Equals(user));
         }
 
-        public IEnumerable<Party> GetPartiesUserParticipateIn(User user)
+        public IEnumerable<Party> GetPartiesWithUser(User user)
         {
             /*var result = parties.Where(x => x.Participants != null)
                                   .Where(x => x.Participants

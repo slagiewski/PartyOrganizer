@@ -30,9 +30,9 @@ namespace PartyOrganizer.Core.Repository.Tests
                 Friends = null
             };
 
-            var expected = 2;
+            var expected = 4;
 
-            var actual = repository.GetPartiesUserParticipateIn(user) == null ? 0 : repository.GetPartiesUserParticipateIn(user).Count();
+            var actual = repository.GetPartiesWithUser(user) == null ? 0 : repository.GetPartiesWithUser(user).Count();
 
             Assert.AreEqual(expected, actual);
 
@@ -55,7 +55,7 @@ namespace PartyOrganizer.Core.Repository.Tests
 
             var expected = 0;
 
-            var actual = repository.GetPartiesUserParticipateIn(user) == null ? 0 : repository.GetPartiesUserParticipateIn(user).Count();
+            var actual = repository.GetPartiesWithUser(user) == null ? 0 : repository.GetPartiesWithUser(user).Count();
 
             Assert.AreEqual(expected, actual);
 
@@ -64,9 +64,9 @@ namespace PartyOrganizer.Core.Repository.Tests
         [TestMethod()]
         public void Should_Return_All_Parties()
         {
-            //currently initialized to 3 values
+            //currently initialized with 5 values
 
-            var expected = 3;
+            var expected = 5;
 
 
             var actual = repository.GetAll().Count();
@@ -150,7 +150,7 @@ namespace PartyOrganizer.Core.Repository.Tests
         [TestMethod()]
         public void GetPartiesOrganizedByUserTest()
         {
-            var expected1 = 2;
+            var expected1 = 4;
             var expected2 = 1;
 
             var admin1 = new User()
@@ -177,8 +177,8 @@ namespace PartyOrganizer.Core.Repository.Tests
                 Friends = null
             };
 
-            var actual1 = repository.GetPartiesOrganizedByUser(admin1).Count();
-            var actual2 = repository.GetPartiesOrganizedByUser(admin2).Count();
+            var actual1 = repository.GetPartiesByUser(admin1).Count();
+            var actual2 = repository.GetPartiesByUser(admin2).Count();
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);

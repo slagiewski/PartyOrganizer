@@ -10,30 +10,29 @@ namespace PartyOrganizer.Adapters
 {
     class FriendsListAdapter : BaseAdapter<User>
     {
+        private List<User> _friends;
+        private Activity _context;
 
-        Activity context;
-        List<User> friends;
-
-        public FriendsListAdapter(Activity context, IEnumerable<User> friends) : base()
+        public FriendsListAdapter(Activity context, List<User> friends) : base()
         {
-            this.context = context;
-            this.friends = friends.ToList();
+            _context = context;
+            _friends = friends;
         }
 
         public override long GetItemId(int position)
         {
-            return friends[position].ID;
+            return _friends[position].ID;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            var friend = friends[position];
+            var friend = _friends[position];
             var avatarImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath + ".jpg");
             var statusImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath + ".jpg");
 
             if ( convertView == null)
             {
-                convertView = context.LayoutInflater.Inflate(Resource.Layout.FriendRowView, null);
+                convertView = _context.LayoutInflater.Inflate(Resource.Layout.FriendRowView, null);
             }
 
             convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
@@ -43,8 +42,8 @@ namespace PartyOrganizer.Adapters
             return convertView;
         }
 
-        public override int Count => friends.Count;
+        public override int Count => _friends.Count;
 
-        public override User this[int position] => friends[position];
+        public override User this[int position] => _friends[position];
     }
 }

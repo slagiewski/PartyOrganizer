@@ -11,7 +11,7 @@ using Android.Content;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Party Organizer", MainLauncher = true)]
+    [Activity(Label = "Party Organizer", MainLauncher = false)]
     public class MainActivity : Activity
     {
         private ListView partyListView;
@@ -36,7 +36,7 @@ namespace PartyOrganizer
 
         private void PartyListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var party = allParties.ElementAt(e.Position);
+            var party = allParties[e.Position];
 
             var intent = new Intent();
             intent.SetClass(this, typeof(PartyDetailActivity));
