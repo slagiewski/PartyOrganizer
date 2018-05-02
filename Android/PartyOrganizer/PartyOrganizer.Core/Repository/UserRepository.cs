@@ -6,11 +6,11 @@ namespace PartyOrganizer.Core.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private List<User> users = new List<User>();
+        private static List<User> users = new List<User>();
 
-        public UserRepository()
+        static UserRepository()
         {
-            Add(new User()
+            users.Add(new User()
             {
                 ID = 0,
                 Name = "Sebastian",
@@ -22,7 +22,7 @@ namespace PartyOrganizer.Core.Repository
                 ImagePath = "247324/abstract-user-flat-1.png",
                 Friends = null
             });
-            Add(new User()
+            users.Add(new User()
             {
                 ID = 1,
                 Name = "Klaudia",
@@ -72,7 +72,7 @@ namespace PartyOrganizer.Core.Repository
                     }
                 }
             });
-            Add(new User()
+            users.Add(new User()
             {
                 ID = 2,
                 Name = "Typical",

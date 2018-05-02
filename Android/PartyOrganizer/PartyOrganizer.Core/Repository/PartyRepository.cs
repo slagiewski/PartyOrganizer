@@ -8,9 +8,9 @@ namespace PartyOrganizer.Core.Repository
 {
     public class PartyRepository : IPartyRepository
     {
-        private List<Party> parties = new List<Party>();
+        private static List<Party> parties = new List<Party>();
         
-        public PartyRepository()
+        static PartyRepository()
         {
             var admin1 = new User()
             {
@@ -38,7 +38,7 @@ namespace PartyOrganizer.Core.Repository
 
             for (int i = 0; i < 4; i++)
             {
-                Add(new Party()
+                parties.Add(new Party()
                 {
                     ID = i,
                     ShortDescription = $"Short Description about the {i+1}. party",
@@ -80,7 +80,7 @@ namespace PartyOrganizer.Core.Repository
                 });
             }
 
-            Add(new Party()
+            parties.Add(new Party()
             {
                 ID = 5,
                 ShortDescription = "Short Description about the 5. party",
