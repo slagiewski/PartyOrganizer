@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Android.App;
 using Android.Views;
 using Android.Widget;
@@ -19,16 +18,11 @@ namespace PartyOrganizer.Adapters
             _friends = friends;
         }
 
-        public override long GetItemId(int position)
-        {
-            return _friends[position].ID;
-        }
-
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var friend = _friends[position];
-            var avatarImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath + ".jpg");
-            var statusImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath + ".jpg");
+            var avatarImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath);
+            var statusImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath);
 
             if ( convertView == null)
             {
@@ -45,5 +39,10 @@ namespace PartyOrganizer.Adapters
         public override int Count => _friends.Count;
 
         public override User this[int position] => _friends[position];
+
+        public override long GetItemId(int position)
+        {
+            return _friends[position].ID;
+        }
     }
 }

@@ -8,13 +8,16 @@ namespace PartyOrganizer.Core.Repository
 {
     public class PartyRepository : IPartyRepository
     {
-        private static List<Party> parties = new List<Party>();
-        
+        private static List<Party> _parties = new List<Party>();
+
+        private static int IdCounter => _parties.Count; 
+
         static PartyRepository()
         {
+            var userRepository = new UserRepository();
+
             var admin1 = new User()
             {
-                ID = 3,
                 Name = "Sławomir",
                 Online = true,
                 Surname = "Sławny",
@@ -23,10 +26,11 @@ namespace PartyOrganizer.Core.Repository
                 ImagePath = "247320/abstract-user-flat-4.png",
                 Friends = null
             };
+            userRepository.Add(admin1);
 
             var admin2 = new User()
             {
-                ID = 4,
+                ID = IdCounter,
                 Name = "Przemysław",
                 Online = true,
                 Surname = "Uprzejmy",
@@ -35,61 +39,42 @@ namespace PartyOrganizer.Core.Repository
                 ImagePath = "247320/abstract-user-flat-4.png",
                 Friends = null
             };
+            userRepository.Add(admin2);
 
             for (int i = 0; i < 4; i++)
             {
-                parties.Add(new Party()
+                _parties.Add(new Party()
                 {
-                    ID = i,
-                    ShortDescription = $"Short Description about the {i+1}. party",
+                    ID = IdCounter,
+                    Name = $"Short Description about the {i + 1}. party",
                     Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
-                                  " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                                  " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +
-                                  " irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
-                                  " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim" +
-                                  " id est laborum.",
+                                    " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                    " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +
+                                    " irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
+                                    " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim" +
+                                    " id est laborum.",
                     Location = "Wrocław, ul. xyz 1337 ",
                     Admin = admin1,
                     Participants = new List<User>
                     {
-                        new User()
-                        {
-                            ID = 0,
-                            Name = "Sebastian",
-                            Surname = "Łągiewski",
-                            Online = true,
-                            Email = $"s3blag{i}@gmail.com",
-                            PhoneNumber = "48123456789",
-                            ImagePath = "247324/abstract-user-flat-1.png",
-                            Friends = null
-                        },
-                        new User()
-                        {
-                            ID = 1,
-                            Name = "Klaudia",
-                            Surname = "Łągiewska",
-                            Online = false,
-                            Email = $"sl{i}@gmail.com",
-                            PhoneNumber = "48123423139",
-                            ImagePath = "247319/abstract-user-flat-3.png",
-                            Friends = null
-                        }
+                        admin1,
+                        admin2
                     },
                     ImagePath = "171448/cyberscooty-let-s-party-1.png",
                     Date = DateTime.Today
                 });
             }
 
-            parties.Add(new Party()
+            _parties.Add(new Party()
             {
-                ID = 5,
-                ShortDescription = "Short Description about the 5. party",
+                ID = IdCounter,
+                Name = "Short Description about the 5. party",
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
-                              " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                              " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +
-                              " irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
-                              " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim" +
-                              " id est laborum.",
+                                " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                " quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute" +
+                                " irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
+                                " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim" +
+                                " id est laborum.",
                 Location = " Wrocław, ul. xyz 1337 ",
                 Admin = admin2,
                 Participants = null,
@@ -98,37 +83,37 @@ namespace PartyOrganizer.Core.Repository
             });
         }
 
-        public void Add(Party party)
+        public int Add(Party party)
         {
-            parties.Add(party);
+            party.ID = IdCounter;
+            _parties.Add(party);
+            return party.ID;
         }
 
         public IEnumerable<Party> GetAll()
         {
-            return parties;
+            return _parties;
         }
 
         public Party GetByID(int ID)
         {
-            return parties.FirstOrDefault(x => x.ID == ID);
+            return _parties.FirstOrDefault(x => x.ID == ID);
         }
 
         public IEnumerable<Party> GetPartiesByUser(User user)
         {
-            return parties.FindAll(x => x.Admin.Equals(user));
+            return _parties.FindAll(x => x.Admin.Equals(user));
         }
 
         public IEnumerable<Party> GetPartiesWithUser(User user)
         {
             /*var result = parties.Where(x => x.Participants != null)
-                                  .Where(x => x.Participants
-                                  .All(z => !z.Equals(user)));*/
+                                  .Where(x => x.Participants.All(z => !z.Equals(user)));*/
 
             /*var result = parties.Where(x => x.Participants != null)
-                                .Where(x => x.Participants
-                                .Any(z => z.Equals(user)));*/
+                                .Where(x => x.Participants.Any(z => z.Equals(user)));*/
 
-            var result = from p in parties
+            var result = from p in _parties
                          where p.Participants != null
                          from participants in p.Participants
                          where participants.Equals(user)
@@ -139,13 +124,13 @@ namespace PartyOrganizer.Core.Repository
 
         public void Remove(Party party)
         {
-            parties.Remove(party);
+            _parties.Remove(party);
         }
 
-        //only for unit tests purposes, it will be removed in the final ver
+        //temporary
         public void RemoveAll()
         {
-            parties.Clear();
+            _parties.Clear();
         }
 
     }

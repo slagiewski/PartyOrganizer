@@ -8,26 +8,26 @@ using PartyOrganizer.Utility;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Wydarzenie", MainLauncher = false)]
+    [Activity(Label = "Party", MainLauncher = false)]
     public class PartyDetailActivity : Activity
     {
-        IPartyRepository partyRepository;
-        Party selectedParty;
+        private IPartyRepository _partyRepository;
+        private Party _selectedParty;
 
-        ImageView partyAvatarImageView;
-        TextView partyShortDescriptionTextView;
-        TextView partyLongDescriptionTextView;
-        TextView partyAdminTextView;
-        TextView partyLocationTextView;
-        TextView partyDateTextView;
+        private ImageView _partyAvatarImageView;
+        private TextView _partyShortDescriptionTextView;
+        private TextView _partyLongDescriptionTextView;
+        private TextView _partyAdminTextView;
+        private TextView _partyLocationTextView;
+        private TextView _partyDateTextView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PartyDetailView);
-            partyRepository = new PartyRepository();
+            _partyRepository = new PartyRepository();
             var selectedPartyID = Intent.Extras.GetInt("selectedPartyID");
-            selectedParty = partyRepository.GetByID(selectedPartyID);
+            _selectedParty = _partyRepository.GetByID(selectedPartyID);
 
             FindViews();
 
@@ -36,23 +36,23 @@ namespace PartyOrganizer
 
         private void FindViews()
         {
-            partyAvatarImageView = FindViewById<ImageView>(Resource.Id.partyAvatarImageView);
-            partyShortDescriptionTextView = FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView);
-            partyLongDescriptionTextView = FindViewById<TextView>(Resource.Id.partyLongDescriptionTextView);
-            partyAdminTextView = FindViewById<TextView>(Resource.Id.partyAdminTextView);
-            partyLocationTextView = FindViewById<TextView>(Resource.Id.partyLocationTextView);
-            partyDateTextView = FindViewById<TextView>(Resource.Id.partyDateTextView);
+            _partyAvatarImageView = FindViewById<ImageView>(Resource.Id.partyAvatarImageView);
+            _partyShortDescriptionTextView = FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView);
+            _partyLongDescriptionTextView = FindViewById<TextView>(Resource.Id.partyLongDescriptionTextView);
+            _partyAdminTextView = FindViewById<TextView>(Resource.Id.partyAdminTextView);
+            _partyLocationTextView = FindViewById<TextView>(Resource.Id.partyLocationTextView);
+            _partyDateTextView = FindViewById<TextView>(Resource.Id.partyDateTextView);
         }
 
         private void BindData()
         {
-            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + selectedParty.ImagePath + ".jpg");
-            partyAvatarImageView.SetImageBitmap(avatarBitmap);
-            partyShortDescriptionTextView.Text = selectedParty.ShortDescription;
-            partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + selectedParty.Description;
-            partyAdminTextView.Text = selectedParty.Admin.FullName;
-            partyLocationTextView.Text = selectedParty.Location;
-            partyDateTextView.Text = selectedParty.Date.ToString("dd/MM/yyyy hh:mm"); ;
+            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.ImagePath);
+            _partyAvatarImageView.SetImageBitmap(avatarBitmap);
+            _partyShortDescriptionTextView.Text = _selectedParty.Name;
+            _partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + _selectedParty.Description;
+            _partyAdminTextView.Text = _selectedParty.Admin?.ToString()??"App user (in progress)";
+            _partyLocationTextView.Text = _selectedParty.Location;
+            _partyDateTextView.Text = _selectedParty.Date.ToString("dd/MM/yyyy hh:mm"); ;
         }
 
     }

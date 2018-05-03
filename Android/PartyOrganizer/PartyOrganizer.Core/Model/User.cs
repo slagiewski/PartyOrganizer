@@ -13,14 +13,6 @@ namespace PartyOrganizer.Core
 
         public string Surname { get; set; }
 
-        public string FullName
-        {
-            get
-            {
-                return Name + " " + Surname;
-            }
-        }
-
         public string Location { get; set; }
 
         public bool Online { get; set; }
@@ -51,7 +43,7 @@ namespace PartyOrganizer.Core
         public bool Equals(User other)
         {
             if (other == null) return false;
-            if ((this.ID == other.ID || this.Email == other.Email) || 
+            if (this.ID == other.ID || this.Email == other.Email || 
                 (this.Name == other.Name && this.Surname == other.Surname && this.PhoneNumber == other.PhoneNumber))
                 return true;
             else

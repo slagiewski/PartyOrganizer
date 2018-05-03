@@ -44,62 +44,83 @@ namespace PartyOrganizer
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f04000d
-			public const int adminTextView = 2130968589;
+			// aapt resource value: 0x7f040014
+			public const int adminTextView = 2130968596;
 			
-			// aapt resource value: 0x7f04000f
-			public const int avatarImageView = 2130968591;
+			// aapt resource value: 0x7f040016
+			public const int avatarImageView = 2130968598;
 			
-			// aapt resource value: 0x7f04000e
-			public const int dateTextView = 2130968590;
-			
-			// aapt resource value: 0x7f040000
-			public const int friendImageView = 2130968576;
-			
-			// aapt resource value: 0x7f040003
-			public const int friendsListView = 2130968579;
-			
-			// aapt resource value: 0x7f040004
-			public const int mainScrollView = 2130968580;
-			
-			// aapt resource value: 0x7f040001
-			public const int nameAndSurnameTextView = 2130968577;
+			// aapt resource value: 0x7f040015
+			public const int dateTextView = 2130968597;
 			
 			// aapt resource value: 0x7f040007
-			public const int partyAdminTextView = 2130968583;
-			
-			// aapt resource value: 0x7f040005
-			public const int partyAvatarImageView = 2130968581;
-			
-			// aapt resource value: 0x7f040009
-			public const int partyDateTextView = 2130968585;
-			
-			// aapt resource value: 0x7f04000c
-			public const int partyImageView = 2130968588;
-			
-			// aapt resource value: 0x7f040008
-			public const int partyLocationTextView = 2130968584;
+			public const int friendImageView = 2130968583;
 			
 			// aapt resource value: 0x7f04000a
-			public const int partyLongDescriptionTextView = 2130968586;
+			public const int friendsListView = 2130968586;
 			
 			// aapt resource value: 0x7f04000b
-			public const int partyOrganizerListView = 2130968587;
+			public const int mainScrollView = 2130968587;
+			
+			// aapt resource value: 0x7f040008
+			public const int nameAndSurnameTextView = 2130968584;
 			
 			// aapt resource value: 0x7f040006
-			public const int partyShortDescriptionTextView = 2130968582;
+			public const int newPartyAddButton = 2130968582;
+			
+			// aapt resource value: 0x7f040003
+			public const int newPartyDescriptionEditText = 2130968579;
 			
 			// aapt resource value: 0x7f040002
-			public const int statusImageView = 2130968578;
+			public const int newPartyDescriptionTextView = 2130968578;
 			
-			// aapt resource value: 0x7f040012
-			public const int userEmailTextView = 2130968594;
+			// aapt resource value: 0x7f040005
+			public const int newPartyLocationEditText = 2130968581;
+			
+			// aapt resource value: 0x7f040004
+			public const int newPartyLocationTextView = 2130968580;
+			
+			// aapt resource value: 0x7f040001
+			public const int newPartyNameEditText = 2130968577;
+			
+			// aapt resource value: 0x7f040000
+			public const int newPartyNameTextView = 2130968576;
+			
+			// aapt resource value: 0x7f04000e
+			public const int partyAdminTextView = 2130968590;
+			
+			// aapt resource value: 0x7f04000c
+			public const int partyAvatarImageView = 2130968588;
 			
 			// aapt resource value: 0x7f040010
-			public const int userFullNameTextView = 2130968592;
+			public const int partyDateTextView = 2130968592;
+			
+			// aapt resource value: 0x7f040013
+			public const int partyImageView = 2130968595;
+			
+			// aapt resource value: 0x7f04000f
+			public const int partyLocationTextView = 2130968591;
 			
 			// aapt resource value: 0x7f040011
-			public const int userLocationTextView = 2130968593;
+			public const int partyLongDescriptionTextView = 2130968593;
+			
+			// aapt resource value: 0x7f040012
+			public const int partyOrganizerListView = 2130968594;
+			
+			// aapt resource value: 0x7f04000d
+			public const int partyShortDescriptionTextView = 2130968589;
+			
+			// aapt resource value: 0x7f040009
+			public const int statusImageView = 2130968585;
+			
+			// aapt resource value: 0x7f040019
+			public const int userEmailTextView = 2130968601;
+			
+			// aapt resource value: 0x7f040017
+			public const int userFullNameTextView = 2130968599;
+			
+			// aapt resource value: 0x7f040018
+			public const int userLocationTextView = 2130968600;
 			
 			static Id()
 			{
@@ -115,25 +136,28 @@ namespace PartyOrganizer
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int FriendRowView = 2130837504;
+			public const int AddPartyView = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int FriendsView = 2130837505;
+			public const int FriendRowView = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int Main = 2130837506;
+			public const int FriendsView = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int PartyDetailView = 2130837507;
+			public const int Main = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int PartyOrganizerView = 2130837508;
+			public const int PartyDetailView = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int PartyRowView = 2130837509;
+			public const int PartyOrganizerView = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int UserDetailView = 2130837510;
+			public const int PartyRowView = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int UserDetailView = 2130837511;
 			
 			static Layout()
 			{

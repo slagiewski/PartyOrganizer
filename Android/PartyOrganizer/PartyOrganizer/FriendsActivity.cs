@@ -11,12 +11,12 @@ using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Znajomi", MainLauncher = true)]
+    [Activity(Label = "Friends", MainLauncher = false)]
     public class FriendsActivity : Activity
     {
-        ListView friendsListView;
-        List<User> friends;
-        IUserRepository userRepository;
+        private ListView _friendsListView;
+        private List<User> _friends;
+        private IUserRepository _userRepository;
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -24,27 +24,30 @@ namespace PartyOrganizer
 
             SetContentView(Resource.Layout.FriendsView);
 
-            friendsListView = FindViewById<ListView>(Resource.Id.friendsListView);
+            _friendsListView = FindViewById<ListView>(Resource.Id.friendsListView);
 
-            userRepository = new UserRepository();
+            _userRepository = new UserRepository();
 
-            friends = userRepository.GetAll().ToList();
+            _friends = _userRepository.GetAll().ToList();
 
-            friendsListView.Adapter = new FriendsListAdapter(this, friends);
+            _friendsListView.Adapter = new FriendsListAdapter(this, _friends);
 
-            friendsListView.ItemClick += PartyListView_ItemClick;
+            HandleEvents();
 
         }
 
-        private void PartyListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private void HandleEvents()
         {
-            var party = friends[e.Position];
+            _friendsListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
+            {
+                var party = _friends[e.Position];
 
-            var intent = new Intent();
-            intent.SetClass(this, typeof(UserDetailActivity));
-            intent.PutExtra("selectedUserID", party.ID);
+                var intent = new Intent();
+                intent.SetClass(this, typeof(UserDetailActivity));
+                intent.PutExtra("selectedUserID", party.ID);
 
-            StartActivityForResult(intent, 100);
+                StartActivityForResult(intent, 100);
+            }; 
         }
     }
 }

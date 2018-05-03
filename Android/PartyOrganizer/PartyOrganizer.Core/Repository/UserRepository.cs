@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PartyOrganizer.Core.Repository.Interfaces;
 
@@ -6,13 +7,18 @@ namespace PartyOrganizer.Core.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private static List<User> users = new List<User>();
+        // TODO: 
+        // 1. Add UserViewModel which doesn't contain ID etc 
+
+        private static List<User> _users = new List<User>();
+
+        private static int IdCounter => _users.Count;
 
         static UserRepository()
         {
-            users.Add(new User()
+            _users.Add(new User()
             {
-                ID = 0,
+                ID = IdCounter,
                 Name = "Sebastian",
                 Surname = "Łągiewski",
                 Location = "Wrocław",
@@ -22,9 +28,52 @@ namespace PartyOrganizer.Core.Repository
                 ImagePath = "247324/abstract-user-flat-1.png",
                 Friends = null
             });
-            users.Add(new User()
+
+            var friend1 = new User()
             {
-                ID = 1,
+                ID = IdCounter,
+                Name = "Friend1",
+                Location = "Wrocław",
+                Surname = "Surname1",
+                Online = true,
+                Email = "s3blag1@gmail.com",
+                PhoneNumber = "48123456781",
+                ImagePath = "247324/abstract-user-flat-1.png",
+                Friends = null
+            };
+            _users.Add(friend1);
+
+            var friend2 = new User()
+            {
+                ID = IdCounter,
+                Name = "Friend2",
+                Surname = "Surname2",
+                Location = "Wrocław",
+                Online = true,
+                Email = "s3blag2@gmail.com",
+                PhoneNumber = "48123456782",
+                ImagePath = "247324/abstract-user-flat-1.png",
+                Friends = null
+            };
+            _users.Add(friend2);
+
+            var friend3 = new User()
+            {
+                ID = IdCounter,
+                Name = "Friend3",
+                Surname = "Surname3",
+                Location = "Wrocław",
+                Online = true,
+                Email = "s3blag3@gmail.com",
+                PhoneNumber = "48123456783",
+                ImagePath = "247324/abstract-user-flat-1.png",
+                Friends = null
+            };
+            _users.Add(friend3);
+
+            _users.Add(new User()
+            {
+                ID = IdCounter,
                 Name = "Klaudia",
                 Surname = "Łągiewska",
                 Location = "Wrocław",
@@ -34,47 +83,15 @@ namespace PartyOrganizer.Core.Repository
                 ImagePath = "247319/abstract-user-flat-3.png",
                 Friends = new List<User>
                 {
-                    new User()
-                    {
-                        ID = 5,
-                        Name = "Friend1",
-                        Location = "Wrocław",
-                        Surname = "Surname1",
-                        Online = true,
-                        Email = "s3blag1@gmail.com",
-                        PhoneNumber = "48123456781",
-                        ImagePath = "247324/abstract-user-flat-1.png",
-                        Friends = null
-                    },
-                    new User()
-                    {
-                        ID = 6,
-                        Name = "Friend2",
-                        Surname = "Surname2",
-                        Location = "Wrocław",
-                        Online = true,
-                        Email = "s3blag2@gmail.com",
-                        PhoneNumber = "48123456782",
-                        ImagePath = "247324/abstract-user-flat-1.png",
-                        Friends = null
-                    },
-                    new User()
-                    {
-                        ID = 7,
-                        Name = "Friend3",
-                        Surname = "Surname3",
-                        Location = "Wrocław",
-                        Online = true,
-                        Email = "s3blag3@gmail.com",
-                        PhoneNumber = "48123456783",
-                        ImagePath = "247324/abstract-user-flat-1.png",
-                        Friends = null
-                    }
+                    friend1,
+                    friend2,
+                    friend3
                 }
             });
-            users.Add(new User()
+
+            _users.Add(new User()
             {
-                ID = 2,
+                ID = IdCounter,
                 Name = "Typical",
                 Surname = "User",
                 Location = "Wrocław",
@@ -88,12 +105,12 @@ namespace PartyOrganizer.Core.Repository
 
         public IEnumerable<User> GetAll()
         {
-            return users;
+            return _users;
         }
 
         public User GetByID(int ID)
         {
-            return users.FirstOrDefault(x => x.ID == ID);
+            return _users.FirstOrDefault(x => x.ID == ID);
         }
 
         public IEnumerable<User> GetFriends(User user)
@@ -101,14 +118,17 @@ namespace PartyOrganizer.Core.Repository
             return user.Friends;
         }
 
-        public void Add(User user)
+        // UserViewModel
+        public int Add(User user)
         {
-            users.Add(user);
+            user.ID = IdCounter;
+            _users.Add(user);
+            return user.ID;
         }
 
         public void Remove(User user)
         {
-            users.Remove(user);
+            _users.Remove(user);
         }
     }
 }

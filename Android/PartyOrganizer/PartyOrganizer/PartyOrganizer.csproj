@@ -59,9 +59,10 @@
   <ItemGroup>
     <Compile Include="Adapters\FriendsListAdapter.cs" />
     <Compile Include="Adapters\PartyListAdapter.cs" />
+    <Compile Include="AddPartyActivity.cs" />
     <Compile Include="FriendsActivity.cs" />
+    <Compile Include="PartiesActivity.cs" />
     <Compile Include="PartyDetailActivity.cs" />
-    <Compile Include="PartyOrganizerActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDetailActivity.cs" />
@@ -90,6 +91,9 @@
     <AndroidResource Include="Resources\layout\UserDetailView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\AddPartyView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -98,6 +102,7 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Fragments\" />
     <Folder Include="Resources\drawable\" />
     <Folder Include="Resources\mipmap-hdpi\" />
     <Folder Include="Resources\mipmap-mdpi\" />
@@ -110,6 +115,9 @@
       <Project>{9A78702B-EF2D-4A9C-8C2D-22CBB37CAF3C}</Project>
       <Name>PartyOrganizer.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\raw\letsparty1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

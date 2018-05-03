@@ -8,7 +8,7 @@ namespace PartyOrganizer.Core.Repository
 
         T GetByID(int ID);
 
-        void Add(T entity);
+        int Add(T entity);
 
         void Remove(T entity);
     }
