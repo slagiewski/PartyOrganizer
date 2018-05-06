@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import PartyList from './PartyList';
 
 import AppBar from 'material-ui/AppBar';
+import Paper from 'material-ui/Paper';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import Avatar from 'material-ui/Avatar';
 import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
@@ -12,8 +14,9 @@ import Typography from 'material-ui/Typography';
 import { withTheme, withStyles } from 'material-ui/styles';
 
 //icons
+import AddIcon from 'material-ui-icons/Add';
+import JoinIcon from 'material-ui-icons/ChatBubble';
 import AccountCircle from 'material-ui-icons/AccountCircle';
-import { Paper } from 'material-ui';
 
 const NewUserDashboard = withStyles((theme)=>({
   wrapper: {
@@ -110,14 +113,31 @@ const ControlPanel = withStyles((theme)=>({
   paper: {
     width: 300,
     height: 400
+  },
+  tile: {
+    display: 'flex',
+    alignItems: 'center',
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main
+    }
   }
 }))((props)=>{
   const { classes } = props;
 
   return (
     <Paper className={classes.paper}>
-      <div>Throw a new party</div>
-      <div>Join a party</div>      
+      <div className={classes.tile}>
+        <Avatar>
+          <AddIcon/>
+        </Avatar>
+        <Typography>Throw a party</Typography>        
+      </div>
+      <div className={classes.tile}>
+        <Avatar>
+          <JoinIcon/>
+        </Avatar> 
+        <Typography>Join a party</Typography>
+      </div>     
     </Paper>
   )
 })
@@ -133,6 +153,20 @@ const styles = theme => ({
     justifyContent: 'center',
     marginTop: 30
   },
+  flex: {
+    flex: 1,
+  },
+  controlPaper: {
+    marginBottom: theme.spacing.unit*2
+  },
+  controlTile: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing.unit*2,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main
+    }
+  }
 });
 
 class Dashboard extends React.Component {
@@ -157,8 +191,8 @@ class Dashboard extends React.Component {
       <div className={classes.wrapper}>
          <AppBar position="static">
           <Toolbar>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-              Title
+            <Typography variant="title" align="center" color="inherit" className={classes.flex}>
+              Welcome, user
             </Typography>
             <div>
               <IconButton
@@ -190,7 +224,25 @@ class Dashboard extends React.Component {
           </Toolbar>
         </AppBar>
         <div className={classes.content}>
-          <ControlPanel/>
+          <div>
+            <Paper className={classes.controlPaper}>
+              <div className={classes.controlTile}>
+                <Avatar>
+                  <AddIcon/>
+                </Avatar>
+                <Typography>Throw a party</Typography>        
+              </div>
+            
+            </Paper>
+            <Paper className={classes.controlPaper}>
+              <div className={classes.controlTile}>
+                <Avatar>
+                  <JoinIcon/>
+                </Avatar> 
+                <Typography>Join a party</Typography>
+              </div>     
+            </Paper>            
+          </div>
           <PartyList/>
           <Paper>
             Coming up
