@@ -9,7 +9,7 @@ using System;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Add Party", MainLauncher = true)]
+    [Activity(Label = "Add Party", MainLauncher = false)]
     public class AddPartyActivity : Activity
     {
         private IPartyRepository _partyRepository;
