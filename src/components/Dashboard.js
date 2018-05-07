@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import PartyList from './PartyList';
+import PartyForm from './PartyForm';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -172,6 +173,15 @@ const styles = theme => ({
 class Dashboard extends React.Component {
   state={
     anchorEl: null,
+    formOpen: false
+  }
+
+  formOpen = () => {
+    this.setState({formOpen: true});
+  };
+
+  formClose = () => {
+    this.setState({formOpen: false});
   }
 
   handleMenu = event => {
@@ -226,7 +236,7 @@ class Dashboard extends React.Component {
         <div className={classes.content}>
           <div>
             <Paper className={classes.controlPaper}>
-              <div className={classes.controlTile}>
+              <div className={classes.controlTile} onClick={this.formOpen}>
                 <Avatar>
                   <AddIcon/>
                 </Avatar>
@@ -248,6 +258,7 @@ class Dashboard extends React.Component {
             Coming up
           </Paper>
         </div>
+        <PartyForm open={this.state.formOpen} handleClose={this.formClose}/>
       </div>
     );
   }
@@ -255,3 +266,4 @@ class Dashboard extends React.Component {
 
 
 export default withStyles(styles)(withTheme()(Dashboard));
+
