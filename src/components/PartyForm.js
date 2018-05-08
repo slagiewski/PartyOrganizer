@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Items from './Items';
+import { ItemsInteractive, ItemsPanel } from './Items';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Dialog, {
@@ -72,7 +72,8 @@ class PartyForm extends React.Component{
                 className={classes.textField}
               />
             </div>
-            <Items />
+            <ItemsPanel />
+            <ItemsInteractive />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleSubmit} color="primary">

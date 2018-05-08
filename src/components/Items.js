@@ -1,11 +1,54 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { addItem } from '../actions/items';
+
+import Button from 'material-ui/Button';
 import { Spring } from 'react-spring';
 import { Gesture } from 'react-with-gesture';
 import { withStyles } from 'material-ui/styles';
+import { TextField } from 'material-ui';
 
 
-const mockData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const tileHeight = 55;
+const mapStateToProps = (state) => ({
+  order: state.items.order,
+  items: state.items.info
+});
+
+const mockData = {
+  11: {
+    name: 'Wódka 0.5l',
+    count: 2
+  },
+  2: {
+    name: 'Tort',
+    count: 1
+  },
+  13: {
+    name: 'Talerze plastikowe',
+    count: 12
+  },
+  4: {
+    name: 'Kieliszki do wódki',
+    count: 6
+  }
+}
+
+export const ItemsPanel = connect()(class extends React.Component{
+  onNewItem = () => {
+    const fakeItem = {name: this.refs.item.value, count: 2}
+    this.props.dispatch(addItem(fakeItem, Math.random()*10));
+  }
+  render() {
+    return (
+      <div>
+        <input ref="item" type="text"/>
+        <Button onClick={this.onNewItem}>Add</Button>
+      </div>
+    )
+  }
+})
 
 const clamp = (n, min, max) => Math.max(Math.min(n, max), min);
 function reinsert(arr, from, to) {
@@ -16,14 +59,14 @@ function reinsert(arr, from, to) {
   return _arr;
 };
 
-const styles = theme => ({
+export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
   container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     userSelect: 'none',
     position: 'relative',
-    height: 400,
+    height: `calc(${Object.keys(mockData).length} * ${tileHeight}px)`,
     touchAction: 'none'
   },
   item: {
@@ -35,17 +78,15 @@ const styles = theme => ({
     overflow: 'visible',
     pointerEvents: 'auto',
     borderRadius: 4,
-    color: 'rgb(153, 153, 153)',
+    color: '#fff',
     paddingLeft: 32,
     fontSize: 24,
     fontWeight: 400,
     backgroundColor: theme.palette.primary.main,
     boxSizing: 'border-box'
   }
-});
-
-class ItemsInteractive extends React.Component {
-  state = { mouseY: 0, topDeltaY: 0, isPressed: false, originalPosOfLastPressed: 0, order: mockData }
+}))(class extends React.Component {
+  state = { mouseY: 0, topDeltaY: 0, isPressed: false, originalPosOfLastPressed: 0, order: this.props.order }
 
   componentDidMount() {
     window.addEventListener('touchmove', this.handleTouchMove);
@@ -61,11 +102,20 @@ class ItemsInteractive extends React.Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      order: this.props.order
+    })
+  }
+
   handleTouchStart = (key, pressLocation, e) => this.handleMouseDown(key, pressLocation, e.touches[0]);
 
   handleTouchMove = e => e.preventDefault() || this.handleMouseMove(e.touches[0]);
 
-  handleMouseUp = () => this.setState({ isPressed: false, topDeltaY: 0 });
+  handleMouseUp = () => {
+    console.log('dispatch action to change order here?');
+    this.setState({ isPressed: false, topDeltaY: 0 });
+  } 
 
   handleMouseDown = (pos, pressY, { pageY }) =>
     this.setState({ topDeltaY: pageY - pressY, mouseY: pressY, isPressed: true, originalPosOfLastPressed: pos });
@@ -74,7 +124,7 @@ class ItemsInteractive extends React.Component {
     const { isPressed, topDeltaY, order, originalPosOfLastPressed } = this.state;
     if (isPressed) {
       const mouseY = pageY - topDeltaY;
-      const currentRow = clamp(Math.round(mouseY / 100), 0, mockData.length - 1);
+      const currentRow = clamp(Math.round(mouseY / tileHeight), 0, this.props.order.length - 1);
       let newOrder = order;
       if (currentRow !== order.indexOf(originalPosOfLastPressed))
         newOrder = reinsert(order, order.indexOf(originalPosOfLastPressed), currentRow);
@@ -86,13 +136,15 @@ class ItemsInteractive extends React.Component {
     const { mouseY, isPressed, originalPosOfLastPressed, order } = this.state;
     const { classes } = this.props;
 
+    console.log(this.props);
+
     return (
       <div className={classes.container}>
-        {mockData.map(i => {
+        {order.map(i => {
           const active = originalPosOfLastPressed === i && isPressed;
           const style = active
             ? { scale: 1.1, shadow: 16, y: mouseY }
-            : { scale: 1, shadow: 1, y: order.indexOf(i) * 100 }
+            : { scale: 1, shadow: 1, y: order.indexOf(i) * tileHeight }
           return (
             <Spring immediate={name => active && name === 'y'} to={style} key={i}>
               {({ scale, shadow, y }) => (
@@ -105,7 +157,7 @@ class ItemsInteractive extends React.Component {
                     transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
                     zIndex: i === originalPosOfLastPressed ? 99 : i
                   }}>
-                  {order.indexOf(i) + 1} produkt
+                  {order.indexOf(i) + 1} {this.props.items[i].name} {this.props.items[i].count}
                 </div>
               )}
             </Spring>
@@ -114,6 +166,4 @@ class ItemsInteractive extends React.Component {
       </div>
     )
   }
-}
-
-export default withStyles(styles)(ItemsInteractive);
+}));
