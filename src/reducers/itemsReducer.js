@@ -16,6 +16,11 @@ export default (state = initialState, action) => {
     case 'REMOVE_ITEM':
       const { [action.id]: _, ...newState } = state;
       return newState;
+    case 'CHANGE_ORDER': 
+      return {
+        ...state,
+        order: action.order
+      }
     default:
       return state;
   }

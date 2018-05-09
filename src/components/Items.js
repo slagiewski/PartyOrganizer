@@ -1,13 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { addItem } from '../actions/items';
+import { addItem, changeOrder } from '../actions/items';
 
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 import { Spring } from 'react-spring';
 import { Gesture } from 'react-with-gesture';
 import { withStyles } from 'material-ui/styles';
-import { TextField } from 'material-ui';
+import { Typography } from 'material-ui';
+
 
 
 const tileHeight = 55;
@@ -35,20 +36,43 @@ const mockData = {
   }
 }
 
-export const ItemsPanel = connect()(class extends React.Component{
-  onNewItem = () => {
-    const fakeItem = {name: this.refs.item.value, count: 2}
-    this.props.dispatch(addItem(fakeItem, Math.random()*10));
+export const ItemsPanel = withStyles((theme)=>({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    margin: theme.spacing.unit,
+  },
+}))(connect()(class extends React.Component{
+  state = {
+    name: '',
+    count: 1
   }
+
+  onNewItem = () => {
+    const { name, count } = this.state;
+    this.props.dispatch(addItem({name, count}, Math.random()*10));
+  }
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
   render() {
+    const { classes } = this.props;
     return (
-      <div>
-        <input ref="item" type="text"/>
+      <div className={classes.root}>
+        <Typography>Add products/items for the party and move them around</Typography>
+        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
+        <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
         <Button onClick={this.onNewItem}>Add</Button>
       </div>
     )
   }
-})
+}));
 
 const clamp = (n, min, max) => Math.max(Math.min(n, max), min);
 function reinsert(arr, from, to) {
@@ -86,7 +110,7 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
     boxSizing: 'border-box'
   }
 }))(class extends React.Component {
-  state = { mouseY: 0, topDeltaY: 0, isPressed: false, originalPosOfLastPressed: 0, order: this.props.order }
+  state = { mouseY: 0, topDeltaY: 0, isPressed: false, originalPosOfLastPressed: 0 }
 
   componentDidMount() {
     window.addEventListener('touchmove', this.handleTouchMove);
@@ -102,41 +126,32 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  componentWillReceiveProps(nextProps){
-    this.setState({
-      order: this.props.order
-    })
-  }
-
   handleTouchStart = (key, pressLocation, e) => this.handleMouseDown(key, pressLocation, e.touches[0]);
 
   handleTouchMove = e => e.preventDefault() || this.handleMouseMove(e.touches[0]);
 
-  handleMouseUp = () => {
-    console.log('dispatch action to change order here?');
-    this.setState({ isPressed: false, topDeltaY: 0 });
-  } 
+  handleMouseUp = () => this.setState({ isPressed: false, topDeltaY: 0 });
 
   handleMouseDown = (pos, pressY, { pageY }) =>
     this.setState({ topDeltaY: pageY - pressY, mouseY: pressY, isPressed: true, originalPosOfLastPressed: pos });
 
   handleMouseMove = ({ pageY }) => {
-    const { isPressed, topDeltaY, order, originalPosOfLastPressed } = this.state;
+    const { isPressed, topDeltaY, originalPosOfLastPressed } = this.state;
+    const { order } = this.props;
     if (isPressed) {
       const mouseY = pageY - topDeltaY;
-      const currentRow = clamp(Math.round(mouseY / tileHeight), 0, this.props.order.length - 1);
+      const currentRow = clamp(Math.round(mouseY / tileHeight), 0, order.length - 1);
       let newOrder = order;
       if (currentRow !== order.indexOf(originalPosOfLastPressed))
         newOrder = reinsert(order, order.indexOf(originalPosOfLastPressed), currentRow);
-      this.setState({ mouseY: mouseY, order: newOrder });
+      this.setState({ mouseY: mouseY });
+      this.props.dispatch(changeOrder(newOrder));
     }
   }
 
   render() {
-    const { mouseY, isPressed, originalPosOfLastPressed, order } = this.state;
-    const { classes } = this.props;
-
-    console.log(this.props);
+    const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
+    const { classes, order, items } = this.props;
 
     return (
       <div className={classes.container}>
@@ -157,7 +172,7 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
                     transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
                     zIndex: i === originalPosOfLastPressed ? 99 : i
                   }}>
-                  {order.indexOf(i) + 1} {this.props.items[i].name} {this.props.items[i].count}
+                  {order.indexOf(i) + 1} {items[i].name} {items[i].count}
                 </div>
               )}
             </Spring>

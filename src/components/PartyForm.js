@@ -23,9 +23,59 @@ const styles = theme => ({
 });
 
 class PartyForm extends React.Component{
+  state = {
+    page: 1
+  }
 
   render() {
     const { classes, fullScreen, open } = this.props;
+
+    const firstPage = (
+      <React.Fragment>
+        <DialogContentText>
+          Fill in the form below and follow the instructions
+        </DialogContentText>
+        <div className={classes.root}>
+          <TextField
+            label="Party Name"
+            placeholder="eg. Kanye's birthday party"
+            id="party-name"
+            fullWidth
+            className={classes.textField}
+          />
+          <TextField
+            label="Location"
+            placeholder="Type a location"
+            id="party-location"
+            fullWidth                
+            className={classes.textField}
+          />
+          <TextField
+            label="Date"
+            id="party-date"
+            className={classes.textField}
+          />
+          <TextField
+            label="Time"
+            id="party-time"
+            className={classes.textField}
+          />
+          <TextField
+            label="Description"
+            placeholder="Tell guests more about the party"
+            id="party-description"
+            fullWidth
+            className={classes.textField}
+          />
+        </div>
+      </React.Fragment>
+    );
+    const secondPage = (
+      <React.Fragment>
+        <ItemsPanel />
+        <ItemsInteractive />
+      </React.Fragment>
+    )
 
     return(
       <Dialog
@@ -36,49 +86,26 @@ class PartyForm extends React.Component{
         >
           <DialogTitle id="responsive-dialog-form">{"Party Creator"}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Fill in the form below and follow the instructions
-            </DialogContentText>
-            <div className={classes.root}>
-              <TextField
-                label="Party Name"
-                placeholder="eg. Kanye's birthday party"
-                id="party-name"
-                fullWidth
-                className={classes.textField}
-              />
-              <TextField
-                label="Location"
-                placeholder="Type a location"
-                id="party-location"
-                fullWidth                
-                className={classes.textField}
-              />
-              <TextField
-                label="Date"
-                id="party-date"
-                className={classes.textField}
-              />
-              <TextField
-                label="Time"
-                id="party-time"
-                className={classes.textField}
-              />
-              <TextField
-                label="Description"
-                placeholder="Tell guests more about the party"
-                id="party-description"
-                fullWidth
-                className={classes.textField}
-              />
-            </div>
-            <ItemsPanel />
-            <ItemsInteractive />
+            {this.state.page === 1 ? 
+              firstPage :
+              secondPage
+            }
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleSubmit} color="primary">
-              Let's party!
-            </Button>
+            {this.state.page === 1 ? 
+              <Button onClick={()=>this.setState({page: 2})} variant="raised" color="primary">
+                Next
+              </Button>
+              :
+              <React.Fragment>
+                <Button onClick={()=>this.setState({page: 1})} color="primary">
+                  Back
+                </Button>
+                <Button onClick={this.handleSubmit} variant="raised" color="primary">
+                  Let's party!
+                </Button>
+              </React.Fragment>
+            }
           </DialogActions>
         </Dialog>
     )
