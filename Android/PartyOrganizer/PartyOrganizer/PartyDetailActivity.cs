@@ -5,6 +5,7 @@ using PartyOrganizer.Core.Model;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Utility;
+using Square.Picasso;
 
 namespace PartyOrganizer
 {
@@ -46,8 +47,9 @@ namespace PartyOrganizer
 
         private void BindData()
         {
-            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.ImagePath);
-            _partyAvatarImageView.SetImageBitmap(avatarBitmap);
+            Picasso.With(this)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.ImagePath)
+                   .Into(_partyAvatarImageView);
             _partyShortDescriptionTextView.Text = _selectedParty.Name;
             _partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + _selectedParty.Description;
             _partyAdminTextView.Text = _selectedParty.Admin?.ToString()??"App user (in progress)";

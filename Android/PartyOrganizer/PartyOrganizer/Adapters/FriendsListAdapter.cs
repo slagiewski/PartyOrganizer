@@ -4,6 +4,7 @@ using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core;
 using PartyOrganizer.Utility;
+using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
@@ -21,18 +22,24 @@ namespace PartyOrganizer.Adapters
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var friend = _friends[position];
-            var avatarImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath);
-            var statusImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath);
 
             if ( convertView == null)
             {
                 convertView = _context.LayoutInflater.Inflate(Resource.Layout.FriendRowView, null);
             }
 
-            convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
-            convertView.FindViewById<ImageView>(Resource.Id.statusImageView).SetImageBitmap(statusImageBitmap);
-            convertView.FindViewById<ImageView>(Resource.Id.friendImageView).SetImageBitmap(avatarImageBitmap);
+            //TODO: use Picasso to load images async.
 
+            Picasso.With(_context)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath)
+                   .Into(convertView.FindViewById<ImageView>(Resource.Id.statusImageView));
+
+            Picasso.With(_context)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath)
+                   .Into(convertView.FindViewById<ImageView>(Resource.Id.friendImageView));
+            
+            convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
+            
             return convertView;
         }
 

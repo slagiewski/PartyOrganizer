@@ -5,6 +5,7 @@ using PartyOrganizer.Core;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Utility;
+using Square.Picasso;
 
 namespace PartyOrganizer
 {
@@ -36,9 +37,9 @@ namespace PartyOrganizer
 
         private void BindData()
         {
-            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" 
-                                                                  + _selectedUser.ImagePath + ".jpg");
-            _avatarImageView.SetImageBitmap(avatarBitmap);
+            Picasso.With(this)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedUser.ImagePath + ".jpg")
+                   .Into(_avatarImageView);
             _userFullNameTextView.Text = _selectedUser.ToString();
             _userLocationTextView.Text = _selectedUser.Location;
             _userEmailTextView.Text = _selectedUser.Email;
