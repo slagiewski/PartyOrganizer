@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <TextView
+        android:id="@+id/newPartyNameTextView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Party Name"
+        android:textSize="13sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/newPartyNameEditText"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="10sp"
+        android:textColor="@android:color/black"
+        android:inputType="text" />
+    <TextView
+        android:id="@+id/newPartyDescriptionTextView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Party Description"
+        android:textSize="13sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/newPartyDescriptionEditText"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="10sp"
+        android:textColor="@android:color/black"
+        android:inputType="text" />
+    <TextView
+        android:id="@+id/newPartyLocationTextView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Party Location"
+        android:textSize="13sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/newPartyLocationEditText"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="10sp"
+        android:textColor="@android:color/black"
+        android:inputType="text" />
+    <Button
+        android:id="@+id/newPartyAddButton"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Add" />
+</LinearLayout>

@@ -1,50 +1,55 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Android.App;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core;
 using PartyOrganizer.Utility;
+using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
     class FriendsListAdapter : BaseAdapter<User>
     {
+        private List<User> _friends;
+        private Activity _context;
 
-        Activity context;
-        List<User> friends;
-
-        public FriendsListAdapter(Activity context, IEnumerable<User> friends) : base()
+        public FriendsListAdapter(Activity context, List<User> friends) : base()
         {
-            this.context = context;
-            this.friends = friends.ToList();
-        }
-
-        public override long GetItemId(int position)
-        {
-            return friends[position].ID;
+            _context = context;
+            _friends = friends;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            var friend = friends[position];
-            var avatarImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath + ".jpg");
-            var statusImageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath + ".jpg");
+            var friend = _friends[position];
 
             if ( convertView == null)
             {
-                convertView = context.LayoutInflater.Inflate(Resource.Layout.FriendRowView, null);
+                convertView = _context.LayoutInflater.Inflate(Resource.Layout.FriendRowView, null);
             }
 
-            convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
-            convertView.FindViewById<ImageView>(Resource.Id.statusImageView).SetImageBitmap(statusImageBitmap);
-            convertView.FindViewById<ImageView>(Resource.Id.friendImageView).SetImageBitmap(avatarImageBitmap);
+            //TODO: use Picasso to load images async.
 
+            Picasso.With(_context)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + friend.StatusImagePath)
+                   .Into(convertView.FindViewById<ImageView>(Resource.Id.statusImageView));
+
+            Picasso.With(_context)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath)
+                   .Into(convertView.FindViewById<ImageView>(Resource.Id.friendImageView));
+            
+            convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
+            
             return convertView;
         }
 
-        public override int Count => friends.Count;
+        public override int Count => _friends.Count;
 
-        public override User this[int position] => friends[position];
+        public override User this[int position] => _friends[position];
+
+        public override long GetItemId(int position)
+        {
+            return _friends[position].ID;
+        }
     }
 }

@@ -13,14 +13,6 @@ namespace PartyOrganizer.Core
 
         public string Surname { get; set; }
 
-        public string FullName
-        {
-            get
-            {
-                return Name + " " + Surname;
-            }
-        }
-
         public string Location { get; set; }
 
         public bool Online { get; set; }
@@ -29,14 +21,13 @@ namespace PartyOrganizer.Core
         {
             get
             {
-                if (this.Online)
+                if (Online)
                     return "103027/1293960051.png";
                 else
                     return "169058/red-point.png";
             }
         }
             
-
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
@@ -52,7 +43,7 @@ namespace PartyOrganizer.Core
         public bool Equals(User other)
         {
             if (other == null) return false;
-            if ((this.ID == other.ID || this.Email == other.Email) || 
+            if (this.ID == other.ID || this.Email == other.Email || 
                 (this.Name == other.Name && this.Surname == other.Surname && this.PhoneNumber == other.PhoneNumber))
                 return true;
             else

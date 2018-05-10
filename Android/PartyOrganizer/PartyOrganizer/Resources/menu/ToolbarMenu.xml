@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+
+      >
+
+    
+    <item
+    android:id="@+id/friends"
+    android:icon="@drawable/friends"
+    app:showAsAction="ifRoom"
+    android:title="Friends"/>
+    <item
+      android:id="@+id/parties"
+      android:icon="@drawable/party"
+      app:showAsAction="ifRoom"
+      android:title="Parties"/>
+
+</menu>
