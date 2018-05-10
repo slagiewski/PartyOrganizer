@@ -5,4 +5,22 @@
     <item name="windowActionBar">false</item>
     <item name="colorPrimary">#4CAF50</item>
   </style>
+  <style name="PrimaryThemes" parent="Theme.AppCompat.Light">
+
+    <item name="windowNoTitle">true</item>
+    <item name="windowActionBar">false</item>
+    <item name="colorPrimary">#E53935</item>
+    <item name="colorPrimaryDark">#D32F2F</item>
+
+  </style>
+
+  <!--TabLayout Theme-->
+
+  <style name="TabLayoutThemes" parent="Widget.Design.TabLayout">
+
+    <item name="tabIndicatorColor">#FFFFFF</item>
+
+ 
+ 
+    </style>
 </resources>

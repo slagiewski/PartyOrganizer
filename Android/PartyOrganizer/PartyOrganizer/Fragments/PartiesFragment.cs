@@ -12,7 +12,7 @@ using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer.Fragments
 {
-    public class PartiesFragment : Fragment
+    public class PartiesFragment : Android.Support.V4.App.Fragment
     {
         private ListView _partyListView;
         private List<Party> _allParties;

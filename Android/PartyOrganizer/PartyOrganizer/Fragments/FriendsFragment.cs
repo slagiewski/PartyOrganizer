@@ -12,7 +12,7 @@ using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer.Fragments
 {
-    public class FriendsFragment : Fragment
+    public class FriendsFragment : Android.Support.V4.App.Fragment
     {
         private ListView _friendsListView;
         private List<User> _friends;
