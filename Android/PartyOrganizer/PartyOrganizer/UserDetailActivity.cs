@@ -5,19 +5,20 @@ using PartyOrganizer.Core;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Utility;
+using Square.Picasso;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Użytkownik", MainLauncher = false)]
+    [Activity(Label = "User", MainLauncher = false)]
     public class UserDetailActivity : Activity
     {
-        private ImageView avatarImageView;
-        private TextView userFullNameTextView;
-        private TextView userLocationTextView;
-        private TextView userEmailTextView;
+        private ImageView _avatarImageView;
+        private TextView _userFullNameTextView;
+        private TextView _userLocationTextView;
+        private TextView _userEmailTextView;
 
-        private User selectedUser;
-        private IUserRepository userRepository;
+        private User _selectedUser;
+        private IUserRepository _userRepository;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -25,9 +26,9 @@ namespace PartyOrganizer
 
             SetContentView(Resource.Layout.UserDetailView);
 
-            userRepository = new UserRepository();
+            _userRepository = new UserRepository();
             var selectedUserID = Intent.Extras.GetInt("selectedUserID");
-            selectedUser = userRepository.GetByID(selectedUserID);
+            _selectedUser = _userRepository.GetByID(selectedUserID);
 
             FindViews();
 
@@ -36,20 +37,20 @@ namespace PartyOrganizer
 
         private void BindData()
         {
-            var avatarBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" 
-                                                                  + selectedUser.ImagePath + ".jpg");
-            avatarImageView.SetImageBitmap(avatarBitmap);
-            userFullNameTextView.Text = selectedUser.FullName;
-            userLocationTextView.Text = selectedUser.Location;
-            userEmailTextView.Text = selectedUser.Email;
+            Picasso.With(this)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedUser.ImagePath + ".jpg")
+                   .Into(_avatarImageView);
+            _userFullNameTextView.Text = _selectedUser.ToString();
+            _userLocationTextView.Text = _selectedUser.Location;
+            _userEmailTextView.Text = _selectedUser.Email;
         }
 
         private void FindViews()
         {
-            avatarImageView = FindViewById<ImageView>(Resource.Id.avatarImageView);
-            userFullNameTextView = FindViewById<TextView>(Resource.Id.userFullNameTextView);
-            userLocationTextView = FindViewById<TextView>(Resource.Id.userLocationTextView);
-            userEmailTextView = FindViewById<TextView>(Resource.Id.userEmailTextView);
+            _avatarImageView = FindViewById<ImageView>(Resource.Id.avatarImageView);
+            _userFullNameTextView = FindViewById<TextView>(Resource.Id.userFullNameTextView);
+            _userLocationTextView = FindViewById<TextView>(Resource.Id.userLocationTextView);
+            _userEmailTextView = FindViewById<TextView>(Resource.Id.userEmailTextView);
         }
     }
 }

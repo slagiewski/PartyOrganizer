@@ -1,53 +1,55 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Android.App;
+using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Model;
 using PartyOrganizer.Utility;
+using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
     class PartyListAdapter : BaseAdapter<Party>
     {
-        // IEnumerable might affect performance, will test it later how much
-        // Edit: not a good idea
-        List<Party> parties;
-        Activity context;
+        private List<Party> _parties;
+        private Activity _context;
 
-        public PartyListAdapter(Activity context, IEnumerable<Party> parties)
+        public PartyListAdapter(Activity context, List<Party> parties)
         {
-            this.context = context;
-            this.parties = parties.ToList();
-        }
-
-        public override long GetItemId(int position)
-        {
-            return parties[position].ID;
+            _context = context;
+            _parties = parties;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            var party = parties[position];
-
-            var imageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + party.ImagePath + ".jpg");
+            var party = _parties[position];
 
             if (convertView == null)
             {
-                convertView = context.LayoutInflater.Inflate(Resource.Layout.PartyRowView, null);
+                convertView = _context.LayoutInflater.Inflate(Resource.Layout.PartyRowView, null);
             }
 
-            convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = party.ShortDescription;
+            convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = party.Name;
             convertView.FindViewById<TextView>(Resource.Id.dateTextView).Text = party.Date.ToString("dd/MM/yyyy hh:mm");
-            convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Admin.ToString();
-            convertView.FindViewById<ImageView>(Resource.Id.partyImageView).SetImageBitmap(imageBitmap);
-            
+            convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Admin?.ToString()??"App user(in progress)";
+
+            Picasso.With(_context)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + party.ImagePath)
+                   .Into(convertView.FindViewById<ImageView>(Resource.Id.partyImageView));
+
+            //using (var imageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + party.ImagePath))
+            //{
+            //    convertView.FindViewById<ImageView>(Resource.Id.partyImageView).SetImageBitmap(imageBitmap);
+            //}
+
             return convertView;
         }
 
-        public override int Count => parties.Count;
+        public override int Count => _parties.Count;
 
-        public override Party this[int position] => parties[position];
-    
+        public override Party this[int position] => _parties[position];
+
+        public override long GetItemId(int position) =>
+            _parties[position].ID;
     }
 }
