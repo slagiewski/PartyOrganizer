@@ -20,7 +20,7 @@ class PartyList extends React.Component {
 
     return (
       <Paper className={classes.paper}>
-        <Link to="/party/someID/"><PartyTile /></Link>
+        <Link to="/party/someID/" style={{textDecoration: 'none'}}><PartyTile /></Link>
         <PartyTile/>
       </Paper>
     )

@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import './index.css';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
-import LoginPage from './components/LoginPage';
+import './index.css';
+import 'react-dates/initialize';
 
 const theme = createMuiTheme({
   palette: {

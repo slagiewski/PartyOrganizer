@@ -1,5 +1,4 @@
 import React from 'react';
-
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';
 

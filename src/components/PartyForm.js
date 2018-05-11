@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
+import { LocationSearchBox } from './Map';
+import { DayPickerSingleDateController, isInclusivelyAfterDay } from 'react-dates';
+import TimeField from 'react-simple-timefield';
 import { addItem } from '../actions/items';
 import ItemList from './ItemList';
 import TextField from 'material-ui/TextField';
@@ -14,6 +18,8 @@ import Dialog, {
   withMobileDialog,
 } from 'material-ui/Dialog';
 import { withStyles } from 'material-ui/styles';
+
+import 'react-dates/lib/css/_datepicker.css';
 
 export const ItemsPanel = withStyles((theme)=>({
   root: {
@@ -44,10 +50,10 @@ export const ItemsPanel = withStyles((theme)=>({
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography>Add products/items for the party and move them around</Typography>
+        <Typography style={{width: '100%'}}>Add products/items for the party and move them around</Typography>
         <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
         <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
-        <Button onClick={this.onNewItem}>Add</Button>
+        <Button onClick={this.onNewItem} autoFocus>Add</Button>
       </div>
     )
   }
@@ -65,7 +71,7 @@ const styles = theme => ({
 
 class PartyForm extends React.Component{
   state = {
-    page: 1
+    page: 1,
   }
 
   handleChange = name => event => {
@@ -74,9 +80,19 @@ class PartyForm extends React.Component{
     });
   };
 
+  handleChangeUncontrolled = name => val => {
+    this.setState({
+      [name]: val
+    })
+  }
+
   render() {
     const { classes, fullScreen, open } = this.props;
 
+    // const staticMapURL = this.props.form.meetingLocation ? `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}&zoom=14&scale=1&size=600x300&maptype=roadmap&key=AIzaSyCwqkpgtZSg4uCWIws9SgSgTlLVpxaOY7w&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}` : '';
+
+
+    console.log(`focused: ${this.state.focused}, showPicker: ${this.state.showDatePicker}`);
     const firstPage = (
       <React.Fragment>
         <DialogContentText>
@@ -92,29 +108,40 @@ class PartyForm extends React.Component{
             fullWidth
             className={classes.textField}
           />
-          <TextField
-            label="Location"
-            placeholder="Type a location"
-            id="party-location"
-            value={this.state.location || ''}
-            onChange={this.handleChange('location')}
-            fullWidth                
-            className={classes.textField}
-          />
+          <LocationSearchBox onSelected={(loc) => {this.handleChangeUncontrolled('meetingLocation', loc)}}>
+            <TextField
+              label="Location"
+              placeholder="Type a location"
+              id="party-location"
+              defaultValue={this.state.location ? this.state.location.name : ''}
+              className={classes.textField}
+              fullWidth                                     
+            />
+          </LocationSearchBox>
           <TextField
             label="Date"
-            id="party-date"
-            value={this.state.date || ''}
-            onChange={this.handleChange('date')}
+            onFocus={()=>this.setState({focused: true, showDatePicker: true})}
+            inputRef={(input) => { this.dateInput = input; }}
+            onBlur={ () => this.setState({showDatePicker: false})}
+            value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
             className={classes.textField}
           />
-          <TextField
-            label="Time"
-            id="party-time"
+          <TimeField
             value={this.state.time || ''}
-            onChange={this.handleChange('time')}
-            className={classes.textField}
+            onChange={(e)=>this.setState({time: e})}
+            input={<TextField label="Time" className={classes.textField} />}
           />
+          {(this.state.focused || this.state.showDatePicker) &&
+            <DayPickerSingleDateController 
+              date={this.state.date}
+              focused={this.state.focused}
+              onDateChange={date => this.setState({ date })}
+              onFocusChange={({ focused }) => this.setState({ focused })}
+              onOutsideClick={() => this.setState((prevState)=>(!prevState.showDatePicker && { focused: false }))}
+              numberOfMonths={1}
+              isOutsideRange={day => !isInclusivelyAfterDay(day, moment())}
+            />
+          }
           <TextField
             label="Description"
             placeholder="Tell guests more about the party"

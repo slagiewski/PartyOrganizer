@@ -21,7 +21,9 @@ const styles = theme => ({
     padding: theme.spacing.unit*2
   },
   info: {
-    width: 'calc(100% / 3)'
+    width: 'calc(100% / 3)',
+    height: '100%',
+    padding: theme.spacing.unit
   },
   items: {
     width: 'calc(100% / 3 * 2)'    
