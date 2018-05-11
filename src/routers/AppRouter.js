@@ -8,6 +8,7 @@ import PublicRoute from './PublicRoute';
 
 import LoginPage from '../components/LoginPage';
 import Dashboard from '../components/Dashboard';
+import PartyPage from '../components/PartyPage';
 import NotFoundPage from '../components/NotFoundPage';
 
 export const history = createHistory();
@@ -25,6 +26,7 @@ class AppRouter extends React.Component{
           <Switch>
             <PublicRoute path="/" component={LoginPage} exact={true} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/party/:id" component={PartyPage} />            
             <Route component={NotFoundPage} />
           </Switch>
         </div>

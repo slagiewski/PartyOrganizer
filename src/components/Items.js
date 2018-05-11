@@ -17,25 +17,6 @@ const mapStateToProps = (state) => ({
   items: state.items.info
 });
 
-const mockData = {
-  11: {
-    name: 'Wódka 0.5l',
-    count: 2
-  },
-  2: {
-    name: 'Tort',
-    count: 1
-  },
-  13: {
-    name: 'Talerze plastikowe',
-    count: 12
-  },
-  4: {
-    name: 'Kieliszki do wódki',
-    count: 6
-  }
-}
-
 export const ItemsPanel = withStyles((theme)=>({
   root: {
     display: 'flex',
@@ -90,8 +71,7 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
     alignItems: 'center',
     userSelect: 'none',
     position: 'relative',
-    height: `calc(${Object.keys(mockData).length} * ${tileHeight}px)`,
-    touchAction: 'none'
+    minHeight: `calc(${tileHeight}px * 3)`,
   },
   item: {
     position: 'absolute',
@@ -113,9 +93,11 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
   state = { mouseY: 0, topDeltaY: 0, isPressed: false, originalPosOfLastPressed: 0 }
 
   componentDidMount() {
-    window.addEventListener('touchmove', this.handleTouchMove);
+    if (!this.props.fixed) {
+      window.addEventListener('touchmove', this.handleTouchMove);
+      window.addEventListener('mousemove', this.handleMouseMove);
+    }
     window.addEventListener('touchend', this.handleMouseUp);
-    window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
   }
 
@@ -154,7 +136,7 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
     const { classes, order, items } = this.props;
 
     return (
-      <div className={classes.container}>
+      <div className={classes.container} style={{height: order.length * tileHeight}}>
         {order.map(i => {
           const active = originalPosOfLastPressed === i && isPressed;
           const style = active

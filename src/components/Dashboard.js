@@ -63,7 +63,7 @@ const NewUserDashboard = withStyles((theme)=>({
     fontWeight: 500,
     letterSpacing: 1           
   },
-  '@media (max-width: 500px)': {
+  '@media (max-width: 600px)': {
     wrapper: {
       background: 'linear-gradient(180deg, pink 50%, cyan 50%)'      
     },
@@ -258,7 +258,7 @@ class Dashboard extends React.Component {
             Coming up
           </Paper>
         </div>
-        <PartyForm open={this.state.formOpen} handleClose={this.formClose}/>
+        {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
       </div>
     );
   }

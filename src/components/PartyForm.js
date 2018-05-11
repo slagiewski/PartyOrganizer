@@ -27,6 +27,12 @@ class PartyForm extends React.Component{
     page: 1
   }
 
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
   render() {
     const { classes, fullScreen, open } = this.props;
 
@@ -40,6 +46,8 @@ class PartyForm extends React.Component{
             label="Party Name"
             placeholder="eg. Kanye's birthday party"
             id="party-name"
+            value={this.state.name || ''}
+            onChange={this.handleChange('name')}
             fullWidth
             className={classes.textField}
           />
@@ -47,23 +55,31 @@ class PartyForm extends React.Component{
             label="Location"
             placeholder="Type a location"
             id="party-location"
+            value={this.state.location || ''}
+            onChange={this.handleChange('location')}
             fullWidth                
             className={classes.textField}
           />
           <TextField
             label="Date"
             id="party-date"
+            value={this.state.date || ''}
+            onChange={this.handleChange('date')}
             className={classes.textField}
           />
           <TextField
             label="Time"
             id="party-time"
+            value={this.state.time || ''}
+            onChange={this.handleChange('time')}
             className={classes.textField}
           />
           <TextField
             label="Description"
             placeholder="Tell guests more about the party"
             id="party-description"
+            value={this.state.description || ''}
+            onChange={this.handleChange('description')}
             fullWidth
             className={classes.textField}
           />
@@ -73,7 +89,7 @@ class PartyForm extends React.Component{
     const secondPage = (
       <React.Fragment>
         <ItemsPanel />
-        <ItemsInteractive />
+        <ItemsInteractive/>
       </React.Fragment>
     )
 
