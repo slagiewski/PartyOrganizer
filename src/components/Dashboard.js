@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';

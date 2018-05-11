@@ -1,7 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import { ItemsInteractive, ItemsPanel } from './Items';
+import { addItem } from '../actions/items';
+import ItemList from './ItemList';
 import TextField from 'material-ui/TextField';
+import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
@@ -11,6 +14,44 @@ import Dialog, {
   withMobileDialog,
 } from 'material-ui/Dialog';
 import { withStyles } from 'material-ui/styles';
+
+export const ItemsPanel = withStyles((theme)=>({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    margin: theme.spacing.unit,
+  },
+}))(connect()(class extends React.Component{
+  state = {
+    name: '',
+    count: 1
+  }
+
+  onNewItem = () => {
+    const { name, count } = this.state;
+    this.props.dispatch(addItem({name, count}, Math.random()*10));
+  }
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <Typography>Add products/items for the party and move them around</Typography>
+        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
+        <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
+        <Button onClick={this.onNewItem}>Add</Button>
+      </div>
+    )
+  }
+}));
 
 const styles = theme => ({
   root: {
@@ -89,7 +130,7 @@ class PartyForm extends React.Component{
     const secondPage = (
       <React.Fragment>
         <ItemsPanel />
-        <ItemsInteractive/>
+        <ItemList fixed={false}/>
       </React.Fragment>
     )
 

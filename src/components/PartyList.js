@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import PartyTile from './PartyTile';
 
 import { withStyles } from 'material-ui/styles';
@@ -20,7 +20,7 @@ class PartyList extends React.Component {
 
     return (
       <Paper className={classes.paper}>
-        <PartyTile />
+        <Link to="/party/someID/"><PartyTile /></Link>
         <PartyTile/>
       </Paper>
     )

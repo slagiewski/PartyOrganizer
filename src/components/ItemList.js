@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addItem, changeOrder } from '../actions/items';
-
+import { changeOrder } from '../actions/items';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Spring } from 'react-spring';
@@ -12,49 +12,6 @@ import { Typography } from 'material-ui';
 
 
 const tileHeight = 55;
-const mapStateToProps = (state) => ({
-  order: state.items.order,
-  items: state.items.info
-});
-
-export const ItemsPanel = withStyles((theme)=>({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing.unit,
-  },
-}))(connect()(class extends React.Component{
-  state = {
-    name: '',
-    count: 1
-  }
-
-  onNewItem = () => {
-    const { name, count } = this.state;
-    this.props.dispatch(addItem({name, count}, Math.random()*10));
-  }
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <Typography>Add products/items for the party and move them around</Typography>
-        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
-        <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
-        <Button onClick={this.onNewItem}>Add</Button>
-      </div>
-    )
-  }
-}));
-
 const clamp = (n, min, max) => Math.max(Math.min(n, max), min);
 function reinsert(arr, from, to) {
   const _arr = arr.slice(0);
@@ -64,7 +21,7 @@ function reinsert(arr, from, to) {
   return _arr;
 };
 
-export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
+const styles = theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -72,6 +29,7 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
     userSelect: 'none',
     position: 'relative',
     minHeight: `calc(${tileHeight}px * 3)`,
+    touchAction: 'manipulation'
   },
   item: {
     position: 'absolute',
@@ -89,7 +47,9 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
     backgroundColor: theme.palette.primary.main,
     boxSizing: 'border-box'
   }
-}))(class extends React.Component {
+})
+
+class ItemList extends React.Component {
   state = { mouseY: 0, topDeltaY: 0, isPressed: false, originalPosOfLastPressed: 0 }
 
   componentDidMount() {
@@ -163,4 +123,15 @@ export const ItemsInteractive = connect(mapStateToProps)(withStyles((theme)=>({
       </div>
     )
   }
-}));
+};
+
+const mapStateToProps = (state) => ({
+  order: state.items.order,
+  items: state.items.info
+});
+
+ItemList.propTypes = {
+  fixed: PropTypes.bool.isRequired
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(ItemList));

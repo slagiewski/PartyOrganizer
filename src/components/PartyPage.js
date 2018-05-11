@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ItemsInteractive } from './Items';
+import ItemList from './ItemList';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
@@ -55,7 +55,7 @@ class PartyPage extends React.Component{
               <Typography>8 guests</Typography>
             </Paper>
             <Paper className={classes.items}>
-              <ItemsInteractive/>
+              <ItemList fixed={true}/>
             </Paper>
           </div>
         </div>
