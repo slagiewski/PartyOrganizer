@@ -9,7 +9,7 @@ import {
 export class LocationSearchBox extends React.Component {
   placesChanged = () => {
     const res = this.searchBox.getPlaces()[0];
-    res && this.props.onSelected({name: res.formatted_address, lat: res.geometry.location.lat(), lng: res.geometry.location.lng()});
+    res && this.props.onSelected({lat: res.geometry.location.lat(), lng: res.geometry.location.lng()});
   }
   render() {
     return (

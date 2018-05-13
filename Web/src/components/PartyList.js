@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import PartyTile from './PartyTile';
 
@@ -16,15 +17,20 @@ const styles = theme => ({
 
 class PartyList extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, parties } = this.props;
 
     return (
       <Paper className={classes.paper}>
-        <Link to="/party/someID/" style={{textDecoration: 'none'}}><PartyTile /></Link>
-        <PartyTile/>
+        {Object.keys(parties).map((party)=>
+          <Link key={party} to={`/party/${party}/`} style={{textDecoration: 'none'}}><PartyTile {...parties[party].partyInfo}/></Link>            
+        )}
       </Paper>
     )
   }
 }
 
-export default withStyles(styles)(PartyList);
+const mapStateToProps = state => ({
+  parties: state.parties
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(PartyList));

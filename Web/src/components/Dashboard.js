@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';
 
@@ -82,8 +83,7 @@ const NewUserDashboard = withStyles((theme)=>({
       right: 0,
     },
   }
-}))(withTheme()(({ classes, theme })=>{
-
+}))(withTheme()(({ classes, theme, openDialog })=>{
     return (
       <div className={classes.wrapper}>
         <div className={classes.contentLeft}>
@@ -91,7 +91,7 @@ const NewUserDashboard = withStyles((theme)=>({
             <Typography variant="display3" color="inherit">Create a new party,</Typography>
             <Typography variant="display1" color="inherit">add guests, assign duties and throw the <span style={{color:'#333'}}>best</span> party!</Typography>            
           </div>
-          <Button variant="flat" color="secondary" className={classes.buttonHollow} style={{marginRight: 70}}>
+          <Button variant="flat" color="secondary" className={classes.buttonHollow} style={{marginRight: 70}} onClick={openDialog}>
             <Typography variant="title" color="inherit">Party up!</Typography>            
           </Button>
         </div>
@@ -195,9 +195,9 @@ class Dashboard extends React.Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
-    return (
+    const main = (
       <div className={classes.wrapper}>
-         <AppBar position="static">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="title" align="center" color="inherit" className={classes.flex}>
               Welcome, user
@@ -258,10 +258,18 @@ class Dashboard extends React.Component {
         </div>
         {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
       </div>
-    );
+    )
+
+    return this.props.hasParties ? main : 
+      (
+        <React.Fragment>
+          <NewUserDashboard openDialog={this.formOpen}/>
+          {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}      
+        </React.Fragment>
+      );
   }
 }
 
 
-export default withStyles(styles)(withTheme()(Dashboard));
+export default connect((state)=>({hasParties: Object.keys(state.parties).length !== 0}))(withStyles(styles)(withTheme()(Dashboard)));
 

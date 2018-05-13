@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Spring } from 'react-spring';
@@ -28,7 +27,8 @@ const styles = theme => ({
     userSelect: 'none',
     position: 'relative',
     minHeight: `calc(${tileHeight}px * 3)`,
-    touchAction: 'manipulation'
+    touchAction: 'manipulation',
+    overflowY: 'hidden'
   },
   item: {
     position: 'absolute',
@@ -94,8 +94,6 @@ class ItemList extends React.Component {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
     const { classes, order, items } = this.props;
 
-    console.log(order, items);
-
     return (
       <div className={classes.container} style={{height: order.length * tileHeight}}>
         {order.map(i => {
@@ -127,7 +125,9 @@ class ItemList extends React.Component {
 };
 
 ItemList.propTypes = {
-  fixed: PropTypes.bool.isRequired
+  fixed: PropTypes.bool.isRequired,
+  order: PropTypes.array.isRequired,
+  items: PropTypes.object.isRequired
 }
 
-export default connect()(withStyles(styles)(ItemList));
+export default withStyles(styles)(ItemList);

@@ -10,9 +10,8 @@ export default (state = {}, action) => {
         }
       }
     case 'REMOVE_PARTY':
-      return state;
-    case 'EDIT_PARTY': 
-      return state.filter((party)=> party.id === action.id && {...action.party});
+      const { [action.id]: _, newState } = state;
+      return newState;
     default:
       return state;
   }

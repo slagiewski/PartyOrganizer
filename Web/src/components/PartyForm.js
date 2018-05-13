@@ -86,7 +86,7 @@ class PartyForm extends React.Component{
     });
   };
 
-  handleChangeUncontrolled = name => val => {
+  handleChangeUncontrolled = (name, val) => {
     this.setState({
       [name]: val
     })
@@ -116,10 +116,13 @@ class PartyForm extends React.Component{
 
   handleSubmit = () => {
     const { name, date, time, location, description } = this.state;
+    const unix = (() => {
+      let timeArr =  time.split(':');
+      return date.unix() + parseInt(timeArr[0]) * 3600 + parseInt(timeArr[1]) * 60;
+    })();
     const party = {
       name,
-      date: date.unix(),
-      time,
+      unix,
       location,
       description
     }
@@ -131,8 +134,6 @@ class PartyForm extends React.Component{
 
     // const staticMapURL = this.props.form.meetingLocation ? `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}&zoom=14&scale=1&size=600x300&maptype=roadmap&key=AIzaSyCwqkpgtZSg4uCWIws9SgSgTlLVpxaOY7w&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}` : '';
 
-
-    console.log(`focused: ${this.state.focused}, showPicker: ${this.state.showDatePicker}`);
     const firstPage = (
       <React.Fragment>
         <DialogContentText>
@@ -148,10 +149,11 @@ class PartyForm extends React.Component{
             fullWidth
             className={classes.textField}
           />
-          <LocationSearchBox onSelected={(loc) => {this.handleChangeUncontrolled('meetingLocation', loc)}}>
+          <LocationSearchBox onSelected={(loc) => this.handleChangeUncontrolled('location', { ...loc, name: this.locationBox.value})}>
             <TextField
               label="Location"
               placeholder="Type a location"
+              inputRef={ref => this.locationBox = ref}
               id="party-location"
               defaultValue={this.state.location ? this.state.location.name : ''}
               className={classes.textField}
