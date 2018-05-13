@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { newParty } from '../actions/parties';
 
 import { LocationSearchBox } from './Map';
 import { DayPickerSingleDateController, isInclusivelyAfterDay } from 'react-dates';
@@ -30,6 +31,8 @@ export const ItemsPanel = withStyles((theme)=>({
     margin: theme.spacing.unit,
   },
 }))(connect()(class extends React.Component{
+
+  // PUT LOGIC HERE ORDER AND PARTIES
   state = {
     name: '',
     count: 1
@@ -37,7 +40,8 @@ export const ItemsPanel = withStyles((theme)=>({
 
   onNewItem = () => {
     const { name, count } = this.state;
-    this.props.dispatch(addItem({name, count}, Math.random()*10));
+    this.props.onNewItem({name, count, id: 1});
+    //this.props.dispatch(addItem({name, count, id: 1}, this.props.partyID));
   }
 
   handleChange = name => event => {
@@ -72,6 +76,8 @@ const styles = theme => ({
 class PartyForm extends React.Component{
   state = {
     page: 1,
+    itemOrder: [],
+    items: {}
   }
 
   handleChange = name => event => {
@@ -84,6 +90,40 @@ class PartyForm extends React.Component{
     this.setState({
       [name]: val
     })
+  }
+
+  handleNewItem = (item) => {
+    this.setState((prevState)=>{
+      const id = prevState.itemOrder.length + 1;
+      return {
+        itemOrder: [...prevState.itemOrder, id],
+        items: {
+          ...prevState.items,
+          [id]: {
+            name: item.name,
+            count: item.count
+          }
+        }
+      }
+    });
+  }
+
+  handleChangeItemOrder = (order) => {
+    this.setState({
+      itemOrder: order
+    })
+  }
+
+  handleSubmit = () => {
+    const { name, date, time, location, description } = this.state;
+    const party = {
+      name,
+      date: date.unix(),
+      time,
+      location,
+      description
+    }
+    this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items));
   }
 
   render() {
@@ -156,8 +196,8 @@ class PartyForm extends React.Component{
     );
     const secondPage = (
       <React.Fragment>
-        <ItemsPanel />
-        <ItemList fixed={false}/>
+        <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
+        <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder}/>
       </React.Fragment>
     )
 
@@ -196,4 +236,4 @@ class PartyForm extends React.Component{
   }
 }
 
-export default withMobileDialog()(withStyles(styles)(PartyForm));
+export default connect((state)=>({partyID: state.party}))(withMobileDialog()(withStyles(styles)(PartyForm)));

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeOrder } from '../actions/items';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Spring } from 'react-spring';
@@ -79,7 +78,7 @@ class ItemList extends React.Component {
 
   handleMouseMove = ({ pageY }) => {
     const { isPressed, topDeltaY, originalPosOfLastPressed } = this.state;
-    const { order } = this.props;
+    const { order, partyID } = this.props;
     if (isPressed) {
       const mouseY = pageY - topDeltaY;
       const currentRow = clamp(Math.round(mouseY / tileHeight), 0, order.length - 1);
@@ -87,13 +86,15 @@ class ItemList extends React.Component {
       if (currentRow !== order.indexOf(originalPosOfLastPressed))
         newOrder = reinsert(order, order.indexOf(originalPosOfLastPressed), currentRow);
       this.setState({ mouseY: mouseY });
-      this.props.dispatch(changeOrder(newOrder));
+      this.props.onMoved(newOrder);
     }
   }
 
   render() {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
     const { classes, order, items } = this.props;
+
+    console.log(order, items);
 
     return (
       <div className={classes.container} style={{height: order.length * tileHeight}}>
@@ -125,13 +126,8 @@ class ItemList extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => ({
-  order: state.items.order,
-  items: state.items.info
-});
-
 ItemList.propTypes = {
   fixed: PropTypes.bool.isRequired
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(ItemList));
+export default connect()(withStyles(styles)(ItemList));
