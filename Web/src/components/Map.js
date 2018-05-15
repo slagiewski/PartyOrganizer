@@ -3,7 +3,7 @@ import { compose, withProps } from 'recompose';
 import StandaloneSearchBox from 'react-google-maps/lib/components/places/StandaloneSearchBox';
 import {
   withGoogleMap,
-  GoogleMap
+  GoogleMap,
 } from "react-google-maps";
 
 export class LocationSearchBox extends React.Component {
@@ -28,7 +28,7 @@ class Map extends React.Component {
     const {children, ...other} = this.props;
     return (
       <GoogleMap
-        defaultZoom={12}
+        defaultZoom={14}
         defaultCenter={{ lat: 51.919438, lng: 19.14513599999998 }}
         {...other}
       >

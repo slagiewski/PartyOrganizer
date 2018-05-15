@@ -92,7 +92,7 @@ class ItemList extends React.Component {
 
   render() {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
-    const { classes, order, items } = this.props;
+    const { classes, order = [], items = {} } = this.props;
 
     return (
       <div className={classes.container} style={{height: order.length * tileHeight}}>
