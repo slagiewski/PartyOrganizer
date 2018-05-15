@@ -5,6 +5,8 @@ import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import firebase from './firebase';
+import { startSetParties } from './actions/parties';
 
 import './index.css';
 import 'react-dates/initialize';
@@ -25,6 +27,8 @@ const theme = createMuiTheme({
 });
 
 const store = configureStore();
+store.dispatch(startSetParties());
+
 const jsx = (
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>

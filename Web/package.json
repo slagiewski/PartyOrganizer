@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.5.1",
+    "firebase": "^5.0.2",
     "material-ui": "^1.0.0-beta.44",
     "material-ui-icons": "^1.0.0-beta.36",
     "moment": "^2.22.1",

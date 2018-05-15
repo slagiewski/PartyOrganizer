@@ -4,7 +4,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         [action.id]: {
-          partyInfo: { ...action.party },
+          ...action.party,
           order: action.order,
           items: action.items
         }
@@ -12,6 +12,8 @@ export default (state = {}, action) => {
     case 'REMOVE_PARTY':
       const { [action.id]: _, newState } = state;
       return newState;
+    case 'SET_PARTIES':
+      return action.parties;
     default:
       return state;
   }

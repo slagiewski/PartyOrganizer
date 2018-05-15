@@ -46,7 +46,7 @@ class PartyTile extends React.Component {
       <div className={classes.tile}>
         <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />
         <div className={classes.content}>
-          <Typography color="inherit">What: {this.props.name}y</Typography>
+          <Typography color="inherit">What: {this.props.name}</Typography>
           <Typography color="inherit">Where: {this.props.location.name}</Typography>
           <Typography color="inherit">When: {moment.unix(this.props.unix).calendar()}</Typography>          
         </div>

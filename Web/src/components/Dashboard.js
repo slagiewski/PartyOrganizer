@@ -35,7 +35,7 @@ const NewUserDashboard = withStyles((theme)=>({
   },
   contentRight: {
     display: 'flex',
-    flexDirection: 'column',    
+    flexDirection: 'column',
     width: '45%',
     position: 'absolute',
     right: '2%',

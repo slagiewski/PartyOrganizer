@@ -28,7 +28,7 @@ class Map extends React.Component {
     const {children, ...other} = this.props;
     return (
       <GoogleMap
-        defaultZoom={6}
+        defaultZoom={12}
         defaultCenter={{ lat: 51.919438, lng: 19.14513599999998 }}
         {...other}
       >
@@ -40,6 +40,6 @@ class Map extends React.Component {
 
 export default compose(withProps({
   loadingElement: <div style={{ height: `100%` }} />,
-  containerElement: <div style={{ height: `440px` }} />,
+  containerElement: <div style={{ height: `300px` }} />,
   mapElement: <div style={{ height: `100%` }} />
 }), withGoogleMap)(Map);

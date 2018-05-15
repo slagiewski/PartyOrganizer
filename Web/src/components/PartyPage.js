@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
+import Map from './Map';
 import ItemList from './ItemList';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -44,26 +47,29 @@ const styles = theme => ({
 class PartyPage extends React.Component{
 
   render() {
-    const { classes } = this.props;
+    const { classes, party } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.infoWrapper}>
           <Paper className={classes.headline}>
-            <Typography align="center" variant="display3">BIRTHDAY PARTY</Typography>
+            <Typography align="center" variant="display3">{party.name}</Typography>
           </Paper>
           <div style={{display: 'flex'}}>
             <Paper className={classes.info}>
-              <Typography>Party @ mosty warszawskie</Typography>
-              <Typography>8 guests</Typography>
+              <Typography>{party.description}</Typography>
+              <Typography>{moment.unix(party.unix).format('hh:mm Do MMMM')}</Typography>
+              <Typography>{party.location.name}</Typography>
+              <Map center={{lat: party.location.lat, lng: party.location.lng}}/>
             </Paper>
             <Paper className={classes.items}>
-              <ItemList fixed={true}/>
+              <ItemList fixed={true} order={party.order} items={party.items}/>
             </Paper>
           </div>
         </div>
         <div className={classes.guestsWrapper}>
           <Paper>
-            This shit
+            <Typography>8 guests</Typography>
+            ....
           </Paper>
         </div>        
       </div>
@@ -71,4 +77,8 @@ class PartyPage extends React.Component{
   }
 }
 
-export default withStyles(styles)(PartyPage);
+const mapStateToProps = (state, ownProps) => ({
+  party: state.parties[ownProps.match.params.id]
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(PartyPage));
