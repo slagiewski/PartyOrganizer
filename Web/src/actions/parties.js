@@ -33,7 +33,6 @@ export const startSetParties = () => {
     // const uid = getState().auth.uid;
     return database.ref(`parties`).once('value').then((snapshot) => {
       let parties = {};
-
       snapshot.forEach((childSnapshot) => {
         parties = {
           ...parties,

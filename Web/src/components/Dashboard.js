@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';
+import { startLogout } from '../actions/auth';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -114,7 +115,7 @@ const NewUserDashboard = withStyles( theme =>({
       right: 0,
     },
   }
-}))(withTheme()(({ classes, theme, openDialog })=>{
+}))(withTheme()(({ classes, theme, openDialog, openForm })=>{
     return (
       <div className={classes.wrapper}>
         <div className={classes.contentLeft}>
@@ -122,12 +123,12 @@ const NewUserDashboard = withStyles( theme =>({
             <Typography variant="display3" color="inherit">Create a new party,</Typography>
             <Typography variant="display1" color="inherit">add guests, assign duties and throw the <span style={{color:'#333'}}>best</span> party!</Typography>            
           </div>
-          <Button variant="flat" color="secondary" className={classes.buttonHollow} style={{marginRight: 70}} onClick={openDialog}>
+          <Button variant="flat" color="secondary" className={classes.buttonHollow} style={{marginRight: 70}} onClick={openForm}>
             <Typography variant="title" color="inherit">Party up!</Typography>            
           </Button>
         </div>
         <div className={classes.contentRight}>
-          <Button variant="raised" color="primary" className={classes.buttonFill} style={{marginLeft: 70}}>
+          <Button variant="raised" color="primary" className={classes.buttonFill} style={{marginLeft: 70}} onClick={openDialog}>
             <Typography variant="title" color="inherit">Let's dance!</Typography>
           </Button>
           <div>
@@ -231,16 +232,15 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, user } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
-
     const main = (
       <div className={classes.wrapper}>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="title" align="center" color="inherit" className={classes.flex}>
-              Welcome, user
+              Hi, {user.name}
             </Typography>
             <div>
               <IconButton
@@ -249,7 +249,9 @@ class Dashboard extends React.Component {
                 onClick={this.handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                {user.photo ? 
+                <Avatar alt="user-photo" src={user.photo}/>
+                : <AccountCircle /> }
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -266,7 +268,7 @@ class Dashboard extends React.Component {
                 onClose={this.handleClose}
               >
                 <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                <MenuItem onClick={this.props.logout}>Log out</MenuItem>
               </Menu>
             </div>
           </Toolbar>
@@ -295,22 +297,28 @@ class Dashboard extends React.Component {
           <Paper>
             Coming up
           </Paper>
-        </div>
-        {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
-        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose}/>}        
+        </div>  
       </div>
     )
 
-    return this.props.hasParties ? main : 
-      (
-        <React.Fragment>
-          <NewUserDashboard openDialog={this.formOpen}/>
-          {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}      
-        </React.Fragment>
-      );
+    return (
+      <React.Fragment>
+        {this.props.hasParties ? main : <NewUserDashboard openForm={this.formOpen} openDialog={this.dialogOpen}/>}
+        {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
+        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose}/>}      
+      </React.Fragment>
+    );
   }
 }
 
+const mapStateToProps = (state) => ({
+  hasParties: Object.keys(state.parties).length !== 0,
+  user: state.auth
+});
 
-export default connect((state)=>({hasParties: Object.keys(state.parties).length !== 0}))(withStyles(styles)(withTheme()(Dashboard)));
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(startLogout())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withTheme()(Dashboard)));
 

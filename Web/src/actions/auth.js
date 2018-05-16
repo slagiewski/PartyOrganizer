@@ -1,25 +1,27 @@
-export const login = (uid) => ({
+import { firebase, facebookAuthProvider } from '../firebase';
+
+
+export const login = (user) => ({
   type: 'LOGIN',
-  uid
+  user
 });
 
 export const authenticationError = () => ({
   type: 'AUTH_ERROR'
 })
 
-export const startLogin = (creds) => {
-  return dispatch => {
-    // async logic
-    dispatch(login('123'));
+export const startLogin = () => {
+  return () => {
+    return firebase.auth().signInWithPopup(facebookAuthProvider);
   };
-}
+};
+
+export const startLogout = () => {
+  return () => {
+    return firebase.auth().signOut();
+  };
+};
 
 export const logout = () => ({
   type: 'LOGOUT'
 });
-
-export const startLogout = () => {
-  return (dispatch) => {
-    dispatch(logout());
-  };
-};

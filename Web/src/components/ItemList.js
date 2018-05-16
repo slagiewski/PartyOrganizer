@@ -27,6 +27,7 @@ const styles = theme => ({
     userSelect: 'none',
     position: 'relative',
     minHeight: `calc(${tileHeight}px * 3)`,
+    padding: 5,
     touchAction: 'manipulation',
     overflowY: 'hidden'
   },
@@ -38,6 +39,7 @@ const styles = theme => ({
     height: 50,
     overflow: 'visible',
     pointerEvents: 'auto',
+    cursor: 'pointer',
     borderRadius: 4,
     color: '#fff',
     paddingLeft: 32,
