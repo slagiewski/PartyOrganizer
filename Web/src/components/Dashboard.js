@@ -5,6 +5,12 @@ import PartyForm from './PartyForm';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from 'material-ui/Dialog';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Avatar from 'material-ui/Avatar';
 import Toolbar from 'material-ui/Toolbar';
@@ -17,8 +23,33 @@ import { withTheme, withStyles } from 'material-ui/styles';
 import AddIcon from 'material-ui-icons/Add';
 import JoinIcon from 'material-ui-icons/ChatBubble';
 import AccountCircle from 'material-ui-icons/AccountCircle';
+import { TextField } from 'material-ui';
 
-const NewUserDashboard = withStyles((theme)=>({
+const JoinDialog = withStyles( theme => ({
+
+}))(class extends React.Component{
+  render() {
+    return (
+    <Dialog
+      fullScreen={this.props.fullScreen}
+      open={this.props.open}
+      onClose={this.props.handleClose}
+      aria-labelledby="responsive-dialog-join"
+    >
+      <DialogTitle id="responsive-dialog-join">Join existing party</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Enter party ID
+        </DialogContentText>
+        <input type="text"/>
+      </DialogContent>
+      <DialogActions></DialogActions>
+    </Dialog>
+    )
+  }
+});
+
+const NewUserDashboard = withStyles( theme =>({
   wrapper: {
     height: '100vh',
     width: '100%',
@@ -171,7 +202,8 @@ const styles = theme => ({
 class Dashboard extends React.Component {
   state={
     anchorEl: null,
-    formOpen: false
+    formOpen: false,
+    dialogOpen: false
   }
 
   formOpen = () => {
@@ -180,6 +212,14 @@ class Dashboard extends React.Component {
 
   formClose = () => {
     this.setState({formOpen: false});
+  }
+
+  dialogOpen = () => {
+    this.setState({dialogOpen: true});
+  };
+
+  dialogClose = () => {
+    this.setState({dialogOpen: false});
   }
 
   handleMenu = event => {
@@ -243,7 +283,7 @@ class Dashboard extends React.Component {
             
             </Paper>
             <Paper className={classes.controlPaper}>
-              <div className={classes.controlTile}>
+              <div className={classes.controlTile} onClick={this.dialogOpen}>
                 <Avatar>
                   <JoinIcon/>
                 </Avatar> 
@@ -257,6 +297,7 @@ class Dashboard extends React.Component {
           </Paper>
         </div>
         {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
+        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose}/>}        
       </div>
     )
 

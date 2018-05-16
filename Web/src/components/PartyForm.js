@@ -6,7 +6,6 @@ import { newParty } from '../actions/parties';
 import { LocationSearchBox } from './Map';
 import { DayPickerSingleDateController, isInclusivelyAfterDay } from 'react-dates';
 import TimeField from 'react-simple-timefield';
-import { addItem } from '../actions/items';
 import ItemList from './ItemList';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
@@ -40,8 +39,7 @@ export const ItemsPanel = withStyles((theme)=>({
 
   onNewItem = () => {
     const { name, count } = this.state;
-    this.props.onNewItem({name, count, id: 1});
-    //this.props.dispatch(addItem({name, count, id: 1}, this.props.partyID));
+    this.props.onNewItem({ name, count });
   }
 
   handleChange = name => event => {
@@ -118,7 +116,7 @@ class PartyForm extends React.Component{
     const { name, date, time, location, description } = this.state;
     const unix = (() => {
       let timeArr =  time.split(':');
-      return date.unix() + parseInt(timeArr[0]) * 3600 + parseInt(timeArr[1]) * 60;
+      return date.unix() + parseInt(timeArr[0], 10) * 3600 + parseInt(timeArr[1], 10) * 60;
     })();
     const party = {
       name,
@@ -169,7 +167,7 @@ class PartyForm extends React.Component{
             className={classes.textField}
           />
           <TimeField
-            value={this.state.time || ''}
+            value={this.state.time || '00:00'}
             onChange={(e)=>this.setState({time: e})}
             input={<TextField label="Time" className={classes.textField} />}
           />
