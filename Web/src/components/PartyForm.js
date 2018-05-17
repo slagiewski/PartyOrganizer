@@ -10,6 +10,7 @@ import ItemList from './ItemList';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
+import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
@@ -26,22 +27,27 @@ export const ItemsPanel = withStyles((theme)=>({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    flexGrow: 1
   },
-  textField: {
+  nameText: {
     margin: theme.spacing.unit,
-    marginLeft: 0
+    marginLeft: 0,
   },
+  amountText: {
+    margin: theme.spacing.unit,
+    width: 60   
+  }
 }))(connect()(class extends React.Component{
 
   // PUT LOGIC HERE ORDER AND PARTIES
   state = {
     name: '',
-    count: 1
+    amount: 1
   }
 
   onNewItem = () => {
-    const { name, count } = this.state;
-    this.props.onNewItem({ name, count });
+    const { name, amount } = this.state;
+    this.props.onNewItem({ name, amount });
   }
 
   handleChange = name => event => {
@@ -54,9 +60,9 @@ export const ItemsPanel = withStyles((theme)=>({
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
-        <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
-        <Button onClick={this.onNewItem} autoFocus>Add</Button>
+        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.nameText}/>
+        <TextField value={this.state.amount} onChange={this.handleChange('amount')} type="number" label="Amount" className={classes.amountText}/>        
+        <Button onClick={this.onNewItem} autoFocus style={{width: '15%'}}>Add</Button>
       </div>
     )
   }
@@ -82,16 +88,25 @@ const styles = theme => ({
     paddingLeft: 5,
     paddingRight: 5,
     maxWidth: 400
-  }
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 });
 
 class PartyForm extends React.Component{
   state = {
     activeStep: 0,
+    loading: false,
     itemOrder: [],
     items: {},
     name: '',
-    time: '00:00'
+    time: '00:00',
+    description: ''
   }
 
   handleChange = name => event => {
@@ -115,7 +130,7 @@ class PartyForm extends React.Component{
           ...prevState.items,
           [id]: {
             name: item.name,
-            count: item.count
+            amount: item.amount
           }
         }
       }
@@ -129,6 +144,7 @@ class PartyForm extends React.Component{
   }
 
   handleSubmit = () => {
+    this.setState({ loading: true });
     const { name, unix, location, description } = this.state;
     const party = {
       name,
@@ -136,7 +152,10 @@ class PartyForm extends React.Component{
       location,
       description
     }
-    this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items));
+    this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items)).then(()=>{
+      this.setState({ loading: false });
+      this.props.handleClose();
+    });
   }
 
   handleFormControl = () => {
@@ -158,7 +177,7 @@ class PartyForm extends React.Component{
     })();
     if (name.length < 3) { error = true; nameError = true }
     if (unix < moment().unix()) { error = true; dateError = true; timeError = true}
-    if (!this.locationBox.value) { error = true; locationError = true; }
+    if (!this.locationBox.value || !location) { error = true; locationError = true; }
 
     if (error) {
       this.setState({
@@ -189,6 +208,7 @@ class PartyForm extends React.Component{
             onChange={this.handleChange('name')}
             fullWidth
             error={this.state.nameError}
+            helperText={this.state.nameError && "Name is too short"}
             className={classes.textField}
           />
           <LocationSearchBox onSelected={(loc) => this.handleChangeUncontrolled('location', { ...loc, name: this.locationBox.value})}>
@@ -199,7 +219,8 @@ class PartyForm extends React.Component{
               id="party-location"
               defaultValue={this.state.location ? this.state.location.name : ''}
               className={classes.textField}
-              error={this.state.locationError}              
+              error={this.state.locationError}  
+              helperText={this.state.locationError && "You need to specify a location"}            
               fullWidth                                     
             />
           </LocationSearchBox>
@@ -211,7 +232,7 @@ class PartyForm extends React.Component{
               onBlur={ () => this.setState({showDatePicker: false})}
               value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
               className={classes.textField}
-              error={this.state.dateError}              
+              error={this.state.dateError}     
             />
             {(this.state.focused || this.state.showDatePicker) &&
             <div className={classes.datePicker}>
@@ -230,7 +251,7 @@ class PartyForm extends React.Component{
           <TimeField
             value={this.state.time || '00:00'}
             onChange={(e)=>this.setState({time: e})}
-            input={<TextField label="Time" className={classes.textField} error={this.state.timeError}/>}
+            input={<TextField label="Time" className={classes.textField} error={this.state.timeError} helperText={this.state.timeError && "Enter a valid date"}/>}
           />
           <TextField
             label="Description"
@@ -292,9 +313,12 @@ class PartyForm extends React.Component{
                 <Button onClick={()=>this.setState({activeStep: 0})} color="primary">
                   Back
                 </Button>
-                <Button onClick={this.handleSubmit} variant="raised" color="primary">
-                  Let's party!
-                </Button>
+                <div style={{position: 'relative'}}>
+                  <Button onClick={this.handleSubmit} variant="raised" color="primary" disabled={this.state.loading}>
+                    Let's party!
+                  </Button>
+                  {this.state.loading && <CircularProgress size={26} className={classes.buttonProgress} />}
+                </div>
               </React.Fragment>
             }
           </DialogActions>
