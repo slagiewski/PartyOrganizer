@@ -21,7 +21,7 @@ export default withStyles( theme => ({
     alignItems: 'center'
   },
   text: {
-    color: '#fbae17',
+    color: '#FFEB3B',
     display: 'inline-block',
     fontSize: '1.5rem',
     marginLeft: 10,
@@ -39,7 +39,7 @@ export default withStyles( theme => ({
       width,
       height,
       borderRadius: '50%',
-      backgroundColor: '#fbae17',
+      backgroundColor: '#FFEB3B',
       transformOrigin: '50%',
       animation: 'bounce 500ms alternate infinite ease'
     }

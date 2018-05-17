@@ -89,7 +89,9 @@ class PartyForm extends React.Component{
   state = {
     activeStep: 0,
     itemOrder: [],
-    items: {}
+    items: {},
+    name: '',
+    time: '00:00'
   }
 
   handleChange = name => event => {
@@ -127,11 +129,7 @@ class PartyForm extends React.Component{
   }
 
   handleSubmit = () => {
-    const { name, date, time, location, description } = this.state;
-    const unix = (() => {
-      let timeArr =  time.split(':');
-      return date.unix() + parseInt(timeArr[0], 10) * 3600 + parseInt(timeArr[1], 10) * 60;
-    })();
+    const { name, unix, location, description } = this.state;
     const party = {
       name,
       unix,
@@ -139,6 +137,37 @@ class PartyForm extends React.Component{
       description
     }
     this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items));
+  }
+
+  handleFormControl = () => {
+    const { name, date, time, location } = this.state;
+    let error = false;
+    let nameError = false;
+    let dateError = false;
+    let timeError = false;
+    let locationError = false;
+
+    const unix = (() => {
+      let timeArr =  time.split(':');
+      if (date) {
+        return (date.unix() - 12 * 3600) + parseInt(timeArr[0], 10) * 3600 + parseInt(timeArr[1], 10) * 60;
+      } else {
+        error = true;
+        dateError = true;
+      }
+    })();
+    if (name.length < 3) { error = true; nameError = true }
+    if (unix < moment().unix()) { error = true; dateError = true; timeError = true}
+    if (!this.locationBox.value) { error = true; locationError = true; }
+
+    if (error) {
+      this.setState({
+        nameError,
+        dateError,
+        timeError,
+        locationError
+      });
+    } else { this.setState({ nameError: false, dateError: false, locationError: false, timeError: false, activeStep: 1, unix })}
   }
 
   render() {
@@ -159,6 +188,7 @@ class PartyForm extends React.Component{
             value={this.state.name || ''}
             onChange={this.handleChange('name')}
             fullWidth
+            error={this.state.nameError}
             className={classes.textField}
           />
           <LocationSearchBox onSelected={(loc) => this.handleChangeUncontrolled('location', { ...loc, name: this.locationBox.value})}>
@@ -169,6 +199,7 @@ class PartyForm extends React.Component{
               id="party-location"
               defaultValue={this.state.location ? this.state.location.name : ''}
               className={classes.textField}
+              error={this.state.locationError}              
               fullWidth                                     
             />
           </LocationSearchBox>
@@ -180,6 +211,7 @@ class PartyForm extends React.Component{
               onBlur={ () => this.setState({showDatePicker: false})}
               value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
               className={classes.textField}
+              error={this.state.dateError}              
             />
             {(this.state.focused || this.state.showDatePicker) &&
             <div className={classes.datePicker}>
@@ -198,7 +230,7 @@ class PartyForm extends React.Component{
           <TimeField
             value={this.state.time || '00:00'}
             onChange={(e)=>this.setState({time: e})}
-            input={<TextField label="Time" className={classes.textField} />}
+            input={<TextField label="Time" className={classes.textField} error={this.state.timeError}/>}
           />
           <TextField
             label="Description"
@@ -252,7 +284,7 @@ class PartyForm extends React.Component{
           </DialogContent>
           <DialogActions>
             {this.state.activeStep === 0 ? 
-              <Button onClick={()=>this.setState({activeStep: 1})} variant="raised" color="primary">
+              <Button onClick={this.handleFormControl} variant="raised" color="primary">
                 Next
               </Button>
               :
