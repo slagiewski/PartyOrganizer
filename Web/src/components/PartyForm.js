@@ -12,6 +12,7 @@ import Typography from 'material-ui/Typography';
 import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -21,21 +22,23 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import { withStyles } from 'material-ui/styles';
 
+import CloseIcon from 'material-ui-icons/Close';
 import 'react-dates/lib/css/_datepicker.css';
 
 export const ItemsPanel = withStyles((theme)=>({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
-    flexGrow: 1
+    flexFlow: 'row wrap',
+    alignItems: 'stretch',
   },
   nameText: {
     margin: theme.spacing.unit,
     marginLeft: 0,
+    flexGrow: 3
   },
   amountText: {
     margin: theme.spacing.unit,
-    width: 60   
+    flexGrow: 1
   }
 }))(connect()(class extends React.Component{
 
@@ -72,6 +75,14 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  bar: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 60,
+    width: '100%',
+    color: '#fff',
+    backgroundColor: theme.palette.primary.main
   },
   textField: {
     margin: theme.spacing.unit,
@@ -286,6 +297,12 @@ class PartyForm extends React.Component{
           onClose={this.props.handleClose}
           aria-labelledby="responsive-dialog-form"
         >
+          <div className={classes.bar}>
+            <Typography align="center" color="inherit" variant="display1">PARTY CREATOR</Typography>          
+            <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close" style={{justifySelf: 'flex-end'}}>
+              <CloseIcon />
+            </IconButton>
+          </div>
           <DialogTitle id="responsive-dialog-form">{"Party Creator"}</DialogTitle>
           <DialogContent style={{height: 620}}>
             <div style={{display: 'flex', justifyContent: 'center', marginBottom: 30}}>
