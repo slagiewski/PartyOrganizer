@@ -90,7 +90,7 @@ class PartyPage extends React.Component{
           <div style={{display: 'flex'}}>
             <Paper className={classes.info}>
               <List dense>
-                <ListItem disableGutters>
+                <ListItem disableGutters style={{alignItems: 'flex-start'}}>
                   <ListItemIcon>
                     <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />   
                   </ListItemIcon>

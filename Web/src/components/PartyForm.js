@@ -9,6 +9,7 @@ import TimeField from 'react-simple-timefield';
 import ItemList from './ItemList';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
+import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
@@ -28,6 +29,7 @@ export const ItemsPanel = withStyles((theme)=>({
   },
   textField: {
     margin: theme.spacing.unit,
+    marginLeft: 0
   },
 }))(connect()(class extends React.Component{
 
@@ -52,7 +54,6 @@ export const ItemsPanel = withStyles((theme)=>({
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography style={{width: '100%'}}>Add products/items for the party and move them around</Typography>
         <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
         <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
         <Button onClick={this.onNewItem} autoFocus>Add</Button>
@@ -68,12 +69,25 @@ const styles = theme => ({
   },
   textField: {
     margin: theme.spacing.unit,
+    marginLeft: 0
   },
+  datePicker: {
+    position: 'absolute',
+    top: 56,
+    left: -14,
+    zIndex: 1
+  },
+  stepper: {
+    width: '100%',
+    paddingLeft: 5,
+    paddingRight: 5,
+    maxWidth: 400
+  }
 });
 
 class PartyForm extends React.Component{
   state = {
-    page: 1,
+    activeStep: 0,
     itemOrder: [],
     items: {}
   }
@@ -158,20 +172,17 @@ class PartyForm extends React.Component{
               fullWidth                                     
             />
           </LocationSearchBox>
-          <TextField
-            label="Date"
-            onFocus={()=>this.setState({focused: true, showDatePicker: true})}
-            inputRef={(input) => { this.dateInput = input; }}
-            onBlur={ () => this.setState({showDatePicker: false})}
-            value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
-            className={classes.textField}
-          />
-          <TimeField
-            value={this.state.time || '00:00'}
-            onChange={(e)=>this.setState({time: e})}
-            input={<TextField label="Time" className={classes.textField} />}
-          />
-          {(this.state.focused || this.state.showDatePicker) &&
+          <div style={{position: 'relative'}}>
+            <TextField
+              label="Date"
+              onFocus={()=>this.setState({focused: true, showDatePicker: true})}
+              inputRef={(input) => { this.dateInput = input; }}
+              onBlur={ () => this.setState({showDatePicker: false})}
+              value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
+              className={classes.textField}
+            />
+            {(this.state.focused || this.state.showDatePicker) &&
+            <div className={classes.datePicker}>
             <DayPickerSingleDateController 
               date={this.state.date}
               focused={this.state.focused}
@@ -181,13 +192,23 @@ class PartyForm extends React.Component{
               numberOfMonths={1}
               isOutsideRange={day => !isInclusivelyAfterDay(day, moment())}
             />
-          }
+            </div>
+            }
+          </div>
+          <TimeField
+            value={this.state.time || '00:00'}
+            onChange={(e)=>this.setState({time: e})}
+            input={<TextField label="Time" className={classes.textField} />}
+          />
           <TextField
             label="Description"
             placeholder="Tell guests more about the party"
             id="party-description"
             value={this.state.description || ''}
             onChange={this.handleChange('description')}
+            multiline
+            rows={3}
+            rowsMax={10}
             fullWidth
             className={classes.textField}
           />
@@ -196,6 +217,9 @@ class PartyForm extends React.Component{
     );
     const secondPage = (
       <React.Fragment>
+        <DialogContentText>
+          Add products/items for the party and move them around
+        </DialogContentText>
         <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
         <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder}/>
       </React.Fragment>
@@ -204,25 +228,36 @@ class PartyForm extends React.Component{
     return(
       <Dialog
           fullScreen={fullScreen}
+          disableBackdropClick
           open={open}
           onClose={this.props.handleClose}
           aria-labelledby="responsive-dialog-form"
         >
           <DialogTitle id="responsive-dialog-form">{"Party Creator"}</DialogTitle>
-          <DialogContent>
-            {this.state.page === 1 ? 
+          <DialogContent style={{height: 620}}>
+            <div style={{display: 'flex', justifyContent: 'center', marginBottom: 30}}>
+              <Stepper activeStep={this.state.activeStep} className={classes.stepper}>
+                <Step>
+                  <StepLabel>Basic info</StepLabel>
+                </Step>
+                <Step>
+                  <StepLabel>Stuff to bring</StepLabel>
+                </Step>
+              </Stepper>
+            </div>
+            {this.state.activeStep === 0 ? 
               firstPage :
               secondPage
             }
           </DialogContent>
           <DialogActions>
-            {this.state.page === 1 ? 
-              <Button onClick={()=>this.setState({page: 2})} variant="raised" color="primary">
+            {this.state.activeStep === 0 ? 
+              <Button onClick={()=>this.setState({activeStep: 1})} variant="raised" color="primary">
                 Next
               </Button>
               :
               <React.Fragment>
-                <Button onClick={()=>this.setState({page: 1})} color="primary">
+                <Button onClick={()=>this.setState({activeStep: 0})} color="primary">
                   Back
                 </Button>
                 <Button onClick={this.handleSubmit} variant="raised" color="primary">
