@@ -79,10 +79,14 @@ const styles = theme => ({
   bar: {
     display: 'flex',
     alignItems: 'center',
-    height: 60,
+    height: 100,
+    marginTop: -70,
+    paddingTop: 40,
+    paddingLeft: 50,
     width: '100%',
     color: '#fff',
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: 50
   },
   textField: {
     margin: theme.spacing.unit,
@@ -297,11 +301,11 @@ class PartyForm extends React.Component{
           onClose={this.props.handleClose}
           aria-labelledby="responsive-dialog-form"
         >
+          <IconButton onClick={this.props.handleClose} aria-label="Close" style={{position: 'absolute', top: 0, right: 0, height: 70, width: 70, color: '#fff'}}>
+            <CloseIcon style={{ fontSize: 30 }}/>
+          </IconButton>
           <div className={classes.bar}>
-            <Typography align="center" color="inherit" variant="display1">PARTY CREATOR</Typography>          
-            <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close" style={{justifySelf: 'flex-end'}}>
-              <CloseIcon />
-            </IconButton>
+            <Typography align="center" color="inherit" variant="display1" style={{marginTop: 30}}>Party Creator</Typography>          
           </div>
           <DialogTitle id="responsive-dialog-form">{"Party Creator"}</DialogTitle>
           <DialogContent style={{height: 620}}>

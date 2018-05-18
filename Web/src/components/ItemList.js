@@ -42,9 +42,7 @@ const styles = theme => ({
     cursor: 'pointer',
     borderRadius: 4,
     color: '#fff',
-    paddingLeft: 32,
-    fontSize: 24,
-    fontWeight: 400,
+    paddingLeft: 12,
     backgroundColor: theme.palette.primary.main,
     boxSizing: 'border-box'
   }
@@ -115,7 +113,7 @@ class ItemList extends React.Component {
                     transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
                     zIndex: i === originalPosOfLastPressed ? 99 : i
                   }}>
-                  {order.indexOf(i) + 1} {items[i].name} {items[i].count}
+                  <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography> <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} x{items[i].amount}</Typography>
                 </div>
               )}
             </Spring>

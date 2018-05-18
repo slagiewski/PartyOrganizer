@@ -15,6 +15,34 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
 
+const Member = withStyles( theme => ({
+  wrapper: {
+    display: 'flex',
+    height: 80,
+    width: 300,
+    borderTop: `2px solid ${theme.palette.primary.main}`,
+    borderBottom: `2px solid ${theme.palette.primary.main}`,    
+  },
+  avatar: {
+    zIndex: 1,    
+    width: 44,
+    height: 44,
+    margin: theme.spacing.unit
+  },
+
+}))((props) => {
+  const { classes } = props;
+  return (
+    <div className={classes.wrapper}>
+      <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />
+      <div>
+        <Typography>Kanye West</Typography>
+        <Typography>Brings: vodka x2</Typography>        
+      </div>
+    </div>
+  )
+});
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -23,9 +51,6 @@ const styles = theme => ({
   },
   infoWrapper: {
     width: '60%'
-  },
-  guestsWrapper: {
-    width: '25%'
   },
   headline: {
     padding: theme.spacing.unit*2
@@ -50,6 +75,8 @@ const styles = theme => ({
     color: '#fff',
     padding: 5,
     minHeight: 34,
+    maxWidth: 'calc(100% - 70px)',
+    wordWrap: 'break-word',
     '&:after':{
       content: '""',
       position: 'absolute',
@@ -96,7 +123,7 @@ class PartyPage extends React.Component{
                   </ListItemIcon>
                   {party.description &&
                   <div className={classes.speechBubble}>
-                    <Typography color="inherit" variant="body">{party.description}</Typography>                 
+                    <Typography color="inherit">{party.description}</Typography>                 
                   </div>
                   }
                 </ListItem>
@@ -125,7 +152,11 @@ class PartyPage extends React.Component{
         <div className={classes.guestsWrapper}>
           <Paper>
             <Typography>8 guests</Typography>
-            ....
+            <Member />
+            <Member />
+            <Member />
+            <Member />
+            
           </Paper>
         </div>        
       </div>
