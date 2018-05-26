@@ -6,6 +6,7 @@ import { Spring } from 'react-spring';
 import { Gesture } from 'react-with-gesture';
 import { withStyles } from 'material-ui/styles';
 import { Typography } from 'material-ui';
+import DoneIcon from 'material-ui-icons/Done';
 
 
 
@@ -137,7 +138,8 @@ class ItemList extends React.Component {
                       zIndex: i === originalPosOfLastPressed ? 99 : i,
                       ...style
                     }}>
-                    <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography> <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} x{items[i].amount}</Typography>
+                    <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography>
+                    <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} {disabled ? <DoneIcon/> : `x${items[i].amount}`}</Typography>
                   </div>
               )}}
             </Spring>

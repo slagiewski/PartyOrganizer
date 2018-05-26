@@ -28,7 +28,7 @@ export default (state = {}, action) => {
               items: {
                 ...state[action.partyID].members[action.uid].items,
                 [action.itemID]: {
-                  ...state[action.partyID].members[action.uid].items[action.itemID],
+                  name: action.itemName,
                   amount: action.userAmount                  
                 }
               }

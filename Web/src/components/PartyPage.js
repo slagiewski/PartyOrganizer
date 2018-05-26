@@ -37,13 +37,13 @@ const Member = withStyles( theme => ({
   },
 
 }))((props) => {
-  const { classes } = props;
+  const { classes, items } = props;
   return (
     <div className={classes.wrapper}>
       <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />
       <div>
-        <Typography>Kanye West</Typography>
-        <Typography>Brings: vodka x2</Typography>        
+        <Typography>{props.name}</Typography>
+        <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}`)}</Typography>        
       </div>
     </div>
   )
@@ -98,7 +98,7 @@ const styles = theme => ({
     }
   },
   amountInput: {
-    width: 80
+    width: 100
   },
   '@media (max-width: 600px)': {
     root: {
@@ -153,11 +153,11 @@ class PartyPage extends React.Component{
     const totalAmount = this.props.party.items[this.state.selectedItemID].amount;
     const partyID = this.props.match.params.id;
 
-    this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount);
+    if(totalAmount >= amount) this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount).then(()=>this.setState({ showItemSelect: false }));
   }
 
   render() {
-    const { classes, party } = this.props;
+    const { classes, party, members } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.infoWrapper}>
@@ -226,11 +226,9 @@ class PartyPage extends React.Component{
         <div className={classes.guestsWrapper}>
           <Paper>
             <Typography>8 guests</Typography>
-            <Member />
-            <Member />
-            <Member />
-            <Member />
-            
+            {Object.keys(members).map((member)=>{
+              return <Member name={member} items={members[member].items}/>
+            })}
           </Paper>
         </div>        
       </div>
@@ -239,7 +237,8 @@ class PartyPage extends React.Component{
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  party: state.parties[ownProps.match.params.id].content
+  party: state.parties[ownProps.match.params.id].content,
+  members: state.parties[ownProps.match.params.id].members,
 });
 
 const mapDispatchToProps = (dispatch) => ({

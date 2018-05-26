@@ -36,6 +36,7 @@ export const setParties = (parties) => ({
 });
 
 export const startSetParties = () => {
+  
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database.ref(`parties`).once('value').then((snapshot) => {
@@ -62,17 +63,19 @@ export const editPartyItems = (partyID, itemID, totalAmount, chosenAmount) => {
   
   return (dispatch, getState) => {
     const state = getState();
+    const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : 0, o)    
+    
     const uid = state.auth.uid;
-    const userTotalAmount = 0 //(state.parties[partyID].members[uid].items[itemID] || {}).amount || 0;
-
+    const itemName = state.parties[partyID].content.items[itemID].name;
+    const userTotalAmount = get(['parties', partyID, 'members', uid, 'items', itemID, 'amount'], state);  
     const amountLeft = totalAmount - chosenAmount;
     const userAmount = parseInt(userTotalAmount, 10) + parseInt(chosenAmount, 10);
 
     // Write the new data simultaneously
     var updates = {};
     updates[`/${partyID}/content/items/${itemID}/amount`] = amountLeft;
-    updates[`/${partyID}/members/${uid}/items/${itemID}/amount`] = userAmount;
+    updates[`/${partyID}/members/${uid}/items/${itemID}`] = { name: itemName, amount:userAmount };
 
-    return database.ref('parties').update(updates).then(()=> dispatch(updateItem({ uid, partyID, itemID, amountLeft, userAmount })));
+    return database.ref('parties').update(updates).then(()=> dispatch(updateItem({ uid, partyID, itemID, itemName, amountLeft, userAmount })));
   }
 }
