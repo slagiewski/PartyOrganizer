@@ -1,12 +1,11 @@
-const initialState = {uid: 'for_demo'}
-
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
   switch(action.type) {
     case 'LOGIN':
       return {
-        ...state,
-        uid: action.uid
+        ...action.user
       }
+    case 'LOGOUT':
+      return {}
     default:
       return state;
   }

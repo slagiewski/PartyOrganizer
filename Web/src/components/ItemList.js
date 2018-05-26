@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { changeOrder } from '../actions/items';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Spring } from 'react-spring';
 import { Gesture } from 'react-with-gesture';
 import { withStyles } from 'material-ui/styles';
 import { Typography } from 'material-ui';
+import DoneIcon from 'material-ui-icons/Done';
 
 
 
@@ -21,6 +20,15 @@ function reinsert(arr, from, to) {
   return _arr;
 };
 
+const toBeDetermined = (props) => {
+  return (
+    <div>
+      <input type="number"/>
+      <button>Ok</button>
+    </div>
+  )
+}
+
 const styles = theme => ({
   container: {
     display: 'flex',
@@ -29,7 +37,10 @@ const styles = theme => ({
     userSelect: 'none',
     position: 'relative',
     minHeight: `calc(${tileHeight}px * 3)`,
-    touchAction: 'manipulation'
+    padding: 5,
+    paddingBottom: 30,
+    touchAction: 'manipulation',
+    overflowY: 'hidden'
   },
   item: {
     position: 'absolute',
@@ -39,11 +50,10 @@ const styles = theme => ({
     height: 50,
     overflow: 'visible',
     pointerEvents: 'auto',
+    cursor: 'pointer',
     borderRadius: 4,
     color: '#fff',
-    paddingLeft: 32,
-    fontSize: 24,
-    fontWeight: 400,
+    paddingLeft: 12,
     backgroundColor: theme.palette.primary.main,
     boxSizing: 'border-box'
   }
@@ -79,7 +89,7 @@ class ItemList extends React.Component {
 
   handleMouseMove = ({ pageY }) => {
     const { isPressed, topDeltaY, originalPosOfLastPressed } = this.state;
-    const { order } = this.props;
+    const { order, partyID } = this.props;
     if (isPressed) {
       const mouseY = pageY - topDeltaY;
       const currentRow = clamp(Math.round(mouseY / tileHeight), 0, order.length - 1);
@@ -87,13 +97,22 @@ class ItemList extends React.Component {
       if (currentRow !== order.indexOf(originalPosOfLastPressed))
         newOrder = reinsert(order, order.indexOf(originalPosOfLastPressed), currentRow);
       this.setState({ mouseY: mouseY });
-      this.props.dispatch(changeOrder(newOrder));
+      this.props.onMoved(newOrder);
     }
+  }
+
+  onItemSelect = (id, clickable) => () => {
+    if (clickable)
+      this.props.onItemSelect(id);
   }
 
   render() {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
-    const { classes, order, items } = this.props;
+    const { classes, order = [], items = {} } = this.props;
+    const disabledStyle = {
+      backgroundColor: '#ddd',
+      cursor: 'default'
+    }
 
     return (
       <div className={classes.container} style={{height: order.length * tileHeight}}>
@@ -104,19 +123,25 @@ class ItemList extends React.Component {
             : { scale: 1, shadow: 1, y: order.indexOf(i) * tileHeight }
           return (
             <Spring immediate={name => active && name === 'y'} to={style} key={i}>
-              {({ scale, shadow, y }) => (
-                <div
-                  onMouseDown={this.handleMouseDown.bind(null, i, y)}
-                  onTouchStart={this.handleTouchStart.bind(null, i, y)}
-                  className={classes.item}
-                  style={{
-                    boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                    transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-                    zIndex: i === originalPosOfLastPressed ? 99 : i
-                  }}>
-                  {order.indexOf(i) + 1} {items[i].name} {items[i].count}
-                </div>
-              )}
+              {({ scale, shadow, y }) => {
+                const disabled = items[i].amount < 1;
+                const style = disabled && disabledStyle;
+                return (
+                  <div
+                    onClick={this.onItemSelect(i, this.props.fixed && !disabled)}
+                    onMouseDown={this.handleMouseDown.bind(null, i, y)}
+                    onTouchStart={this.handleTouchStart.bind(null, i, y)}
+                    className={classes.item}
+                    style={{
+                      boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                      transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
+                      zIndex: i === originalPosOfLastPressed ? 99 : i,
+                      ...style
+                    }}>
+                    <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography>
+                    <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} {disabled ? <DoneIcon/> : `x${items[i].amount}`}</Typography>
+                  </div>
+              )}}
             </Spring>
           )
         })}
@@ -125,13 +150,10 @@ class ItemList extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => ({
-  order: state.items.order,
-  items: state.items.info
-});
-
 ItemList.propTypes = {
-  fixed: PropTypes.bool.isRequired
+  fixed: PropTypes.bool.isRequired,
+  order: PropTypes.array.isRequired,
+  items: PropTypes.object.isRequired
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(ItemList));
+export default withStyles(styles)(ItemList);

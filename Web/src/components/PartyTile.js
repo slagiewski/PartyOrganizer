@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 import Avatar from 'material-ui/Avatar';
 import Typography from 'material-ui/Typography';
@@ -41,14 +42,13 @@ const styles = theme => ({
 class PartyTile extends React.Component {
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.tile}>
         <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />
         <div className={classes.content}>
-          <Typography color="inherit">What: Kanye's birthday party</Typography>
-          <Typography>Where: wyspa</Typography>
-          <Typography>When: 05.06.2018</Typography>          
+          <Typography color="inherit">What: {this.props.name}</Typography>
+          <Typography color="inherit">Where: {this.props.location.name}</Typography>
+          <Typography color="inherit">When: {moment.unix(this.props.unix).calendar()}</Typography>          
         </div>
         <div className={classes.slopeBegin}></div>        
       </div>

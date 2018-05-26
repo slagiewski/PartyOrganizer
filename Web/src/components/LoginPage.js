@@ -44,6 +44,7 @@ class LoginPage extends React.Component {
         const username = this.username.value;
         const password = this.password.value;
         this.props.startLogin({username, password});
+
     }
     render () {
         const { classes } = this.props;
@@ -73,6 +74,9 @@ class LoginPage extends React.Component {
                                 </ListItemIcon>
                                 <TextField defaultValue={"admin"}  inputRef={el => this.password = el} label="Password" fullWidth type="password" error={error}/>
                             </ListItem>
+                            <ListItem>
+                                <Button variant="raised" size="large" color="primary">Login with Facebook</Button>
+                            </ListItem>
                             <div className={classes.buttonWrapper}>
                                 <Button type="submit" variant="raised" size="large" color="primary">Login</Button>
                             </div>
@@ -86,7 +90,7 @@ class LoginPage extends React.Component {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    startLogin: (creds) => dispatch(startLogin(creds))
+    startLogin: () => dispatch(startLogin())
 });
 
 export default connect((state)=>({login: state.auth.login}), mapDispatchToProps)(withStyles(styles)(LoginPage));

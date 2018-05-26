@@ -1,15 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { newParty } from '../actions/parties';
 
 import { LocationSearchBox } from './Map';
 import { DayPickerSingleDateController, isInclusivelyAfterDay } from 'react-dates';
 import TimeField from 'react-simple-timefield';
-import { addItem } from '../actions/items';
 import ItemList from './ItemList';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
+import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
+import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -19,25 +22,35 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import { withStyles } from 'material-ui/styles';
 
+import CloseIcon from 'material-ui-icons/Close';
 import 'react-dates/lib/css/_datepicker.css';
 
 export const ItemsPanel = withStyles((theme)=>({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexFlow: 'row wrap',
+    alignItems: 'stretch',
   },
-  textField: {
+  nameText: {
     margin: theme.spacing.unit,
+    marginLeft: 0,
+    flexGrow: 3
   },
+  amountText: {
+    margin: theme.spacing.unit,
+    flexGrow: 1
+  }
 }))(connect()(class extends React.Component{
+
+  // PUT LOGIC HERE ORDER AND PARTIES
   state = {
     name: '',
-    count: 1
+    amount: 1
   }
 
   onNewItem = () => {
-    const { name, count } = this.state;
-    this.props.dispatch(addItem({name, count}, Math.random()*10));
+    const { name, amount } = this.state;
+    this.props.onNewItem({ name, amount });
   }
 
   handleChange = name => event => {
@@ -50,10 +63,9 @@ export const ItemsPanel = withStyles((theme)=>({
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography style={{width: '100%'}}>Add products/items for the party and move them around</Typography>
-        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.textField}/>
-        <TextField value={this.state.count} onChange={this.handleChange('count')} type="number" label="Count" className={classes.textField}/>        
-        <Button onClick={this.onNewItem} autoFocus>Add</Button>
+        <TextField value={this.state.name} onChange={this.handleChange('name')} type="text" label="Name" className={classes.nameText}/>
+        <TextField value={this.state.amount} onChange={this.handleChange('amount')} type="number" label="Amount" className={classes.amountText}/>        
+        <Button onClick={this.onNewItem} autoFocus style={{width: '15%'}}>Add</Button>
       </div>
     )
   }
@@ -64,14 +76,52 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  bar: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 100,
+    marginTop: -70,
+    paddingTop: 40,
+    paddingLeft: 50,
+    width: '100%',
+    color: '#fff',
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: 50
+  },
   textField: {
     margin: theme.spacing.unit,
+    marginLeft: 0
+  },
+  datePicker: {
+    position: 'absolute',
+    top: 56,
+    left: -14,
+    zIndex: 1
+  },
+  stepper: {
+    width: '100%',
+    paddingLeft: 5,
+    paddingRight: 5,
+    maxWidth: 400
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 });
 
 class PartyForm extends React.Component{
   state = {
-    page: 1,
+    activeStep: 0,
+    loading: false,
+    itemOrder: [],
+    items: {},
+    name: '',
+    time: '00:00',
+    description: ''
   }
 
   handleChange = name => event => {
@@ -80,10 +130,78 @@ class PartyForm extends React.Component{
     });
   };
 
-  handleChangeUncontrolled = name => val => {
+  handleChangeUncontrolled = (name, val) => {
     this.setState({
       [name]: val
     })
+  }
+
+  handleNewItem = (item) => {
+    this.setState((prevState)=>{
+      const id = prevState.itemOrder.length + 1;
+      return {
+        itemOrder: [...prevState.itemOrder, id],
+        items: {
+          ...prevState.items,
+          [id]: {
+            name: item.name,
+            amount: item.amount
+          }
+        }
+      }
+    });
+  }
+
+  handleChangeItemOrder = (order) => {
+    this.setState({
+      itemOrder: order
+    })
+  }
+
+  handleSubmit = () => {
+    this.setState({ loading: true });
+    const { name, unix, location, description } = this.state;
+    const party = {
+      name,
+      unix,
+      location,
+      description
+    }
+    this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items)).then(()=>{
+      this.setState({ loading: false });
+      this.props.handleClose();
+    });
+  }
+
+  handleFormControl = () => {
+    const { name, date, time, location } = this.state;
+    let error = false;
+    let nameError = false;
+    let dateError = false;
+    let timeError = false;
+    let locationError = false;
+
+    const unix = (() => {
+      let timeArr =  time.split(':');
+      if (date) {
+        return (date.unix() - 12 * 3600) + parseInt(timeArr[0], 10) * 3600 + parseInt(timeArr[1], 10) * 60;
+      } else {
+        error = true;
+        dateError = true;
+      }
+    })();
+    if (name.length < 3) { error = true; nameError = true }
+    if (unix < moment().unix()) { error = true; dateError = true; timeError = true}
+    if (!this.locationBox.value || !location) { error = true; locationError = true; }
+
+    if (error) {
+      this.setState({
+        nameError,
+        dateError,
+        timeError,
+        locationError
+      });
+    } else { this.setState({ nameError: false, dateError: false, locationError: false, timeError: false, activeStep: 1, unix })}
   }
 
   render() {
@@ -91,8 +209,6 @@ class PartyForm extends React.Component{
 
     // const staticMapURL = this.props.form.meetingLocation ? `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}&zoom=14&scale=1&size=600x300&maptype=roadmap&key=AIzaSyCwqkpgtZSg4uCWIws9SgSgTlLVpxaOY7w&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}` : '';
 
-
-    console.log(`focused: ${this.state.focused}, showPicker: ${this.state.showDatePicker}`);
     const firstPage = (
       <React.Fragment>
         <DialogContentText>
@@ -106,32 +222,35 @@ class PartyForm extends React.Component{
             value={this.state.name || ''}
             onChange={this.handleChange('name')}
             fullWidth
+            error={this.state.nameError}
+            helperText={this.state.nameError && "Name is too short"}
             className={classes.textField}
           />
-          <LocationSearchBox onSelected={(loc) => {this.handleChangeUncontrolled('meetingLocation', loc)}}>
+          <LocationSearchBox onSelected={(loc) => this.handleChangeUncontrolled('location', { ...loc, name: this.locationBox.value})}>
             <TextField
               label="Location"
               placeholder="Type a location"
+              inputRef={ref => this.locationBox = ref}
               id="party-location"
               defaultValue={this.state.location ? this.state.location.name : ''}
               className={classes.textField}
+              error={this.state.locationError}  
+              helperText={this.state.locationError && "You need to specify a location"}            
               fullWidth                                     
             />
           </LocationSearchBox>
-          <TextField
-            label="Date"
-            onFocus={()=>this.setState({focused: true, showDatePicker: true})}
-            inputRef={(input) => { this.dateInput = input; }}
-            onBlur={ () => this.setState({showDatePicker: false})}
-            value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
-            className={classes.textField}
-          />
-          <TimeField
-            value={this.state.time || ''}
-            onChange={(e)=>this.setState({time: e})}
-            input={<TextField label="Time" className={classes.textField} />}
-          />
-          {(this.state.focused || this.state.showDatePicker) &&
+          <div style={{position: 'relative'}}>
+            <TextField
+              label="Date"
+              onFocus={()=>this.setState({focused: true, showDatePicker: true})}
+              inputRef={(input) => { this.dateInput = input; }}
+              onBlur={ () => this.setState({showDatePicker: false})}
+              value={this.state.date ? this.state.date.format('DD-MM-YYYY') : ''}
+              className={classes.textField}
+              error={this.state.dateError}     
+            />
+            {(this.state.focused || this.state.showDatePicker) &&
+            <div className={classes.datePicker}>
             <DayPickerSingleDateController 
               date={this.state.date}
               focused={this.state.focused}
@@ -141,13 +260,23 @@ class PartyForm extends React.Component{
               numberOfMonths={1}
               isOutsideRange={day => !isInclusivelyAfterDay(day, moment())}
             />
-          }
+            </div>
+            }
+          </div>
+          <TimeField
+            value={this.state.time || '00:00'}
+            onChange={(e)=>this.setState({time: e})}
+            input={<TextField label="Time" className={classes.textField} error={this.state.timeError} helperText={this.state.timeError && "Enter a valid date"}/>}
+          />
           <TextField
             label="Description"
             placeholder="Tell guests more about the party"
             id="party-description"
             value={this.state.description || ''}
             onChange={this.handleChange('description')}
+            multiline
+            rows={3}
+            rowsMax={10}
             fullWidth
             className={classes.textField}
           />
@@ -156,38 +285,61 @@ class PartyForm extends React.Component{
     );
     const secondPage = (
       <React.Fragment>
-        <ItemsPanel />
-        <ItemList fixed={false}/>
+        <DialogContentText>
+          Add products/items for the party and move them around
+        </DialogContentText>
+        <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
+        <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder}/>
       </React.Fragment>
     )
 
     return(
       <Dialog
           fullScreen={fullScreen}
+          disableBackdropClick
           open={open}
           onClose={this.props.handleClose}
           aria-labelledby="responsive-dialog-form"
+          PaperProps={{style: { overflowX: 'hidden' }}}
         >
-          <DialogTitle id="responsive-dialog-form">{"Party Creator"}</DialogTitle>
-          <DialogContent>
-            {this.state.page === 1 ? 
+          <IconButton onClick={this.props.handleClose} aria-label="Close" style={{position: 'absolute', top: 0, right: 0, height: 70, width: 70, color: '#fff'}}>
+            <CloseIcon style={{ fontSize: 30 }}/>
+          </IconButton>
+          <div className={classes.bar}>
+            <Typography align="center" color="inherit" variant="display1" style={{marginTop: 30}}>Party Creator</Typography>          
+          </div>
+          <DialogContent style={{height: 620}}>
+            <div style={{display: 'flex', justifyContent: 'center', marginBottom: 30}}>
+              <Stepper activeStep={this.state.activeStep} className={classes.stepper}>
+                <Step>
+                  <StepLabel>Basic info</StepLabel>
+                </Step>
+                <Step>
+                  <StepLabel>Stuff to bring</StepLabel>
+                </Step>
+              </Stepper>
+            </div>
+            {this.state.activeStep === 0 ? 
               firstPage :
               secondPage
             }
           </DialogContent>
           <DialogActions>
-            {this.state.page === 1 ? 
-              <Button onClick={()=>this.setState({page: 2})} variant="raised" color="primary">
+            {this.state.activeStep === 0 ? 
+              <Button onClick={this.handleFormControl} variant="raised" color="primary">
                 Next
               </Button>
               :
               <React.Fragment>
-                <Button onClick={()=>this.setState({page: 1})} color="primary">
+                <Button onClick={()=>this.setState({activeStep: 0})} color="primary">
                   Back
                 </Button>
-                <Button onClick={this.handleSubmit} variant="raised" color="primary">
-                  Let's party!
-                </Button>
+                <div style={{position: 'relative'}}>
+                  <Button onClick={this.handleSubmit} variant="raised" color="primary" disabled={this.state.loading}>
+                    Let's party!
+                  </Button>
+                  {this.state.loading && <CircularProgress size={26} className={classes.buttonProgress} />}
+                </div>
               </React.Fragment>
             }
           </DialogActions>
@@ -196,4 +348,4 @@ class PartyForm extends React.Component{
   }
 }
 
-export default withMobileDialog()(withStyles(styles)(PartyForm));
+export default connect((state)=>({partyID: state.party}))(withMobileDialog()(withStyles(styles)(PartyForm)));
