@@ -1,13 +1,10 @@
 export default (state = {}, action) => {
   switch(action.type) {
     case 'ADD_PARTY':
+      const { host, ...partyContent } = state;
       return {
         ...state,
-        [action.id]: {
-          ...action.party,
-          order: action.order,
-          items: action.items
-        }
+        [action.id]: action.party
       }
     case 'REMOVE_PARTY':
       const { [action.id]: _, newState } = state;

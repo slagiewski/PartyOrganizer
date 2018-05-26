@@ -19,6 +19,15 @@ function reinsert(arr, from, to) {
   return _arr;
 };
 
+const toBeDetermined = (props) => {
+  return (
+    <div>
+      <input type="number"/>
+      <button>Ok</button>
+    </div>
+  )
+}
+
 const styles = theme => ({
   container: {
     display: 'flex',
@@ -28,6 +37,7 @@ const styles = theme => ({
     position: 'relative',
     minHeight: `calc(${tileHeight}px * 3)`,
     padding: 5,
+    paddingBottom: 30,
     touchAction: 'manipulation',
     overflowY: 'hidden'
   },
@@ -90,6 +100,10 @@ class ItemList extends React.Component {
     }
   }
 
+  onItemSelect = (id) => () => {
+    this.props.onItemSelect(id);
+  }
+
   render() {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
     const { classes, order = [], items = {} } = this.props;
@@ -105,6 +119,7 @@ class ItemList extends React.Component {
             <Spring immediate={name => active && name === 'y'} to={style} key={i}>
               {({ scale, shadow, y }) => (
                 <div
+                  onClick={this.props.fixed && this.onItemSelect(i)}
                   onMouseDown={this.handleMouseDown.bind(null, i, y)}
                   onTouchStart={this.handleTouchStart.bind(null, i, y)}
                   className={classes.item}

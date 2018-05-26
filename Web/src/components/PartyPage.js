@@ -9,11 +9,16 @@ import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import { InputAdornment } from 'material-ui/Input';
 
 
 //icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
+import MaxAmountIcon from 'material-ui-icons/PlaylistAddCheck';
 
 const Member = withStyles( theme => ({
   wrapper: {
@@ -91,6 +96,9 @@ const styles = theme => ({
       marginLeft: '-10px',
     }
   },
+  amountInput: {
+    width: 80
+  },
   '@media (max-width: 600px)': {
     root: {
       flexDirection: 'column'
@@ -105,6 +113,39 @@ const styles = theme => ({
 });
 
 class PartyPage extends React.Component{
+  state = {
+    showItemSelect: false,
+    amount: 1
+  }
+
+  showItemSelect = (id) => {
+    this.setState({
+      showItemSelect: true,
+      selectedItemID: id,
+      amount: 1
+    })
+  }
+
+  getMaxAmount = () => {
+    this.setState({
+      amount: this.props.party.items[this.state.selectedItemID].amount
+    });
+  }
+
+  handleChangeInput = (name) => (e) => {
+    let val = e.target.value;
+    const max = this.props.party.items[this.state.selectedItemID].amount;
+    
+    val = val.toString().replace(/^[^1-9]|[^0-9]*/g, '');
+    if (parseInt(val, 10) > parseInt(max, 10)) {
+      const size = val.length;
+      if (size > 1) val = val.substr(0, size - 1);
+      else val = max;
+    } 
+    this.setState({
+      [name]: val
+    })
+  }
 
   render() {
     const { classes, party } = this.props;
@@ -145,7 +186,31 @@ class PartyPage extends React.Component{
               </Map>
             </Paper>
             <Paper className={classes.items}>
-              <ItemList fixed={true} order={party.order} items={party.items}/>
+              <ItemList fixed={true} order={party.order} items={party.items} onItemSelect={this.showItemSelect}/>
+              {this.state.showItemSelect && 
+              (
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'baseline'}}>
+                <Typography color="primary" variant="body2" style={{marginRight: 10}}>{party.items[this.state.selectedItemID].name}:</Typography>
+                <TextField 
+                  type="text" label="Amount" 
+                  value={this.state.amount} 
+                  onChange={this.handleChangeInput('amount')} 
+                  className={classes.amountInput}
+                  InputProps = {{ endAdornment: 
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={this.getMaxAmount}
+                      >
+                        <MaxAmountIcon/>
+                      </IconButton>
+                  </InputAdornment>
+                  } }
+                />
+                <Button color="primary">Got it!</Button>
+              </div>
+              )
+              }
             </Paper>
           </div>
         </div>
@@ -165,7 +230,7 @@ class PartyPage extends React.Component{
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  party: state.parties[ownProps.match.params.id]
+  party: state.parties[ownProps.match.params.id].content
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(PartyPage));

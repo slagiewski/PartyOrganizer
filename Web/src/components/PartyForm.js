@@ -300,6 +300,7 @@ class PartyForm extends React.Component{
           open={open}
           onClose={this.props.handleClose}
           aria-labelledby="responsive-dialog-form"
+          PaperProps={{style: { overflowX: 'hidden' }}}
         >
           <IconButton onClick={this.props.handleClose} aria-label="Close" style={{position: 'absolute', top: 0, right: 0, height: 70, width: 70, color: '#fff'}}>
             <CloseIcon style={{ fontSize: 30 }}/>
@@ -307,7 +308,6 @@ class PartyForm extends React.Component{
           <div className={classes.bar}>
             <Typography align="center" color="inherit" variant="display1" style={{marginTop: 30}}>Party Creator</Typography>          
           </div>
-          <DialogTitle id="responsive-dialog-form">{"Party Creator"}</DialogTitle>
           <DialogContent style={{height: 620}}>
             <div style={{display: 'flex', justifyContent: 'center', marginBottom: 30}}>
               <Stepper activeStep={this.state.activeStep} className={classes.stepper}>
