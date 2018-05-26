@@ -100,13 +100,18 @@ class ItemList extends React.Component {
     }
   }
 
-  onItemSelect = (id) => () => {
-    this.props.onItemSelect(id);
+  onItemSelect = (id, clickable) => () => {
+    if (clickable)
+      this.props.onItemSelect(id);
   }
 
   render() {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state;
     const { classes, order = [], items = {} } = this.props;
+    const disabledStyle = {
+      backgroundColor: '#ddd',
+      cursor: 'default'
+    }
 
     return (
       <div className={classes.container} style={{height: order.length * tileHeight}}>
@@ -117,20 +122,24 @@ class ItemList extends React.Component {
             : { scale: 1, shadow: 1, y: order.indexOf(i) * tileHeight }
           return (
             <Spring immediate={name => active && name === 'y'} to={style} key={i}>
-              {({ scale, shadow, y }) => (
-                <div
-                  onClick={this.props.fixed && this.onItemSelect(i)}
-                  onMouseDown={this.handleMouseDown.bind(null, i, y)}
-                  onTouchStart={this.handleTouchStart.bind(null, i, y)}
-                  className={classes.item}
-                  style={{
-                    boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                    transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-                    zIndex: i === originalPosOfLastPressed ? 99 : i
-                  }}>
-                  <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography> <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} x{items[i].amount}</Typography>
-                </div>
-              )}
+              {({ scale, shadow, y }) => {
+                const disabled = items[i].amount < 1;
+                const style = disabled && disabledStyle;
+                return (
+                  <div
+                    onClick={this.onItemSelect(i, this.props.fixed && !disabled)}
+                    onMouseDown={this.handleMouseDown.bind(null, i, y)}
+                    onTouchStart={this.handleTouchStart.bind(null, i, y)}
+                    className={classes.item}
+                    style={{
+                      boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                      transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
+                      zIndex: i === originalPosOfLastPressed ? 99 : i,
+                      ...style
+                    }}>
+                    <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography> <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} x{items[i].amount}</Typography>
+                  </div>
+              )}}
             </Spring>
           )
         })}

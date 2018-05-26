@@ -14,7 +14,8 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
 
-
+//actions
+import { editPartyItems } from '../actions/parties';
 //icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -147,6 +148,14 @@ class PartyPage extends React.Component{
     })
   }
 
+  editItemsAmount = () => {
+    const { amount, selectedItemID } = this.state;
+    const totalAmount = this.props.party.items[this.state.selectedItemID].amount;
+    const partyID = this.props.match.params.id;
+
+    this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount);
+  }
+
   render() {
     const { classes, party } = this.props;
     return (
@@ -192,14 +201,14 @@ class PartyPage extends React.Component{
               <div style={{display: 'flex', justifyContent: 'center', alignItems: 'baseline'}}>
                 <Typography color="primary" variant="body2" style={{marginRight: 10}}>{party.items[this.state.selectedItemID].name}:</Typography>
                 <TextField 
-                  type="text" label="Amount" 
+                  type="text" 
                   value={this.state.amount} 
                   onChange={this.handleChangeInput('amount')} 
                   className={classes.amountInput}
                   InputProps = {{ endAdornment: 
                     <InputAdornment position="end">
                       <IconButton
-                        aria-label="Toggle password visibility"
+                        aria-label="Max amount"
                         onClick={this.getMaxAmount}
                       >
                         <MaxAmountIcon/>
@@ -207,7 +216,7 @@ class PartyPage extends React.Component{
                   </InputAdornment>
                   } }
                 />
-                <Button color="primary">Got it!</Button>
+                <Button color="primary" onClick={this.editItemsAmount}>Got it!</Button>
               </div>
               )
               }
@@ -231,6 +240,10 @@ class PartyPage extends React.Component{
 
 const mapStateToProps = (state, ownProps) => ({
   party: state.parties[ownProps.match.params.id].content
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  editPartyItems: (arg1, arg2, arg3, arg4) => dispatch(editPartyItems(arg1, arg2, arg3, arg4))
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(PartyPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PartyPage));
