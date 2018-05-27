@@ -15,7 +15,7 @@ namespace PartyOrganizer
     public class PartiesActivity : Activity
     {
         private ListView _partyListView;
-        private List<Party> _allParties;
+        private List<PartyInfo> _allParties;
         private IPartyRepository _partyRepository;
 
         protected override void OnCreate(Bundle savedInstanceState)

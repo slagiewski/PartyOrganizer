@@ -1,41 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using PartyOrganizer.Core.Model.Interfaces;
 
 namespace PartyOrganizer.Core.Model
 {
-    public class Party : IEntity<Party>
+    public partial class Party
     {
-        #region Properties
-        public int ID { get; set; }
-
-        public string Name { get; set; }
+        public string Id { get; set; }
 
         public string Description { get; set; }
 
-        public string Location { get; set; }
+        public string Image { get; set; } = "171448/cyberscooty-let-s-party-1.png";
 
-        public User Admin { get; set; }
+        public LocationData Location { get; set; }
 
-        public IEnumerable<User> Participants { get; set; }
+        public string Name { get; set; }
 
-        public string ImagePath { get; set; } = "171448/cyberscooty-let-s-party-1.png";
+        public IEnumerable<int> Order { get; set; }
 
-        public DateTime Date { get; set; } = DateTime.Now;
-        #endregion
+        public int Unix { get; set; }
 
-        #region Methods
-
-        public bool Equals(Party other)
-        {
-            if (other == null) return false;
-            if (other.ID == this.ID || String.Equals(other.Name, Name,StringComparison.OrdinalIgnoreCase))
-                return true;
-            else
-                return false;
-        }
-
-        #endregion
+        public IEnumerable<Object> Members { get; set; }
 
     }
 }

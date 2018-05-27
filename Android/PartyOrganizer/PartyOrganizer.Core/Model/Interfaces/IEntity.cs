@@ -16,7 +16,7 @@ namespace PartyOrganizer.Core.Model.Interfaces
     {
         int ID { get; set; }
 
-        string ImagePath { get; set; }
+        string Image { get; set; }
 
         string Location { get; set; }
     }

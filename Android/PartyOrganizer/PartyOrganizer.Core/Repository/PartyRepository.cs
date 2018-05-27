@@ -8,7 +8,7 @@ namespace PartyOrganizer.Core.Repository
 {
     public class PartyRepository : IPartyRepository
     {
-        private static List<Party> _parties = new List<Party>();
+        private static List<PartyInfo> _parties = new List<PartyInfo>();
 
         private static int IdCounter => _parties.Count; 
 
@@ -23,7 +23,7 @@ namespace PartyOrganizer.Core.Repository
                 Surname = "Sławny",
                 Email = "slawny.slawek@gmail.com",
                 PhoneNumber = "48987654321",
-                ImagePath = "247320/abstract-user-flat-4.png",
+                Image = "247320/abstract-user-flat-4.png",
                 Friends = null
             };
             userRepository.Add(admin1);
@@ -36,14 +36,14 @@ namespace PartyOrganizer.Core.Repository
                 Surname = "Uprzejmy",
                 Email = "uprzejmy.przemek@gmail.com",
                 PhoneNumber = "48987654321",
-                ImagePath = "247320/abstract-user-flat-4.png",
+                Image = "247320/abstract-user-flat-4.png",
                 Friends = null
             };
             userRepository.Add(admin2);
 
             for (int i = 0; i < 4; i++)
             {
-                _parties.Add(new Party()
+                _parties.Add(new PartyInfo()
                 {
                     ID = IdCounter,
                     Name = $"Short Description about the {i + 1}. party",
@@ -60,12 +60,12 @@ namespace PartyOrganizer.Core.Repository
                         admin1,
                         admin2
                     },
-                    ImagePath = "171448/cyberscooty-let-s-party-1.png",
+                    Image = "171448/cyberscooty-let-s-party-1.png",
                     Date = DateTime.Today
                 });
             }
 
-            _parties.Add(new Party()
+            _parties.Add(new PartyInfo()
             {
                 ID = IdCounter,
                 Name = "Short Description about the 5. party",
@@ -78,34 +78,34 @@ namespace PartyOrganizer.Core.Repository
                 Location = " Wrocław, ul. xyz 1337 ",
                 Admin = admin2,
                 Participants = null,
-                ImagePath = "171448/cyberscooty-let-s-party-1.png",
+                Image = "171448/cyberscooty-let-s-party-1.png",
                 Date = DateTime.Today
             });
         }
 
-        public int Add(Party party)
+        public int Add(PartyInfo party)
         {
             party.ID = IdCounter;
             _parties.Add(party);
             return party.ID;
         }
 
-        public IEnumerable<Party> GetAll()
+        public IEnumerable<PartyInfo> GetAll()
         {
             return _parties;
         }
 
-        public Party GetByID(int ID)
+        public PartyInfo GetByID(int ID)
         {
             return _parties.FirstOrDefault(x => x.ID == ID);
         }
 
-        public IEnumerable<Party> GetPartiesByUser(User user)
+        public IEnumerable<PartyInfo> GetPartiesByUser(User user)
         {
             return _parties.FindAll(x => x.Admin.Equals(user));
         }
 
-        public IEnumerable<Party> GetPartiesWithUser(User user)
+        public IEnumerable<PartyInfo> GetPartiesWithUser(User user)
         {
             /*var result = parties.Where(x => x.Participants != null)
                                   .Where(x => x.Participants.All(z => !z.Equals(user)));*/
@@ -122,7 +122,7 @@ namespace PartyOrganizer.Core.Repository
             return result;
         }
 
-        public void Remove(Party party)
+        public void Remove(PartyInfo party)
         {
             _parties.Remove(party);
         }

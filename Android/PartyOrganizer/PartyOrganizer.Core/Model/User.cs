@@ -32,7 +32,7 @@ namespace PartyOrganizer.Core
 
         public string PhoneNumber { get; set; }
 
-        public string ImagePath { get; set; }
+        public string Image { get; set; }
 
         public IEnumerable<User> Friends { get; set; }
 

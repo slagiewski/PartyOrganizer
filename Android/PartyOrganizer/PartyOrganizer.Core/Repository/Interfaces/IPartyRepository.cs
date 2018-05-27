@@ -3,10 +3,10 @@ using PartyOrganizer.Core.Model;
 
 namespace PartyOrganizer.Core.Repository.Interfaces
 {
-    public interface IPartyRepository : IRepository<Party>
+    public interface IPartyRepository : IRepository<PartyInfo>
     {
-        IEnumerable<Party> GetPartiesByUser(User User);
+        IEnumerable<PartyInfo> GetPartiesByUser(User User);
 
-        IEnumerable<Party> GetPartiesWithUser(User user);
+        IEnumerable<PartyInfo> GetPartiesWithUser(User user);
     }
 }

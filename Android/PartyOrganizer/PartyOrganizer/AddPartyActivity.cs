@@ -48,12 +48,12 @@ namespace PartyOrganizer
                 // 3. Show success/failure info
                 // 4. Return to the previous activity
 
-                Party party;
+                PartyInfo party;
 
                 try
                 {
                     // Create model wrapper that'll provide proper validation
-                    party = new Party()
+                    party = new PartyInfo()
                     {
                         Name = _newPartyNameEditText.Text,
                         Admin = null,

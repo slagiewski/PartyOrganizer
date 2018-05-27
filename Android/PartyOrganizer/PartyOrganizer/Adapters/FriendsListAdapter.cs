@@ -35,7 +35,7 @@ namespace PartyOrganizer.Adapters
                    .Into(convertView.FindViewById<ImageView>(Resource.Id.statusImageView));
 
             Picasso.With(_context)
-                   .Load("https://openclipart.org/image/800px/svg_to_png/" + friend.ImagePath)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + friend.Image)
                    .Into(convertView.FindViewById<ImageView>(Resource.Id.friendImageView));
             
             convertView.FindViewById<TextView>(Resource.Id.nameAndSurnameTextView).Text = friend.ToString();
