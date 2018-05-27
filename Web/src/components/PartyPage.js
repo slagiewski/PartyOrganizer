@@ -41,9 +41,9 @@ const Member = withStyles( theme => ({
   const { classes, items } = props;
   return (
     <div className={classes.wrapper}>
-      <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />
+      <Avatar alt={props.type} src={props.image} className={classes.avatar} />
       <div>
-        <Typography>{props.name}</Typography>
+        <Typography>{props.name} <i>{props.type}</i></Typography>
         <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}`)}</Typography>        
       </div>
     </div>
@@ -160,8 +160,8 @@ class PartyPage extends React.Component{
     const { amount, selectedItemID } = this.state;
     const totalAmount = this.props.party.items[this.state.selectedItemID].amount;
     const partyID = this.props.match.params.id;
-
-    if(totalAmount >= amount) this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount).then(()=>this.setState({ showItemSelect: false }));
+    if(parseInt(totalAmount, 10) >= parseInt(amount, 10)) 
+      this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount).then(()=>this.setState({ showItemSelect: false }));
   }
 
   render() {
@@ -178,7 +178,7 @@ class PartyPage extends React.Component{
               <List dense>
                 <ListItem disableGutters style={{alignItems: 'flex-start'}}>
                   <ListItemIcon>
-                    <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />   
+                    <Avatar alt="Host" src={party.image} className={classes.avatar} />   
                   </ListItemIcon>
                   {party.description &&
                   <div className={classes.speechBubble}>
@@ -236,7 +236,12 @@ class PartyPage extends React.Component{
           <Paper>
             <Typography>8 guests</Typography>
             {Object.keys(members).map((member)=>{
-              return <Member key={member} name={member} items={members[member].items}/>
+              return <Member 
+                      key={member} 
+                      type={members[member].type}
+                      name={members[member].name} 
+                      image={members[member].image}
+                      items={members[member].items}/>
             })}
           </Paper>
         </div>        

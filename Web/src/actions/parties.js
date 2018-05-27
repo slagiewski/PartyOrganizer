@@ -9,23 +9,31 @@ export const addParty = (id, party) => ({
 
 export const newParty = (partyInfo, order, items) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;      
+    const state = getState().auth;
+    const uid = state.uid;      
+    const host = state.name;
+    const image = state.photo;
     const key = database.ref('parties').push().key;
 
     const party = {
       content: {
         ...partyInfo,
         order,
-        items
+        items,
+        image
       },
       members: {
         [uid]: {
-          type: 'host'
+          type: 'host',
+          name: host,
+          image: image
         }
       }
     }
     const metaParty = {
       name: partyInfo.name,
+      host,
+      image,
       location: partyInfo.location.name,
       unix: partyInfo.unix
     }
@@ -90,7 +98,6 @@ const updateItem = (updatedItem) => ({
 });
 
 export const editPartyItems = (partyID, itemID, totalAmount, chosenAmount) => {
-  
   return (dispatch, getState) => {
     const state = getState();
     const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : 0, o)    
@@ -107,5 +114,17 @@ export const editPartyItems = (partyID, itemID, totalAmount, chosenAmount) => {
     updates[`/${partyID}/members/${uid}/items/${itemID}`] = { name: itemName, amount:userAmount };
 
     return database.ref('parties').update(updates).then(()=> dispatch(updateItem({ uid, itemID, itemName, amountLeft, userAmount })));
+  }
+}
+
+export const requestAccess = (partyID) => {
+  return (dispatch, getState) => {
+    const state = getState().auth;
+
+    const uid = state.uid;    
+    const name = `${state.name} ${state.lastName}`;
+    const image = state.photo;
+
+    return database.ref(`parties/${partyID}/pending`).set({ uid: { name, image }}).then().catch((e)=>console.log(e));
   }
 }

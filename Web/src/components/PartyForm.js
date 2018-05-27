@@ -286,7 +286,7 @@ class PartyForm extends React.Component{
     const secondPage = (
       <React.Fragment>
         <DialogContentText>
-          Add products/items for the party and move them around
+          Add a shopping list for your party and order it from most to least important
         </DialogContentText>
         <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
         <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder}/>

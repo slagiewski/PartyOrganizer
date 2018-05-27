@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';
 import { startLogout } from '../actions/auth';
+import { requestAccess } from '../actions/parties';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -26,9 +27,14 @@ import JoinIcon from 'material-ui-icons/ChatBubble';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import { TextField } from 'material-ui';
 
-const JoinDialog = withStyles( theme => ({
+const JoinDialog = connect(null, (dispatch) => ({
+  requestAccess: (id) => dispatch(requestAccess(id))
+}))(withStyles( theme => ({
 
 }))(class extends React.Component{
+  handleJoin = () => {
+    this.props.requestAccess(this.refs.temporary.value);
+  }
   render() {
     return (
     <Dialog
@@ -42,13 +48,14 @@ const JoinDialog = withStyles( theme => ({
         <DialogContentText>
           Enter party ID
         </DialogContentText>
-        <input type="text"/>
+        <input type="text" ref="temporary"/>
+        <Button onClick={this.handleJoin}>Join</Button>
       </DialogContent>
       <DialogActions></DialogActions>
     </Dialog>
     )
   }
-});
+}));
 
 const NewUserDashboard = withStyles( theme =>({
   wrapper: {
@@ -305,7 +312,7 @@ class Dashboard extends React.Component {
       <React.Fragment>
         {this.props.hasParties ? main : <NewUserDashboard openForm={this.formOpen} openDialog={this.dialogOpen}/>}
         {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
-        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose}/>}      
+        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose} />}      
       </React.Fragment>
     );
   }
@@ -317,7 +324,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(startLogout())
+  logout: () => dispatch(startLogout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withTheme()(Dashboard)));
