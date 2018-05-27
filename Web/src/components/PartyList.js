@@ -22,7 +22,7 @@ class PartyList extends React.Component {
     return (
       <Paper className={classes.paper}>
         {Object.keys(parties).map((party)=>
-          <Link key={party} to={`/party/${party}/`} style={{textDecoration: 'none'}}><PartyTile {...parties[party].content}/></Link>            
+          <Link key={party} to={`/party/${party}/`} style={{textDecoration: 'none'}}><PartyTile {...parties[party]}/></Link>            
         )}
       </Paper>
     )
@@ -30,7 +30,7 @@ class PartyList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  parties: state.parties
+  parties: state.meta
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(PartyList));
