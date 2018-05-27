@@ -38,14 +38,29 @@ const Member = withStyles( theme => ({
   },
 
 }))((props) => {
-  const { classes, items } = props;
-  return (
-    <div className={classes.wrapper}>
-      <Avatar alt={props.type} src={props.image} className={classes.avatar} />
+  const { classes, items, isMember } = props;
+
+  const member = (
+    <React.Fragment>
+      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
       <div>
         <Typography>{props.name} <i>{props.type}</i></Typography>
         <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}`)}</Typography>        
       </div>
+    </React.Fragment>
+  );
+
+  const pendingUser = (
+    <React.Fragment>
+      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
+      <div>
+        <Typography>{props.name} </Typography>
+      </div>
+    </React.Fragment>
+  )
+  return (
+    <div className={classes.wrapper}>
+      {isMember ? member : pendingUser}
     </div>
   )
 });
@@ -165,7 +180,7 @@ class PartyPage extends React.Component{
   }
 
   render() {
-    const { classes, party, members } = this.props;
+    const { classes, party, members, pending } = this.props;
     if (!this.state.render) return <LoadingPage/>;
     return (
       <div className={classes.root}>
@@ -235,13 +250,23 @@ class PartyPage extends React.Component{
         <div className={classes.guestsWrapper}>
           <Paper>
             <Typography>8 guests</Typography>
+            {Object.keys(pending).map((user)=>{
+              return <Member 
+                      isMember={false}
+                      key={user} 
+                      name={pending[user].name} 
+                      image={pending[user].image}
+                    />
+            })}
             {Object.keys(members).map((member)=>{
               return <Member 
+                      isMember={true}
                       key={member} 
                       type={members[member].type}
                       name={members[member].name} 
                       image={members[member].image}
-                      items={members[member].items}/>
+                      items={members[member].items}
+                    />
             })}
           </Paper>
         </div>        
@@ -253,6 +278,7 @@ class PartyPage extends React.Component{
 const mapStateToProps = (state, ownProps) => ({
   party: state.party.content,
   members: state.party.members,
+  pending: state.party.pending || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({
