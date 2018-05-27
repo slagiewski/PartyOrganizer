@@ -38,7 +38,7 @@ namespace PartyOrganizer
         private void BindData()
         {
             Picasso.With(this)
-                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedUser.ImagePath + ".jpg")
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedUser.Image + ".jpg")
                    .Into(_avatarImageView);
             _userFullNameTextView.Text = _selectedUser.ToString();
             _userLocationTextView.Text = _selectedUser.Location;

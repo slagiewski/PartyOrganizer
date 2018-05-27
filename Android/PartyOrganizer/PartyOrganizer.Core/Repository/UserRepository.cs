@@ -25,7 +25,7 @@ namespace PartyOrganizer.Core.Repository
                 Online = true,
                 Email = "s3blag@gmail.com",
                 PhoneNumber = "48123456789",
-                ImagePath = "247324/abstract-user-flat-1.png",
+                Image = "247324/abstract-user-flat-1.png",
                 Friends = null
             });
 
@@ -38,7 +38,7 @@ namespace PartyOrganizer.Core.Repository
                 Online = true,
                 Email = "s3blag1@gmail.com",
                 PhoneNumber = "48123456781",
-                ImagePath = "247324/abstract-user-flat-1.png",
+                Image = "247324/abstract-user-flat-1.png",
                 Friends = null
             };
             _users.Add(friend1);
@@ -52,7 +52,7 @@ namespace PartyOrganizer.Core.Repository
                 Online = true,
                 Email = "s3blag2@gmail.com",
                 PhoneNumber = "48123456782",
-                ImagePath = "247324/abstract-user-flat-1.png",
+                Image = "247324/abstract-user-flat-1.png",
                 Friends = null
             };
             _users.Add(friend2);
@@ -66,7 +66,7 @@ namespace PartyOrganizer.Core.Repository
                 Online = true,
                 Email = "s3blag3@gmail.com",
                 PhoneNumber = "48123456783",
-                ImagePath = "247324/abstract-user-flat-1.png",
+                Image = "247324/abstract-user-flat-1.png",
                 Friends = null
             };
             _users.Add(friend3);
@@ -80,7 +80,7 @@ namespace PartyOrganizer.Core.Repository
                 Online = false,
                 Email = "sl@gmail.com",
                 PhoneNumber = "48123423139",
-                ImagePath = "247319/abstract-user-flat-3.png",
+                Image = "247319/abstract-user-flat-3.png",
                 Friends = new List<User>
                 {
                     friend1,
@@ -98,7 +98,7 @@ namespace PartyOrganizer.Core.Repository
                 Online = false,
                 Email = "wafel@gmail.com",
                 PhoneNumber = "48123423000",
-                ImagePath = "247320/abstract-user-flat-4.png",
+                Image = "247320/abstract-user-flat-4.png",
                 Friends = null
             });
         }

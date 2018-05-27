@@ -15,7 +15,7 @@ namespace PartyOrganizer.Fragments
     public class PartiesFragment : Android.Support.V4.App.Fragment
     {
         private ListView _partyListView;
-        private List<Party> _allParties;
+        private List<PartyInfo> _allParties;
         private IPartyRepository _partyRepository;
 
         public override void OnCreate(Bundle savedInstanceState)

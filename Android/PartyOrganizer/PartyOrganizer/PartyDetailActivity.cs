@@ -13,7 +13,7 @@ namespace PartyOrganizer
     public class PartyDetailActivity : Activity
     {
         private IPartyRepository _partyRepository;
-        private Party _selectedParty;
+        private PartyInfo _selectedParty;
 
         private ImageView _partyAvatarImageView;
         private TextView _partyShortDescriptionTextView;
@@ -48,7 +48,7 @@ namespace PartyOrganizer
         private void BindData()
         {
             Picasso.With(this)
-                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.ImagePath)
+                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.Image)
                    .Into(_partyAvatarImageView);
             _partyShortDescriptionTextView.Text = _selectedParty.Name;
             _partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + _selectedParty.Description;
