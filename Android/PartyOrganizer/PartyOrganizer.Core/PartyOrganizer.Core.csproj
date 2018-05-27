@@ -75,12 +75,14 @@
   <ItemGroup>
     <Compile Include="Model\Interfaces\IEntity.cs" />
     <Compile Include="Model\LocationData.cs" />
-    <Compile Include="Model\Party.cs" />
-    <Compile Include="Model\PartyItem.cs" />
-    <Compile Include="Model\PartyMember.cs" />
-    <Compile Include="Model\LookupParty.cs" />
-    <Compile Include="Model\PartyInfo.cs" />
-    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\Party\Party.cs" />
+    <Compile Include="Model\Party\PartyContent.cs" />
+    <Compile Include="Model\Party\PartyItem.cs" />
+    <Compile Include="Model\Member\PartyMember.cs" />
+    <Compile Include="Model\Party\LookupParty.cs" />
+    <Compile Include="Model\Party\PartyInfo.cs" />
+    <Compile Include="Model\Party\RawPartyData.cs" />
+    <Compile Include="Model\Member\User.cs" />
     <Compile Include="Repository\Interfaces\IPartyRepository.cs" />
     <Compile Include="Repository\Interfaces\IPartyRepositoryAsync.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />

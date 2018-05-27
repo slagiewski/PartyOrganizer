@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PartyOrganizer.Core.Model;
+using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer.Core.Repository

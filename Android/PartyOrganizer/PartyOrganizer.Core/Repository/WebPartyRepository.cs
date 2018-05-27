@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
-using PartyOrganizer.Core.Model;
+using Newtonsoft.Json;
+using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 
 namespace PartyOrganizer.Core.Repository
@@ -33,16 +34,46 @@ namespace PartyOrganizer.Core.Repository
         public async Task<Party> GetById(string id)
         {
             var firebaseObjectParties = await _fb
-                                         .Child("parties")
-                                         .OrderByKey()
-                                         .StartAt(id)
-                                         .EndAt(id)
-                                         .OnceAsync<Party>();
+                                          .Child("parties")
+                                          .OrderByKey()
+                                          .StartAt(id)
+                                          .EndAt(id)
+                                          .OnceAsync<RawPartyData>();
 
-            var party = firebaseObjectParties.FirstOrDefault();
-            party.Object.Id = party.Key;
+            var firebaseObjectParty = firebaseObjectParties.FirstOrDefault();
 
-            return party.Object;
+            var party = new Party();
+
+            party.Id = firebaseObjectParty.Key;
+            party.Content = firebaseObjectParty.Object.Content;
+
+            if (firebaseObjectParty.Object.Members != null)
+            {
+                var members = JsonConvert.DeserializeObject<Dictionary<string, PartyMember>>(firebaseObjectParty.Object.Members.ToString());
+                var membersList = new List<PartyMember>(members.Count);
+                foreach (var member in members)
+                {
+                    member.Value.Id = member.Key;
+                    membersList.Add(member.Value);
+                }
+
+                party.Members = membersList;
+            }   
+
+            if (firebaseObjectParty.Object.Pending != null)
+            {
+                var pendingMembers = JsonConvert.DeserializeObject<Dictionary<string, PartyMember>>(firebaseObjectParty.Object.Pending.ToString());
+                var pendingList = new List<PartyMember>(pendingMembers.Count);
+                foreach (var pendingMember in pendingMembers)
+                {
+                    pendingMember.Value.Id = pendingMember.Key;
+                    pendingList.Add(pendingMember.Value);
+                }
+
+                party.Pending = pendingList;
+            }
+            
+            return party;
         }
 
         public Task<IEnumerable<LookupParty>> GetPartiesByUser(string userId)

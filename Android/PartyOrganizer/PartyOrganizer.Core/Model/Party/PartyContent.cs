@@ -1,15 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace PartyOrganizer.Core.Model
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+
+namespace PartyOrganizer.Core.Model.Party
 {
-    public partial class Party
+    public class PartyContent
     {
-        public string Id { get; set; }
-
         public string Description { get; set; }
 
         public string Image { get; set; } = "171448/cyberscooty-let-s-party-1.png";
+
+        public IEnumerable<PartyItem> Items { get; set; }
 
         public LocationData Location { get; set; }
 
@@ -18,8 +27,5 @@ namespace PartyOrganizer.Core.Model
         public IEnumerable<int> Order { get; set; }
 
         public int Unix { get; set; }
-
-        public IEnumerable<Object> Members { get; set; }
-
     }
 }

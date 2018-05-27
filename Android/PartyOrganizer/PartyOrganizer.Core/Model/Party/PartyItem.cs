@@ -1,4 +1,4 @@
-﻿namespace PartyOrganizer.Core.Model
+﻿namespace PartyOrganizer.Core.Model.Party
 {
     public class PartyItem
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PartyOrganizer.Core.Model.Interfaces;
 
-namespace PartyOrganizer.Core.Model
+namespace PartyOrganizer.Core.Model.Party
 {
     public class PartyInfo : IEntity<PartyInfo>
     {
