@@ -312,7 +312,7 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  hasParties: Object.keys(state.parties).length !== 0,
+  hasParties: Object.keys(state.meta).length !== 0,
   user: state.auth
 });
 

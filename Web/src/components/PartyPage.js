@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Avatar from 'material-ui/Avatar';
 import Map from './Map';
+import LoadingPage from './LoadingPage';
 import { Marker } from "react-google-maps";
 import ItemList from './ItemList';
 import Paper from 'material-ui/Paper';
@@ -15,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
 
 //actions
-import { editPartyItems } from '../actions/parties';
+import { editPartyItems, getPartyData } from '../actions/parties';
 //icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -116,7 +117,14 @@ const styles = theme => ({
 class PartyPage extends React.Component{
   state = {
     showItemSelect: false,
-    amount: 1
+    amount: 1,
+    render: false
+  }
+
+  componentDidMount(){
+    this.props.getPartyData(this.props.match.params.id).then(() =>
+      this.setState({ render: true })
+    );
   }
 
   showItemSelect = (id) => {
@@ -158,6 +166,7 @@ class PartyPage extends React.Component{
 
   render() {
     const { classes, party, members } = this.props;
+    if (!this.state.render) return <LoadingPage/>;
     return (
       <div className={classes.root}>
         <div className={classes.infoWrapper}>
@@ -227,7 +236,7 @@ class PartyPage extends React.Component{
           <Paper>
             <Typography>8 guests</Typography>
             {Object.keys(members).map((member)=>{
-              return <Member name={member} items={members[member].items}/>
+              return <Member key={member} name={member} items={members[member].items}/>
             })}
           </Paper>
         </div>        
@@ -237,12 +246,13 @@ class PartyPage extends React.Component{
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  party: state.parties[ownProps.match.params.id].content,
-  members: state.parties[ownProps.match.params.id].members,
+  party: state.party.content,
+  members: state.party.members,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  editPartyItems: (arg1, arg2, arg3, arg4) => dispatch(editPartyItems(arg1, arg2, arg3, arg4))
+  editPartyItems: (arg1, arg2, arg3, arg4) => dispatch(editPartyItems(arg1, arg2, arg3, arg4)),
+  getPartyData: (id) => dispatch(getPartyData(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PartyPage));

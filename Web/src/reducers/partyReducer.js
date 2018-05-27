@@ -1,36 +1,29 @@
 export default (state = {}, action) => {
   switch(action.type) {
-    case 'ADD_PARTY':
-      const { host, ...partyContent } = state;
-      return {
-        ...state,
-        [action.id]: action.party
-      }
+    case 'SET_PARTY':
+      return action.party;
     case 'UPDATE_ITEM':
       return {
         ...state,
-        [action.partyID]: {
-          ...state[action.partyID],
-          content: {
-            ...state[action.partyID].content,
-            items: {
-              ...state[action.partyID].content.items,
-              [action.itemID]: {
-                ...state[action.partyID].content.items[action.itemID],                
-                amount: action.amountLeft
-              }
+        content: {
+          ...state.content,
+          items: {
+            ...state.content.items,
+            [action.itemID]: {
+              ...state.content.items[action.itemID],                
+              amount: action.amountLeft
             }
-          },
-          members: {
-            ...state[action.partyID].members,
-            [action.uid]: {
-              ...state[action.partyID].members[action.uid],
-              items: {
-                ...state[action.partyID].members[action.uid].items,
-                [action.itemID]: {
-                  name: action.itemName,
-                  amount: action.userAmount                  
-                }
+          }
+        },
+        members: {
+          ...state.members,
+          [action.uid]: {
+            ...state.members[action.uid],
+            items: {
+              ...state.members[action.uid].items,
+              [action.itemID]: {
+                name: action.itemName,
+                amount: action.userAmount                  
               }
             }
           }
@@ -39,8 +32,6 @@ export default (state = {}, action) => {
     case 'REMOVE_PARTY':
       const { [action.id]: _, newState } = state;
       return newState;
-    case 'SET_PARTIES':
-      return action.parties;
     default:
       return state;
   }

@@ -14,11 +14,6 @@ import NotFoundPage from '../components/NotFoundPage';
 export const history = createHistory();
 
 class AppRouter extends React.Component{
-  componentDidMount() {
-    if (sessionStorage.token) {
-      //this.props.dispatch(login(sessionStorage.token));
-    }
-  }
   render() {
     return (
       <Router history={history}>
