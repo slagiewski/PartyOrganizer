@@ -33,7 +33,7 @@ const JoinDialog = connect(null, (dispatch) => ({
 
 }))(class extends React.Component{
   handleJoin = () => {
-    this.props.requestAccess(this.refs.temporary.value);
+    this.props.requestAccess(this.refs.temporary.value).then(()=>alert('invitation sent'));
   }
   render() {
     return (

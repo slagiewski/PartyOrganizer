@@ -125,6 +125,25 @@ export const requestAccess = (partyID) => {
     const name = `${state.name} ${state.lastName}`;
     const image = state.photo;
 
-    return database.ref(`parties/${partyID}/pending`).set({ uid: { name, image }}).then().catch((e)=>console.log(e));
+    return database.ref(`parties/${partyID}/pending/${uid}`).set({ name, image });
+  }
+}
+
+export const acceptPendingUser = (partyID, user) => {
+  return (dispatch) => {
+    database.ref(`parties/${partyID}/content`).once('value').then((snapshot)=>{
+      const metaData = {
+        name: snapshot.val().name,
+        image: snapshot.val().image,
+        location: snapshot.val().location.name,
+        unix: snapshot.val().unix
+      }
+      let updates = {}
+      updates[`/parties/${partyID}/members/${user.uid}`] = { type: 'guest', image: user.image, name: user.name};
+      updates[`/parties/${partyID}/pending/${user.uid}`] = {};      
+      updates[`/users/${user.uid}/partiesMeta/${partyID}`] = metaData;
+
+      return database.ref().update(updates).then();      
+    });
   }
 }

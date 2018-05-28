@@ -16,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
 
 //actions
-import { editPartyItems, getPartyData } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser } from '../actions/parties';
 //icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -55,6 +55,8 @@ const Member = withStyles( theme => ({
       <Avatar alt={props.name} src={props.image} className={classes.avatar} />
       <div>
         <Typography>{props.name} </Typography>
+        <Button onClick={() => props.acceptPendingUser({ name: props.name.split(' ')[0], image: props.image, uid: props.uid })}>Accept</Button>
+        <Button>Decline</Button>        
       </div>
     </React.Fragment>
   )
@@ -253,6 +255,8 @@ class PartyPage extends React.Component{
             {Object.keys(pending).map((user)=>{
               return <Member 
                       isMember={false}
+                      uid={user}
+                      acceptPendingUser={this.props.acceptPendingUser}
                       key={user} 
                       name={pending[user].name} 
                       image={pending[user].image}
@@ -275,15 +279,16 @@ class PartyPage extends React.Component{
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
   party: state.party.content,
   members: state.party.members,
   pending: state.party.pending || {}
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (arg1, arg2, arg3, arg4) => dispatch(editPartyItems(arg1, arg2, arg3, arg4)),
-  getPartyData: (id) => dispatch(getPartyData(id))
+  getPartyData: (id) => dispatch(getPartyData(id)),
+  acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PartyPage));
