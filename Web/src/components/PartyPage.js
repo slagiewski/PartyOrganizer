@@ -139,9 +139,22 @@ class PartyPage extends React.Component{
   }
 
   componentDidMount(){
-    this.props.getPartyData(this.props.match.params.id).then(() =>
+    this.props.getPartyData(this.props.match.params.id);
+    /*
+        .then(() =>
       this.setState({ render: true })
-    );
+    )
+     */
+  }
+
+  static getDerivedStateFromProps(props, state){
+    if (props.party && !state.render) {
+      console.log('here');
+      return {
+        render: true
+      }
+    }
+    return null;
   }
 
   showItemSelect = (id) => {
@@ -177,8 +190,10 @@ class PartyPage extends React.Component{
     const { amount, selectedItemID } = this.state;
     const totalAmount = this.props.party.items[this.state.selectedItemID].amount;
     const partyID = this.props.match.params.id;
-    if(parseInt(totalAmount, 10) >= parseInt(amount, 10)) 
-      this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount).then(()=>this.setState({ showItemSelect: false }));
+    if(parseInt(totalAmount, 10) >= parseInt(amount, 10)) {
+      this.props.editPartyItems(selectedItemID, amount);
+      this.setState({ showItemSelect: false })
+    }
   }
 
   render() {
@@ -286,7 +301,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  editPartyItems: (arg1, arg2, arg3, arg4) => dispatch(editPartyItems(arg1, arg2, arg3, arg4)),
+  editPartyItems: (itemID, amount) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount)),
   getPartyData: (id) => dispatch(getPartyData(id)),
   acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid))
 })

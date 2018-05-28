@@ -86,9 +86,9 @@ const setParty = (party) => ({
 
 export const getPartyData = (id) => {
   return (dispatch, getState) => {
-    return database.ref(`parties/${id}`).once('value').then((party) => {
+    return database.ref(`parties/${id}`).on('value', (party)=>{
       dispatch(setParty(party.val()));
-    })
+    });
   }
 }
 
@@ -97,23 +97,26 @@ const updateItem = (updatedItem) => ({
   ...updatedItem
 });
 
-export const editPartyItems = (partyID, itemID, totalAmount, chosenAmount) => {
+export const editPartyItems = (partyID, itemID, chosenAmount) => {
   return (dispatch, getState) => {
     const state = getState();
-    const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : 0, o)    
-    
     const uid = state.auth.uid;
     const itemName = state.party.content.items[itemID].name;
-    const userTotalAmount = get(['party', 'members', uid, 'items', itemID, 'amount'], state);  
-    const amountLeft = totalAmount - chosenAmount;
-    const userAmount = parseInt(userTotalAmount, 10) + parseInt(chosenAmount, 10);
-
-    // Write the new data simultaneously
-    var updates = {};
-    updates[`/${partyID}/content/items/${itemID}/amount`] = amountLeft;
-    updates[`/${partyID}/members/${uid}/items/${itemID}`] = { name: itemName, amount:userAmount };
-
-    return database.ref('parties').update(updates).then(()=> dispatch(updateItem({ uid, itemID, itemName, amountLeft, userAmount })));
+    const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : 0, o)    
+    
+    return database.ref(`parties/${partyID}/content/items/${itemID}`).once('value').then((snapshot)=>{
+      const totalAmount = snapshot.val().amount;
+      const userTotalAmount = get(['party', 'members', uid, 'items', itemID, 'amount'], state);  
+      const amountLeft = parseInt(totalAmount, 10) - parseInt(chosenAmount, 10);
+      const userAmount = parseInt(userTotalAmount, 10) + parseInt(chosenAmount, 10);
+  
+      // Write the new data simultaneously
+      var updates = {};
+      updates[`/${partyID}/content/items/${itemID}/amount`] = amountLeft;
+      updates[`/${partyID}/members/${uid}/items/${itemID}`] = { name: itemName, amount:userAmount };
+  
+      return database.ref('parties').update(updates);
+    })
   }
 }
 
@@ -129,6 +132,11 @@ export const requestAccess = (partyID) => {
   }
 }
 
+const acceptUser = (user) => ({
+  type: 'ACCEPT_USER',
+  ...user
+})
+
 export const acceptPendingUser = (partyID, user) => {
   return (dispatch) => {
     database.ref(`parties/${partyID}/content`).once('value').then((snapshot)=>{
@@ -143,7 +151,7 @@ export const acceptPendingUser = (partyID, user) => {
       updates[`/parties/${partyID}/pending/${user.uid}`] = {};      
       updates[`/users/${user.uid}/partiesMeta/${partyID}`] = metaData;
 
-      return database.ref().update(updates).then();      
+      return database.ref().update(updates).then(()=> dispatch(acceptUser(user)));      
     });
   }
 }

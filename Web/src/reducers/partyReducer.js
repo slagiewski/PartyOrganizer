@@ -29,6 +29,27 @@ export default (state = {}, action) => {
           }
         }
       }
+    case 'ACCEPT_USER':
+      function removeByKey (myObj, deleteKey) {
+        return Object.keys(myObj)
+          .filter(key => key !== deleteKey)
+          .reduce((result, current) => {
+            result[current] = myObj[current];
+            return result;
+        }, {});
+      }
+      return {
+        ...state,
+        members: {
+          ...state.members,
+          [action.uid]: {
+            type: 'guest',
+            name: action.name,
+            image: action.image
+          }
+        },
+        pending: removeByKey(state.pending, action.uid)
+      }
     case 'REMOVE_PARTY':
       const { [action.id]: _, newState } = state;
       return newState;
