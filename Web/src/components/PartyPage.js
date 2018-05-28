@@ -16,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
 
 //actions
-import { editPartyItems, getPartyData, acceptPendingUser } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData } from '../actions/parties';
 //icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -118,6 +118,13 @@ const styles = theme => ({
   amountInput: {
     width: 100
   },
+  membersBar: {
+    backgroundColor: theme.palette.primary.main,
+    color: '#fff'
+  },
+  pendingBar: {
+    backgroundColor: '#4dd0e1'
+  },
   '@media (max-width: 600px)': {
     root: {
       flexDirection: 'column'
@@ -140,20 +147,18 @@ class PartyPage extends React.Component{
 
   componentDidMount(){
     this.props.getPartyData(this.props.match.params.id);
-    /*
-        .then(() =>
-      this.setState({ render: true })
-    )
-     */
+  }
+
+  componentWillUnmount(){
+    this.props.clearData();
   }
 
   static getDerivedStateFromProps(props, state){
     if (props.party && !state.render) {
-      console.log('here');
       return {
         render: true
       }
-    }
+    } 
     return null;
   }
 
@@ -266,7 +271,10 @@ class PartyPage extends React.Component{
         </div>
         <div className={classes.guestsWrapper}>
           <Paper>
-            <Typography>8 guests</Typography>
+            {
+              pending && 
+              <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
+            }                        
             {Object.keys(pending).map((user)=>{
               return <Member 
                       isMember={false}
@@ -277,6 +285,7 @@ class PartyPage extends React.Component{
                       image={pending[user].image}
                     />
             })}
+            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>            
             {Object.keys(members).map((member)=>{
               return <Member 
                       isMember={true}
@@ -297,13 +306,14 @@ class PartyPage extends React.Component{
 const mapStateToProps = (state) => ({
   party: state.party.content,
   members: state.party.members,
-  pending: state.party.pending || {}
+  pending: state.party.pending || false
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (itemID, amount) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount)),
   getPartyData: (id) => dispatch(getPartyData(id)),
-  acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid))
+  acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  clearData: () => dispatch(clearData())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PartyPage));

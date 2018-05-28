@@ -50,6 +50,8 @@ export default (state = {}, action) => {
         },
         pending: removeByKey(state.pending, action.uid)
       }
+    case 'CLEAR_DATA':
+      return {};
     case 'REMOVE_PARTY':
       const { [action.id]: _, newState } = state;
       return newState;

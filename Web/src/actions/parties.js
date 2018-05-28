@@ -60,6 +60,10 @@ export const setParties = (parties) => ({
   parties
 });
 
+export const clearData = () => ({
+  type: 'CLEAR_DATA'
+})
+
 export const startSetParties = () => {
   
   return (dispatch, getState) => {
