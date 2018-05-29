@@ -16,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
 
 //actions
-import { editPartyItems, getPartyData } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData } from '../actions/parties';
 //icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -27,8 +27,8 @@ const Member = withStyles( theme => ({
     display: 'flex',
     height: 80,
     width: 300,
-    borderTop: `2px solid ${theme.palette.primary.main}`,
-    borderBottom: `2px solid ${theme.palette.primary.main}`,    
+    borderBottom: `2px solid ${theme.palette.primary.main}`, 
+    borderRight: `2px solid ${theme.palette.primary.main}`,      
   },
   avatar: {
     zIndex: 1,    
@@ -36,16 +36,37 @@ const Member = withStyles( theme => ({
     height: 44,
     margin: theme.spacing.unit
   },
-
+  '@media (max-width: 600px)': {
+    wrapper: {
+      width: '100%'
+    }
+  }    
 }))((props) => {
-  const { classes, items } = props;
-  return (
-    <div className={classes.wrapper}>
-      <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />
+  const { classes, items, isMember } = props;
+
+  const member = (
+    <React.Fragment>
+      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
       <div>
-        <Typography>{props.name}</Typography>
+        <Typography>{props.name} <i>{props.type}</i></Typography>
         <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}`)}</Typography>        
       </div>
+    </React.Fragment>
+  );
+
+  const pendingUser = (
+    <React.Fragment>
+      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
+      <div>
+        <Typography>{props.name} </Typography>
+        <Button onClick={() => props.acceptPendingUser({ name: props.name.split(' ')[0], image: props.image, uid: props.uid })}>Accept</Button>
+        <Button>Decline</Button>        
+      </div>
+    </React.Fragment>
+  )
+  return (
+    <div className={classes.wrapper}>
+      {isMember ? member : pendingUser}
     </div>
   )
 });
@@ -57,18 +78,23 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   infoWrapper: {
-    width: '60%'
+    width: '60%',
+    minWidth: 700
+  },
+  infoContent: {
+    display: 'flex',
+    flexDirection: 'row'
   },
   headline: {
     padding: theme.spacing.unit*2
   },
   info: {
-    width: 'calc(100% / 3)',
+    width: '40%',
     height: '100%',
     padding: theme.spacing.unit
   },
   items: {
-    width: 'calc(100% / 3 * 2)'    
+    width: '60%'    
   },
   avatar: {
     zIndex: 1,    
@@ -98,17 +124,39 @@ const styles = theme => ({
       marginLeft: '-10px',
     }
   },
+  guestsWrapper: {
+    width: 300
+  },
   amountInput: {
     width: 100
   },
-  '@media (max-width: 600px)': {
+  membersBar: {
+    backgroundColor: theme.palette.primary.main,
+    color: '#fff'
+  },
+  pendingBar: {
+    backgroundColor: '#4dd0e1'
+  },
+  '@media (max-width: 1000px)': {
     root: {
       flexDirection: 'column'
     },
     infoWrapper: {
-      width: '100%'
+      width: '100%',
+      minWidth: 0
     },
     guestsWrapper: {
+      width: '100%'
+    }
+  },
+  '@media (max-width: 700px)': {
+    infoContent: {
+      flexDirection: 'column'
+    },
+    info: {
+      width: `calc(100% - ${theme.spacing.unit*2}px)`
+    },
+    items: {
       width: '100%'
     }
   }
@@ -122,9 +170,20 @@ class PartyPage extends React.Component{
   }
 
   componentDidMount(){
-    this.props.getPartyData(this.props.match.params.id).then(() =>
-      this.setState({ render: true })
-    );
+    this.props.getPartyData(this.props.match.params.id);
+  }
+
+  componentWillUnmount(){
+    this.props.clearData();
+  }
+
+  static getDerivedStateFromProps(props, state){
+    if (props.party && !state.render) {
+      return {
+        render: true
+      }
+    } 
+    return null;
   }
 
   showItemSelect = (id) => {
@@ -160,12 +219,14 @@ class PartyPage extends React.Component{
     const { amount, selectedItemID } = this.state;
     const totalAmount = this.props.party.items[this.state.selectedItemID].amount;
     const partyID = this.props.match.params.id;
-
-    if(totalAmount >= amount) this.props.editPartyItems(partyID, selectedItemID, totalAmount, amount).then(()=>this.setState({ showItemSelect: false }));
+    if(parseInt(totalAmount, 10) >= parseInt(amount, 10)) {
+      this.props.editPartyItems(selectedItemID, amount);
+      this.setState({ showItemSelect: false })
+    }
   }
 
   render() {
-    const { classes, party, members } = this.props;
+    const { classes, party, members, pending } = this.props;
     if (!this.state.render) return <LoadingPage/>;
     return (
       <div className={classes.root}>
@@ -173,12 +234,12 @@ class PartyPage extends React.Component{
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
           </Paper>
-          <div style={{display: 'flex'}}>
+          <div className={classes.infoContent}>
             <Paper className={classes.info}>
               <List dense>
                 <ListItem disableGutters style={{alignItems: 'flex-start'}}>
                   <ListItemIcon>
-                    <Avatar alt="Kanye West" src="https://instrumentalfx.co/wp-content/uploads/2017/10/Kanye-West-instrumental--300x300.jpg" className={classes.avatar} />   
+                    <Avatar alt="Host" src={party.image} className={classes.avatar} />   
                   </ListItemIcon>
                   {party.description &&
                   <div className={classes.speechBubble}>
@@ -234,10 +295,33 @@ class PartyPage extends React.Component{
         </div>
         <div className={classes.guestsWrapper}>
           <Paper>
-            <Typography>8 guests</Typography>
-            {Object.keys(members).map((member)=>{
-              return <Member key={member} name={member} items={members[member].items}/>
+            {
+              pending && 
+              <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
+            }                        
+            {Object.keys(pending).map((user)=>{
+              return <Member 
+                      isMember={false}
+                      uid={user}
+                      acceptPendingUser={this.props.acceptPendingUser}
+                      key={user} 
+                      name={pending[user].name} 
+                      image={pending[user].image}
+                    />
             })}
+            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>  
+            <div style={{display: 'flex', flexWrap: 'wrap'}}>
+              {Object.keys(members).map((member)=>{
+                return <Member 
+                        isMember={true}
+                        key={member} 
+                        type={members[member].type}
+                        name={members[member].name} 
+                        image={members[member].image}
+                        items={members[member].items}
+                      />
+              })}
+            </div>          
           </Paper>
         </div>        
       </div>
@@ -245,14 +329,17 @@ class PartyPage extends React.Component{
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
   party: state.party.content,
   members: state.party.members,
+  pending: state.party.pending || false
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  editPartyItems: (arg1, arg2, arg3, arg4) => dispatch(editPartyItems(arg1, arg2, arg3, arg4)),
-  getPartyData: (id) => dispatch(getPartyData(id))
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  editPartyItems: (itemID, amount) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount)),
+  getPartyData: (id) => dispatch(getPartyData(id)),
+  acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  clearData: () => dispatch(clearData())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PartyPage));

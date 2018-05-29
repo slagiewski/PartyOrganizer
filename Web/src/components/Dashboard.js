@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';
 import { startLogout } from '../actions/auth';
+import { requestAccess } from '../actions/parties';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -16,6 +17,9 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import Avatar from 'material-ui/Avatar';
 import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import { Slide } from 'material-ui/transitions';
+import { CircularProgress } from 'material-ui/Progress';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import { withTheme, withStyles } from 'material-ui/styles';
@@ -26,9 +30,34 @@ import JoinIcon from 'material-ui-icons/ChatBubble';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import { TextField } from 'material-ui';
 
-const JoinDialog = withStyles( theme => ({
-
+const JoinDialog = connect(null, (dispatch) => ({
+  requestAccess: (id) => dispatch(requestAccess(id))
+}))(withStyles( theme => ({
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+  },
 }))(class extends React.Component{
+  state = {
+    text: '',
+    loading: false,
+    error: false
+  }
+  handleJoin = () => {
+    this.setState({ loading: true });
+    this.props.requestAccess(this.state.text).then(()=>{
+      this.setState({ loading: false, error: false});
+      this.props.handleSubmit();
+    }, ()=>{
+      this.setState({ error: true, loading: false });
+    });
+  }
+  handleChange = (e) => {
+    this.setState({
+      text: e.target.value
+    });
+  }
   render() {
     return (
     <Dialog
@@ -37,18 +66,27 @@ const JoinDialog = withStyles( theme => ({
       onClose={this.props.handleClose}
       aria-labelledby="responsive-dialog-join"
     >
-      <DialogTitle id="responsive-dialog-join">Join existing party</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Enter party ID
-        </DialogContentText>
-        <input type="text"/>
-      </DialogContent>
-      <DialogActions></DialogActions>
+      <div style={{position: 'relative'}}>
+        <DialogTitle id="responsive-dialog-join">Join existing party</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter party ID
+          </DialogContentText>
+          <TextField 
+            label="ID" 
+            value={this.state.text} 
+            onChange={this.handleChange} 
+            error={this.state.error}
+            helperText={this.state.error && 'Party does not exist'}/>
+          <Button color="primary" variant="raised" onClick={this.handleJoin} disabled={this.state.loading}>Join</Button>
+          {this.state.loading && <CircularProgress size={50} className={this.props.classes.loader} />}
+        </DialogContent>
+        <DialogActions></DialogActions>
+      </div>
     </Dialog>
     )
   }
-});
+}));
 
 const NewUserDashboard = withStyles( theme =>({
   wrapper: {
@@ -204,7 +242,8 @@ class Dashboard extends React.Component {
   state={
     anchorEl: null,
     formOpen: false,
-    dialogOpen: false
+    dialogOpen: false,
+    openSnackbar: false
   }
 
   formOpen = () => {
@@ -223,6 +262,10 @@ class Dashboard extends React.Component {
     this.setState({dialogOpen: false});
   }
 
+  dialogSubmit = () => {
+    this.setState({dialogOpen: false, openSnackbar: true});    
+  }
+
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -230,6 +273,10 @@ class Dashboard extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+  handleCloseSnackbar = () => {
+    this.setState({ openSnackbar: false })
+  }
 
   render() {
     const { classes, theme, user } = this.props;
@@ -305,7 +352,16 @@ class Dashboard extends React.Component {
       <React.Fragment>
         {this.props.hasParties ? main : <NewUserDashboard openForm={this.formOpen} openDialog={this.dialogOpen}/>}
         {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
-        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose}/>}      
+        {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose} handleSubmit={this.dialogSubmit}/>}      
+        <Snackbar
+          open={this.state.openSnackbar}
+          onClose={this.handleCloseSnackbar}
+          TransitionComponent={<Slide direction="up" />}
+          ContentProps={{
+            'aria-describedby': 'invitation-sent',
+          }}
+          message={<span id="invitiation-sent">Request has been sent</span>}
+        />
       </React.Fragment>
     );
   }
@@ -317,7 +373,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(startLogout())
+  logout: () => dispatch(startLogout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withTheme()(Dashboard)));
