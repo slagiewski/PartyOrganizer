@@ -27,8 +27,8 @@ const Member = withStyles( theme => ({
     display: 'flex',
     height: 80,
     width: 300,
-    borderTop: `2px solid ${theme.palette.primary.main}`,
-    borderBottom: `2px solid ${theme.palette.primary.main}`,    
+    borderBottom: `2px solid ${theme.palette.primary.main}`, 
+    borderRight: `2px solid ${theme.palette.primary.main}`,      
   },
   avatar: {
     zIndex: 1,    
@@ -36,7 +36,11 @@ const Member = withStyles( theme => ({
     height: 44,
     margin: theme.spacing.unit
   },
-
+  '@media (max-width: 600px)': {
+    wrapper: {
+      width: '100%'
+    }
+  }    
 }))((props) => {
   const { classes, items, isMember } = props;
 
@@ -74,18 +78,23 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   infoWrapper: {
-    width: '60%'
+    width: '60%',
+    minWidth: 700
+  },
+  infoContent: {
+    display: 'flex',
+    flexDirection: 'row'
   },
   headline: {
     padding: theme.spacing.unit*2
   },
   info: {
-    width: 'calc(100% / 3)',
+    width: '40%',
     height: '100%',
     padding: theme.spacing.unit
   },
   items: {
-    width: 'calc(100% / 3 * 2)'    
+    width: '60%'    
   },
   avatar: {
     zIndex: 1,    
@@ -115,6 +124,9 @@ const styles = theme => ({
       marginLeft: '-10px',
     }
   },
+  guestsWrapper: {
+    width: 300
+  },
   amountInput: {
     width: 100
   },
@@ -125,14 +137,26 @@ const styles = theme => ({
   pendingBar: {
     backgroundColor: '#4dd0e1'
   },
-  '@media (max-width: 600px)': {
+  '@media (max-width: 1000px)': {
     root: {
       flexDirection: 'column'
     },
     infoWrapper: {
-      width: '100%'
+      width: '100%',
+      minWidth: 0
     },
     guestsWrapper: {
+      width: '100%'
+    }
+  },
+  '@media (max-width: 700px)': {
+    infoContent: {
+      flexDirection: 'column'
+    },
+    info: {
+      width: `calc(100% - ${theme.spacing.unit*2}px)`
+    },
+    items: {
       width: '100%'
     }
   }
@@ -210,7 +234,7 @@ class PartyPage extends React.Component{
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
           </Paper>
-          <div style={{display: 'flex'}}>
+          <div className={classes.infoContent}>
             <Paper className={classes.info}>
               <List dense>
                 <ListItem disableGutters style={{alignItems: 'flex-start'}}>
@@ -285,17 +309,19 @@ class PartyPage extends React.Component{
                       image={pending[user].image}
                     />
             })}
-            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>            
-            {Object.keys(members).map((member)=>{
-              return <Member 
-                      isMember={true}
-                      key={member} 
-                      type={members[member].type}
-                      name={members[member].name} 
-                      image={members[member].image}
-                      items={members[member].items}
-                    />
-            })}
+            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>  
+            <div style={{display: 'flex', flexWrap: 'wrap'}}>
+              {Object.keys(members).map((member)=>{
+                return <Member 
+                        isMember={true}
+                        key={member} 
+                        type={members[member].type}
+                        name={members[member].name} 
+                        image={members[member].image}
+                        items={members[member].items}
+                      />
+              })}
+            </div>          
           </Paper>
         </div>        
       </div>
