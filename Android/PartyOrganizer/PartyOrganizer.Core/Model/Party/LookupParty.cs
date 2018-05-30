@@ -4,7 +4,11 @@ namespace PartyOrganizer.Core.Model.Party
 {
     public class LookupParty
     {
+<<<<<<< Updated upstream
         [PrimaryKey]
+=======
+        
+>>>>>>> Stashed changes
         public string Id { get; set; }
         public string Name { get; set; }
         public string Host { get; set; }

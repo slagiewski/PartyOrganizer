@@ -10,12 +10,12 @@ using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
-    class PartyListAdapter : BaseAdapter<PartyInfo>
+    class PartyListAdapter : BaseAdapter<LookupParty>
     {
-        private List<PartyInfo> _parties;
+        private List<LookupParty> _parties;
         private Activity _context;
 
-        public PartyListAdapter(Activity context, List<PartyInfo> parties)
+        public PartyListAdapter(Activity context, List<LookupParty> parties)
         {
             _context = context;
             _parties = parties;
@@ -31,8 +31,7 @@ namespace PartyOrganizer.Adapters
             }
 
             convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = party.Name;
-            convertView.FindViewById<TextView>(Resource.Id.dateTextView).Text = party.Date.ToString("dd/MM/yyyy hh:mm");
-            convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Admin?.ToString()??"App user(in progress)";
+            convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Host?.ToString()??"App user(in progress)";
 
             Picasso.With(_context)
                    .Load("https://openclipart.org/image/800px/svg_to_png/" + party.Image)
@@ -48,9 +47,9 @@ namespace PartyOrganizer.Adapters
 
         public override int Count => _parties.Count;
 
-        public override PartyInfo this[int position] => _parties[position];
+        public override LookupParty this[int position] => _parties[position];
 
         public override long GetItemId(int position) =>
-            _parties[position].ID;
+            position;
     }
 }

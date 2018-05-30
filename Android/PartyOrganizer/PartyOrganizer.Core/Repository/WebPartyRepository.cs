@@ -94,7 +94,7 @@ namespace PartyOrganizer.Core.Repository
 
             foreach (var party in firebaseObjectParties)
             {
-                party.Object.Id = party.Key;
+                //party.Object.Id = party.Key;
                 lookupParties.Add(party.Object);
             }
             
