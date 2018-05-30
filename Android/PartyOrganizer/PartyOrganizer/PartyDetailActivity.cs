@@ -2,6 +2,7 @@
 using Android.OS;
 using Android.Widget;
 using PartyOrganizer.Core.Model;
+using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Utility;

@@ -9,7 +9,7 @@ namespace PartyOrganizer.CoreTests.Repository
     [TestClass]
     public class TempTests
     {
-        readonly IPartyRepositoryAsync repository = new WebPartyRepository();
+        private readonly IPartyRepositoryAsync repository = new PersistantPartyRepository();
         FirebaseClient _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
 
         [TestMethod]
@@ -17,8 +17,6 @@ namespace PartyOrganizer.CoreTests.Repository
         {
             var id = "amXgDFj6WcOQkffgtN3pOJupXEz2";
             var parties = await repository.GetPartiesWithUser(id);
-
-
         }
 
         [TestMethod]

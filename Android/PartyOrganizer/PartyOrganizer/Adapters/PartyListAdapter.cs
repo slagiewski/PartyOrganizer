@@ -4,6 +4,7 @@ using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Model;
+using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Utility;
 using Square.Picasso;
 

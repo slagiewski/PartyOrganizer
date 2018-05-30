@@ -42,10 +42,11 @@ namespace PartyOrganizer.Core.Repository
 
             var firebaseObjectParty = firebaseObjectParties.FirstOrDefault();
 
-            var party = new Party();
-
-            party.Id = firebaseObjectParty.Key;
-            party.Content = firebaseObjectParty.Object.Content;
+            var party = new Party
+            {
+                Id = firebaseObjectParty.Key,
+                Content = firebaseObjectParty.Object.Content
+            };
 
             if (firebaseObjectParty.Object.Members != null)
             {

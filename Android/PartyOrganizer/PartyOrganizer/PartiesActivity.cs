@@ -8,6 +8,7 @@ using PartyOrganizer.Adapters;
 using PartyOrganizer.Core.Repository.Interfaces;
 using System.Linq;
 using Android.Content;
+using PartyOrganizer.Core.Model.Party;
 
 namespace PartyOrganizer
 {
