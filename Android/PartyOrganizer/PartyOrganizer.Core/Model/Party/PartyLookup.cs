@@ -1,6 +1,6 @@
 ﻿namespace PartyOrganizer.Core.Model.Party
 {
-    public class LookupParty
+    public class PartyLookup
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -4,7 +4,6 @@ using Android.Widget;
 using PartyOrganizer.Core;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
-using PartyOrganizer.Utility;
 using Square.Picasso;
 
 namespace PartyOrganizer

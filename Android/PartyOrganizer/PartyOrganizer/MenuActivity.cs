@@ -14,8 +14,6 @@ namespace PartyOrganizer
     [Activity(Label = "MenuActivity", MainLauncher = true)]
     public class MenuActivity : FragmentActivity
     {
-
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);

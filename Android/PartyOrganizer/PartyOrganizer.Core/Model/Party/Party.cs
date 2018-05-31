@@ -1,5 +1,4 @@
-﻿using Firebase.Xamarin.Database;
-using System;
+﻿using LiteDB;
 using System.Collections.Generic;
 
 namespace PartyOrganizer.Core.Model.Party

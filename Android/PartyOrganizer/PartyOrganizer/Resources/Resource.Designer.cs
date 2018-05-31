@@ -2255,8 +2255,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f07002f
 			public const int auto = 2131165231;
 			
-			// aapt resource value: 0x7f0700b0
-			public const int avatarImageView = 2131165360;
+			// aapt resource value: 0x7f0700af
+			public const int avatarImageView = 2131165359;
 			
 			// aapt resource value: 0x7f070020
 			public const int beginning = 2131165216;
@@ -2308,9 +2308,6 @@ namespace PartyOrganizer
 			
 			// aapt resource value: 0x7f070054
 			public const int customPanel = 2131165268;
-			
-			// aapt resource value: 0x7f0700af
-			public const int dateTextView = 2131165359;
 			
 			// aapt resource value: 0x7f070062
 			public const int decor_content_parent = 2131165282;
@@ -2375,8 +2372,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f070088
 			public const int friendImageView = 2131165320;
 			
-			// aapt resource value: 0x7f0700b6
-			public const int friends = 2131165366;
+			// aapt resource value: 0x7f0700b5
+			public const int friends = 2131165365;
 			
 			// aapt resource value: 0x7f07008b
 			public const int friendsListView = 2131165323;
@@ -2426,8 +2423,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0700a5
 			public const int mainScrollView = 2131165349;
 			
-			// aapt resource value: 0x7f0700b5
-			public const int masked = 2131165365;
+			// aapt resource value: 0x7f0700b4
+			public const int masked = 2131165364;
 			
 			// aapt resource value: 0x7f070093
 			public const int media_actions = 2131165331;
@@ -2492,8 +2489,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f07004d
 			public const int parentPanel = 2131165261;
 			
-			// aapt resource value: 0x7f0700b7
-			public const int parties = 2131165367;
+			// aapt resource value: 0x7f0700b6
+			public const int parties = 2131165366;
 			
 			// aapt resource value: 0x7f0700a8
 			public const int partyAdminTextView = 2131165352;
@@ -2705,14 +2702,14 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f070018
 			public const int useLogo = 2131165208;
 			
-			// aapt resource value: 0x7f0700b3
-			public const int userEmailTextView = 2131165363;
+			// aapt resource value: 0x7f0700b2
+			public const int userEmailTextView = 2131165362;
+			
+			// aapt resource value: 0x7f0700b0
+			public const int userFullNameTextView = 2131165360;
 			
 			// aapt resource value: 0x7f0700b1
-			public const int userFullNameTextView = 2131165361;
-			
-			// aapt resource value: 0x7f0700b2
-			public const int userLocationTextView = 2131165362;
+			public const int userLocationTextView = 2131165361;
 			
 			// aapt resource value: 0x7f07000e
 			public const int view_offset_helper = 2131165198;
@@ -2720,8 +2717,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f07008c
 			public const int viewpager = 2131165324;
 			
-			// aapt resource value: 0x7f0700b4
-			public const int visible = 2131165364;
+			// aapt resource value: 0x7f0700b3
+			public const int visible = 2131165363;
 			
 			// aapt resource value: 0x7f070027
 			public const int withText = 2131165223;
