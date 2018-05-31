@@ -16,8 +16,8 @@ namespace PartyOrganizer
     public class PartiesActivity : Activity
     {
         private ListView _partyListView;
-        private List<PartyInfo> _allParties;
-        private IPartyRepository _partyRepository;
+        private List<LookupParty> _allParties;
+        private IPartyRepositoryAsync _partyRepository;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -27,9 +27,9 @@ namespace PartyOrganizer
 
             _partyListView = FindViewById<ListView>(Resource.Id.partyOrganizerListView);
 
-            _partyRepository = new PartyRepository();
+            _partyRepository = new WebPartyRepository();
 
-            _allParties = _partyRepository.GetAll().ToList();
+            _allParties = _partyRepository.GetPartiesWithUser("Swue0CeusPTA1adRHD4Qk9Bbsxf1").Result.ToList(); 
 
             _partyListView.Adapter = new PartyListAdapter(this, _allParties);
 
@@ -44,7 +44,7 @@ namespace PartyOrganizer
 
                 var intent = new Intent();
                 intent.SetClass(this, typeof(PartyDetailActivity));
-                intent.PutExtra("selectedPartyID", party.ID);
+                intent.PutExtra("selectedPartyID", party.Id);
 
                 StartActivityForResult(intent, 100);
             };          
