@@ -49,7 +49,7 @@ const Member = withStyles( theme => ({
       <Avatar alt={props.name} src={props.image} className={classes.avatar} />
       <div>
         <Typography>{props.name} <i>{props.type}</i></Typography>
-        <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}`)}</Typography>        
+        <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}, `)}</Typography>        
       </div>
     </React.Fragment>
   );

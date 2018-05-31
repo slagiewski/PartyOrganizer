@@ -48,7 +48,7 @@ export default (state = {}, action) => {
             image: action.image
           }
         },
-        pending: removeByKey(state.pending, action.uid)
+        pending: removeByKey(state.pending || {}, action.uid)
       }
     case 'CLEAR_DATA':
       return {};

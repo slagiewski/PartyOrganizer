@@ -9,16 +9,15 @@ const height = 20;
 const bounce_height = 40;
 
 export default withStyles( theme => ({
-  wrap: {
-    width: '100%',
-    height: '100vh',
-    backgroundColor: theme.palette.primary.main
-  },
   loading: {
+    position: 'fixed',
     display: 'flex',
+    flexFlow: 'column',
     height: '100%',
+    width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: theme.palette.primary.main
   },
   text: {
     color: '#FFEB3B',
@@ -61,10 +60,8 @@ export default withStyles( theme => ({
     }
   }
 }))(({ classes }) => ((
-  <div className={classes.wrap}>
     <div className={classes.loading}>
       <div className={classes.bounceball}></div>
       <div className={classes.text}>LOADING</div>
     </div>
-  </div>
 )));

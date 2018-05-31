@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import Bar from '../components/Bar';
 
 export const PrivateRoute = ({
   isAuthenticated,
@@ -10,7 +11,10 @@ export const PrivateRoute = ({
     <Route {...rest} component={(props) => (
       isAuthenticated ? (
         <div>
-          <Component {...props} />
+          <React.Fragment>
+            <Bar />
+            <Component {...props} />            
+          </React.Fragment>
         </div>
       ) : (
           <Redirect to="/" />

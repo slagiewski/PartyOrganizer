@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PartyList from './PartyList';
 import PartyForm from './PartyForm';
-import { startLogout } from '../actions/auth';
 import { requestAccess } from '../actions/parties';
 
 import AppBar from 'material-ui/AppBar';
@@ -90,7 +89,8 @@ const JoinDialog = connect(null, (dispatch) => ({
 
 const NewUserDashboard = withStyles( theme =>({
   wrapper: {
-    height: '100vh',
+    position: 'fixed',    
+    height: '100%',
     width: '100%',
     background: `linear-gradient(135deg, ${theme.palette.primary.main} 50%, ${theme.palette.secondary.light} 50%)`
   },
@@ -213,7 +213,7 @@ const ControlPanel = withStyles((theme)=>({
 
 const styles = theme => ({
   wrapper: {
-    height: '100vh',
+    height: '100%',
     width: '100%',
     backgroundColor: '#fff'
   },
@@ -240,7 +240,6 @@ const styles = theme => ({
 
 class Dashboard extends React.Component {
   state={
-    anchorEl: null,
     formOpen: false,
     dialogOpen: false,
     openSnackbar: false
@@ -266,60 +265,14 @@ class Dashboard extends React.Component {
     this.setState({dialogOpen: false, openSnackbar: true});    
   }
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
   handleCloseSnackbar = () => {
     this.setState({ openSnackbar: false })
   }
 
   render() {
     const { classes, theme, user } = this.props;
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
     const main = (
       <div className={classes.wrapper}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="title" align="center" color="inherit" className={classes.flex}>
-              Hi, {user.name}
-            </Typography>
-            <div>
-              <IconButton
-                aria-owns={open ? 'menu-appbar' : null}
-                aria-haspopup="true"
-                onClick={this.handleMenu}
-                color="inherit"
-              >
-                {user.photo ? 
-                <Avatar alt="user-photo" src={user.photo}/>
-                : <AccountCircle /> }
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={this.handleClose}
-              >
-                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                <MenuItem onClick={this.props.logout}>Log out</MenuItem>
-              </Menu>
-            </div>
-          </Toolbar>
-        </AppBar>
         <div className={classes.content}>
           <div>
             <Paper className={classes.controlPaper}>
@@ -368,13 +321,8 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  hasParties: Object.keys(state.meta).length !== 0,
-  user: state.auth
+  hasParties: Object.keys(state.meta).length !== 0
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(startLogout()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withTheme()(Dashboard)));
+export default connect(mapStateToProps)(withStyles(styles)(withTheme()(Dashboard)));
 

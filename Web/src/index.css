@@ -1,9 +1,12 @@
 body {
   margin: 0;
   padding: 0;
+  height: 100vh;
   font-family: sans-serif;
 }
-
+#root {
+  height: 100%;
+}
 .pac-container {
   z-index: 1600;
 }

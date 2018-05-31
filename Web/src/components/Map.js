@@ -6,6 +6,9 @@ import {
   GoogleMap,
 } from "react-google-maps";
 
+const gogle = window.google;
+
+
 export class LocationSearchBox extends React.Component {
   placesChanged = () => {
     const res = this.searchBox.getPlaces()[0];

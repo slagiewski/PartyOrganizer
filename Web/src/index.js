@@ -52,7 +52,7 @@ firebase.auth().onAuthStateChanged((user) => {
     const displayName = user.displayName.split(' ');
     store.dispatch(login({ uid: user.uid, name: displayName[0], lastName: displayName[1], photo: user.photoURL }));
     store.dispatch(startSetParties()).then(() => {
-      renderApp();
+     renderApp();
       if (history.location.pathname === '/') {
         history.push('/dashboard');
       }
