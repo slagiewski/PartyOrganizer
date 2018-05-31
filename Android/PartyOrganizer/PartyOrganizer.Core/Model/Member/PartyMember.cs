@@ -10,5 +10,6 @@ namespace PartyOrganizer.Core.Model.Party
         public string Image { get; set; }
         public IEnumerable<PartyItem> Items{ get; set; }
 
+
     }
 }

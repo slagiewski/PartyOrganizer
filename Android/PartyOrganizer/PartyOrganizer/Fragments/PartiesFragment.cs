@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Adapters;
 using PartyOrganizer.Core.Model;
+using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 
@@ -15,8 +16,8 @@ namespace PartyOrganizer.Fragments
     public class PartiesFragment : Android.Support.V4.App.Fragment
     {
         private ListView _partyListView;
-        private List<PartyInfo> _allParties;
-        private IPartyRepository _partyRepository;
+        private List<PartyLookup> _allParties;
+        private IPartyRepositoryAsync _partyRepository;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -25,15 +26,15 @@ namespace PartyOrganizer.Fragments
             // Create your fragment here
         }
 
-        public override void OnActivityCreated(Bundle savedInstanceState)
+        public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
             _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
 
-            _partyRepository = new PartyRepository();
+            _partyRepository = new WebPartyRepository();
 
-            _allParties = _partyRepository.GetAll().ToList();
+            _allParties = (await _partyRepository.GetPartiesByUserId("AAUdmniSRZOGxnAH0RYahSDBS2E3")).ToList();
 
             _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
 
@@ -53,7 +54,7 @@ namespace PartyOrganizer.Fragments
 
                 var intent = new Intent();
                 intent.SetClass(this.Activity, typeof(PartyDetailActivity));
-                intent.PutExtra("selectedPartyID", party.ID);
+                intent.PutExtra("selectedPartyID", party.Id);
 
                 StartActivityForResult(intent, 100);
             };
