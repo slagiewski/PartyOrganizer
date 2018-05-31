@@ -1,10 +1,7 @@
-﻿using SQLite;
-
-namespace PartyOrganizer.Core.Model.Party
+﻿namespace PartyOrganizer.Core.Model.Party
 {
-    public class LookupParty
+    public class PartyLookup
     {
-        [PrimaryKey]
         public string Id { get; set; }
         public string Name { get; set; }
         public string Host { get; set; }

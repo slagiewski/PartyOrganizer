@@ -1,13 +1,12 @@
-﻿
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Firebase.Xamarin.Database;
+﻿using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
 using Newtonsoft.Json;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PartyOrganizer.Core.Repository
 {
@@ -77,28 +76,28 @@ namespace PartyOrganizer.Core.Repository
             return party;
         }
 
-        public Task<IEnumerable<LookupParty>> GetPartiesByUser(string userId)
+        public Task<IEnumerable<PartyLookup>> GetPartiesByUser(string userId)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<IEnumerable<LookupParty>> GetPartiesWithUser(string userId)
+        public async Task<IEnumerable<PartyLookup>> GetPartiesByUserId(string userId)
         {
             var firebaseObjectParties = await _fb
                                          .Child("users")
                                          .Child(userId)
                                          .Child("partiesMeta")
-                                         .OnceAsync<LookupParty>();
+                                         .OnceAsync<PartyLookup>();
 
-            var lookupParties = new List<LookupParty>(firebaseObjectParties.Count);
+            var partiesLookup = new List<PartyLookup>(firebaseObjectParties.Count);
 
             foreach (var party in firebaseObjectParties)
             {
                 party.Object.Id = party.Key;
-                lookupParties.Add(party.Object);
+                partiesLookup.Add(party.Object);
             }
-            
-            return lookupParties;
+
+            return partiesLookup;
         }
 
         public Task Remove(Party entity)

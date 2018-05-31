@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using LiteDB;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 using Plugin.Connectivity;
-using SQLite;
 
 namespace PartyOrganizer.Core.Repository
 {
@@ -13,17 +14,12 @@ namespace PartyOrganizer.Core.Repository
     {
         private readonly IPartyRepositoryAsync _partyRepository;
         private readonly static string _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                                            "partyOrganizerDB");
-        private readonly static SQLiteConnection _db;
+                                            "partyOrganizerDB.db");
 
         private static readonly DateTime _lastConnectionCheck;
 
         static PersistantPartyRepository()
         {
-            _db = new SQLiteConnection(_dbPath);
-            _db.CreateTable<Party>();
-            _db.CreateTable<LookupParty>();
-            _lastConnectionCheck = DateTime.Now;
         }
 
         public PersistantPartyRepository()
@@ -36,38 +32,62 @@ namespace PartyOrganizer.Core.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Party>> GetAll()
+        public async Task<IEnumerable<Party>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Party> GetById(string ID)
+        public async Task<Party> GetById(string id)
         {
-            var connected = await CheckConnection();
+            //Włączyć gdy będzi
+            //var connected = await CheckConnection();
 
-            if (connected == true)
+
+            using (var db = new LiteDatabase(_dbPath))
             {
-                var party = await _partyRepository.GetById(ID);
-                if (party != null)
-                    _db.InsertOrReplace(party);
-                return party;
+                var partiesTable = db.GetCollection<Party>();
+
+                if (true)
+                {
+                    var party = await _partyRepository.GetById(id);
+                    if (party != null)
+                        partiesTable.Upsert(party);
+                    return party;
+                }
+                else
+                {
+                    var party = partiesTable.FindById(id);
+                    return party;
+                }
+
             }
-            else
+        }
+
+        public Task<IEnumerable<PartyLookup>> GetPartiesByUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<PartyLookup>> GetPartiesByUserId(string userId)
+        {
+            using (var db = new LiteDatabase(_dbPath))
             {
-                var party = _db.Get<Party>(p => p.Id == ID);
-                return party;
+                var partieslookupTable = db.GetCollection<PartyLookup>();
+                
+                if (true)
+                {
+                    var parties = await _partyRepository.GetPartiesByUserId(userId);
+                    if (parties != null)
+                        partieslookupTable.Upsert(parties);
+                    return parties;
+                }
+                else
+                {
+                    var parties = partieslookupTable.FindAll();
+                    return parties;
+                }
+
             }
-            
-        }
-
-        public Task<IEnumerable<LookupParty>> GetPartiesByUser(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<LookupParty>> GetPartiesWithUser(string userId)
-        {
-            throw new NotImplementedException();
         }
 
         public Task Remove(Party entity)
@@ -77,7 +97,6 @@ namespace PartyOrganizer.Core.Repository
 
         private async Task<bool> CheckConnection()
         {
-
             // If offline - check if the time difference is below [5] seconds
             // 
             //var internetStatus = await CrossConnectivity.Current.IsReachable("www.google.com", 200);
