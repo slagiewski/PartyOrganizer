@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PartyOrganizer.Core.Model;
 using PartyOrganizer.Core.Model.Party;
 
 namespace PartyOrganizer.Core.Repository.Interfaces

@@ -16,7 +16,7 @@ namespace PartyOrganizer
     public class PartiesActivity : Activity
     {
         private ListView _partyListView;
-        private List<LookupParty> _allParties;
+        private List<PartyLookup> _allParties;
         private IPartyRepositoryAsync _partyRepository;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -29,7 +29,7 @@ namespace PartyOrganizer
 
             _partyRepository = new WebPartyRepository();
 
-            _allParties = _partyRepository.GetPartiesWithUser("Swue0CeusPTA1adRHD4Qk9Bbsxf1").Result.ToList(); 
+            _allParties = _partyRepository.GetPartiesByUserId("Swue0CeusPTA1adRHD4Qk9Bbsxf1").Result.ToList(); 
 
             _partyListView.Adapter = new PartyListAdapter(this, _allParties);
 

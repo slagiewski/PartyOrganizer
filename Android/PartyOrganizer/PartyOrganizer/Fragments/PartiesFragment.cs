@@ -16,7 +16,7 @@ namespace PartyOrganizer.Fragments
     public class PartiesFragment : Android.Support.V4.App.Fragment
     {
         private ListView _partyListView;
-        private List<LookupParty> _allParties;
+        private List<PartyLookup> _allParties;
         private IPartyRepositoryAsync _partyRepository;
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -34,7 +34,7 @@ namespace PartyOrganizer.Fragments
 
             _partyRepository = new WebPartyRepository();
 
-            _allParties = (await _partyRepository.GetPartiesWithUser("amXgDFj6WcOQkffgtN3pOJupXEz2")).ToList();
+            _allParties = (await _partyRepository.GetPartiesByUserId("AAUdmniSRZOGxnAH0RYahSDBS2E3")).ToList();
 
             _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
 

@@ -3,7 +3,6 @@ using Firebase.Xamarin.Database.Query;
 using Newtonsoft.Json;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -39,7 +39,7 @@ namespace PartyOrganizer.Core.Repository
 
         public async Task<Party> GetById(string id)
         {
-            //Włączyć gdy będzi
+            //
             //var connected = await CheckConnection();
 
 

@@ -9,5 +9,10 @@
 
         public string Name { get; set; }
 
+        public override string ToString()
+        {
+            return $"Lat: {Lat}, Lng: {Lng}, Name: {Name}";
+        }
+
     }
 }

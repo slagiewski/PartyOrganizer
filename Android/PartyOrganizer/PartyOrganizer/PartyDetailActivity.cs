@@ -1,20 +1,20 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Widget;
-using PartyOrganizer.Core.Model;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
-using PartyOrganizer.Utility;
 using Square.Picasso;
+using System;
+using System.Linq;
 
 namespace PartyOrganizer
 {
     [Activity(Label = "Party", MainLauncher = false)]
     public class PartyDetailActivity : Activity
     {
-        private IPartyRepository _partyRepository;
-        private PartyInfo _selectedParty;
+        private IPartyRepositoryAsync _partyRepository;
+        private Party _selectedParty;
 
         private ImageView _partyAvatarImageView;
         private TextView _partyShortDescriptionTextView;
@@ -23,13 +23,13 @@ namespace PartyOrganizer
         private TextView _partyLocationTextView;
         private TextView _partyDateTextView;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PartyDetailView);
-            _partyRepository = new PartyRepository();
-            var selectedPartyID = Intent.Extras.GetInt("selectedPartyID");
-            _selectedParty = _partyRepository.GetByID(selectedPartyID);
+            _partyRepository = new WebPartyRepository();
+            var selectedPartyID = Intent.Extras.GetString("selectedPartyID");
+            _selectedParty = await _partyRepository.GetById(selectedPartyID);
 
             FindViews();
 
@@ -49,13 +49,13 @@ namespace PartyOrganizer
         private void BindData()
         {
             Picasso.With(this)
-                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.Image)
+                   .Load(_selectedParty.Content.Image)
                    .Into(_partyAvatarImageView);
-            _partyShortDescriptionTextView.Text = _selectedParty.Name;
-            _partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + _selectedParty.Description;
-            _partyAdminTextView.Text = _selectedParty.Admin?.ToString()??"App user (in progress)";
-            _partyLocationTextView.Text = _selectedParty.Location;
-            _partyDateTextView.Text = _selectedParty.Date.ToString("dd/MM/yyyy hh:mm"); ;
+            _partyShortDescriptionTextView.Text = _selectedParty.Content.Name;
+            _partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + _selectedParty.Content.Description;
+            _partyAdminTextView.Text = _selectedParty.Members?.FirstOrDefault(m  => m.Type.ToLower() == "host").Name ?? "App user (in progress)";
+            _partyLocationTextView.Text = _selectedParty.Content.Location.ToString();
+            _partyDateTextView.Text = DateTimeOffset.FromUnixTimeSeconds(_selectedParty.Content.Unix).ToString();
         }
 
     }
