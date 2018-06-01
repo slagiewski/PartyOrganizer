@@ -9,7 +9,7 @@ namespace PartyOrganizer.Core.Repository
 
         Task<T> GetById(string ID);
 
-        Task<int> Add(T entity);
+        Task Add(T entity);
 
         Task Remove(T entity);
     }

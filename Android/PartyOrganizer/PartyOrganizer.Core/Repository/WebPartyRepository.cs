@@ -18,9 +18,10 @@ namespace PartyOrganizer.Core.Repository
             _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
         }
 
-        public Task<int> Add(Party entity)
+        public async Task Add(Party entity)
         {
-            throw new System.NotImplementedException();
+            await _fb.Child("parties")
+                .PostAsync<Party>(entity);
         }
 
         public Task<IEnumerable<Party>> GetAll()

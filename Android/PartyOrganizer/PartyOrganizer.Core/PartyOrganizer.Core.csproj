@@ -88,7 +88,6 @@
     <Compile Include="Model\Party\PartyItem.cs" />
     <Compile Include="Model\Member\PartyMember.cs" />
     <Compile Include="Model\Party\PartyLookup.cs" />
-    <Compile Include="Model\Party\PartyInfo.cs" />
     <Compile Include="Model\Party\RawPartyData.cs" />
     <Compile Include="Model\Member\User.cs" />
     <Compile Include="Repository\Interfaces\IPartyRepository.cs" />

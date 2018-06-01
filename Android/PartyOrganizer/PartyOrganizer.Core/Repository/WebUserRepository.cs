@@ -53,5 +53,10 @@ namespace PartyOrganizer.Core.Repository
         {
             throw new NotImplementedException();
         }
+
+        Task IRepositoryAsync<User>.Add(User entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

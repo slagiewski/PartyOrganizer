@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Adapters\FriendsListAdapter.cs" />
     <Compile Include="Adapters\PartyListAdapter.cs" />
+    <Compile Include="Adapters\ProductsListAdapter.cs" />
     <Compile Include="Adapters\ViewPagerFragmentsAdapter.cs" />
     <Compile Include="AddPartyActivity.cs" />
     <Compile Include="Fragments\FriendsFragment.cs" />
@@ -148,6 +149,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AddPartyView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ProductRowView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

@@ -105,5 +105,10 @@ namespace PartyOrganizer.Core.Repository
 
             return internetStatus;
         }
+
+        Task IRepositoryAsync<Party>.Add(Party entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
