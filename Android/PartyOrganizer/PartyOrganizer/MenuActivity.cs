@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "MenuActivity", MainLauncher = true)]
+    [Activity(Label = "MenuActivity", MainLauncher = false)]
     public class MenuActivity : FragmentActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
