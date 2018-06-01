@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "Add Party", MainLauncher = true)]
+    [Activity(Label = "Add Party", MainLauncher = false)]
     public class AddPartyActivity : Activity
     {
         private IPartyRepositoryAsync _partyRepository;

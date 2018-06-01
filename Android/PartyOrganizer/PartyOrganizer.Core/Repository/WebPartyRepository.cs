@@ -1,4 +1,5 @@
-﻿using Firebase.Xamarin.Database;
+﻿using Firebase.Xamarin.Auth;
+using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
 using Newtonsoft.Json;
 using PartyOrganizer.Core.Model.Party;
@@ -6,6 +7,7 @@ using PartyOrganizer.Core.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace PartyOrganizer.Core.Repository
 {
@@ -15,7 +17,18 @@ namespace PartyOrganizer.Core.Repository
 
         static WebPartyRepository()
         {
-            _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
+            _fb = new FirebaseClient("https://fir-testwithauth.firebaseio.com");
+        }
+
+        private static async Task Authorize()
+        {
+            /*var authProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyBTrOTjn_lzeggQZwLSxP0ZauqtSCVT2C8"));
+
+
+
+            var facebookAccessToken = "<login with facebook and get oauth access token>";
+
+            var auth = await authProvider.SignInWithOAuthAsync(FirebaseAuthType.Facebook, facebookAccessToken);*/
         }
 
         public async Task Add(Party entity)

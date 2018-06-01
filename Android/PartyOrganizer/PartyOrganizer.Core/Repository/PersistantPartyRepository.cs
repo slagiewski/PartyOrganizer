@@ -18,6 +18,8 @@ namespace PartyOrganizer.Core.Repository
 
         private static readonly DateTime _lastConnectionCheck;
 
+
+
         static PersistantPartyRepository()
         {
         }
