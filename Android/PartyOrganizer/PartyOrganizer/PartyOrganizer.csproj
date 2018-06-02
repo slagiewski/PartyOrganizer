@@ -158,6 +158,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
+    <AndroidResource Include="Resources\layout\Main.axml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\PartyOrganizerView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -193,9 +197,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\values\Strings.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
