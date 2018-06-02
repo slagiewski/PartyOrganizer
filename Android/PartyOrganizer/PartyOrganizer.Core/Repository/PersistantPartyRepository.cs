@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using LiteDB;
+using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 using Plugin.Connectivity;
@@ -29,9 +30,9 @@ namespace PartyOrganizer.Core.Repository
             _partyRepository = new WebPartyRepository();
         }
 
-        public Task<int> Add(Party entity)
+        public Task Add(Party entity)
         {
-            throw new NotImplementedException();
+            return _partyRepository.Add(entity);
         }
 
         public async Task<IEnumerable<Party>> GetAll()
@@ -97,6 +98,16 @@ namespace PartyOrganizer.Core.Repository
             throw new NotImplementedException();
         }
 
+        public Task<bool> Join(string partyId, User user)
+        {
+            return _partyRepository.Join(partyId, user);
+        }
+
+        public Task AcceptRequest(string partyId, User user)
+        {
+            return _partyRepository.AcceptRequest(partyId, user);
+        }
+
         private async Task<bool> CheckConnection()
         {
             // If offline - check if the time difference is below [5] seconds
@@ -106,11 +117,6 @@ namespace PartyOrganizer.Core.Repository
             var internetStatus = CrossConnectivity.Current.IsConnected;
 
             return internetStatus;
-        }
-
-        Task IRepositoryAsync<Party>.Add(Party entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -14,40 +14,40 @@ namespace PartyOrganizer
     [Activity(Label = "Friends", MainLauncher = false)]
     public class FriendsActivity : Activity
     {
-        private ListView _friendsListView;
-        private List<User> _friends;
-        private IUserRepository _userRepository;
+        //private ListView _friendsListView;
+        //private List<User> _friends;
+        //private IUserRepository _userRepository;
         
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
+        //protected override void OnCreate(Bundle savedInstanceState)
+        //{
+        //    base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.FriendsView);
+        //    SetContentView(Resource.Layout.FriendsView);
 
-            _friendsListView = FindViewById<ListView>(Resource.Id.friendsListView);
+        //    _friendsListView = FindViewById<ListView>(Resource.Id.friendsListView);
 
-            _userRepository = new UserRepository();
+        //    _userRepository = new UserRepository();
 
-            _friends = _userRepository.GetAll().ToList();
+        //    _friends = _userRepository.GetAll().ToList();
 
-            _friendsListView.Adapter = new FriendsListAdapter(this, _friends);
+        //    _friendsListView.Adapter = new FriendsListAdapter(this, _friends);
 
-            HandleEvents();
+        //    HandleEvents();
 
-        }
+        //}
 
-        private void HandleEvents()
-        {
-            _friendsListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
-            {
-                var party = _friends[e.Position];
+        //private void HandleEvents()
+        //{
+        //    _friendsListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
+        //    {
+        //        var party = _friends[e.Position];
 
-                var intent = new Intent();
-                intent.SetClass(this, typeof(UserDetailActivity));
-                intent.PutExtra("selectedUserID", party.ID);
+        //        var intent = new Intent();
+        //        intent.SetClass(this, typeof(UserDetailActivity));
+        //        intent.PutExtra("selectedUserID", party.ID);
 
-                StartActivityForResult(intent, 100);
-            }; 
-        }
+        //        StartActivityForResult(intent, 100);
+        //    }; 
+        //}
     }
 }
