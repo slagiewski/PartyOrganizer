@@ -22,7 +22,7 @@ namespace PartyOrganizer.Core.Repository
 
         private static async Task Authorize()
         {
-            /*var authProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyBTrOTjn_lzeggQZwLSxP0ZauqtSCVT2C8"));
+            /*var authProvider = new FirebaseAuthProvider(new FirebaseConfig(""));
 
 
 
