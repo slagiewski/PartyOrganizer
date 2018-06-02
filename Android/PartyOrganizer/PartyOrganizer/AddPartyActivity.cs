@@ -81,20 +81,16 @@ namespace PartyOrganizer
                 // 3. Show success/failure info
                 // 4. Return to the previous activity
 
-                Party party;
-                PartyContent partyContent;
-                LocationData location;
-
                 try
                 {
-                    location = new LocationData()
+                    var location = new LocationData()
                     {
                         Name = _newPartyLocationEditText.Text
                     };
 
-                    Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                    var unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                     // Create model wrapper that'll provide proper validation
-                    partyContent = new PartyContent()
+                    var partyContent = new PartyContent()
                     {
                         Description = _newPartyDescriptionEditText.Text,
                         // Party admin image
@@ -103,19 +99,18 @@ namespace PartyOrganizer
                         Location = location,
                         Name = _newPartyNameEditText.Text,
                         Unix = unixTimestamp
-                };
+                    };
 
-                    party = new Party()
+                    var party = new Party()
                     {
                         Content = partyContent,
                         Members = _partyMembersList,
-                        Pending = _partyPendingList
+                        Pending = null
                     };
                     await _partyRepository.Add(party);
                 }
                 catch (Exception ex)
                 {
-                    party = null;
                     Console.WriteLine(ex.InnerException.Message);
                 }
 
@@ -143,7 +138,7 @@ namespace PartyOrganizer
                 var month = DateTime.UtcNow.Month;
                 var day = DateTime.UtcNow.Day;
 
-                DatePickerDialog date = new DatePickerDialog(this, this, year, month, day);
+                var date = new DatePickerDialog(this, this, year, month, day);
                 date.Show();
             };
         }
@@ -155,7 +150,7 @@ namespace PartyOrganizer
             var hourOfDay = DateTime.UtcNow.Hour;
             var minute = DateTime.UtcNow.Minute;
 
-            TimePickerDialog time = new TimePickerDialog(this, this, hourOfDay, minute, true);
+            var time = new TimePickerDialog(this, this, hourOfDay, minute, true);
             time.Show();
         }
 

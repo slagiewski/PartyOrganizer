@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Firebase.Xamarin.Database;
@@ -8,6 +7,7 @@ using Firebase.Xamarin.Database.Query;
 using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using Firebase.Xamarin.Auth;
 
 namespace PartyOrganizer.Core.Repository
 {
@@ -53,7 +53,9 @@ namespace PartyOrganizer.Core.Repository
                                               .OnceAsync<RawPartyData>();
 
             if (firebaseObjectParties.Count == 0)
+            {
                 return null;
+            }
 
             var firebaseObjectParty = firebaseObjectParties.FirstOrDefault();
             var rawPartyData = firebaseObjectParty.Object;
@@ -82,7 +84,7 @@ namespace PartyOrganizer.Core.Repository
             return lookupParties;
         }
         
-        public async Task<bool> Join(string partyId, User user)
+        public async Task<bool> Join(string partyId, Model.Member.User user)
         {
 
             var party = await this.GetById(partyId);
@@ -101,7 +103,7 @@ namespace PartyOrganizer.Core.Repository
                 return false;
         }
 
-        public async Task AcceptRequest(string partyId, User user)
+        public async Task AcceptRequest(string partyId, Model.Member.User user)
         {
             var newPartyMember = new PartyMember
             {

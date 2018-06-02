@@ -148,10 +148,8 @@
     <Compile Include="AddPartyActivity.cs" />
     <Compile Include="Fragments\FriendsFragment.cs" />
     <Compile Include="Fragments\PartiesFragment.cs" />
-    <Compile Include="FriendsActivity.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MenuActivity.cs" />
-    <Compile Include="PartiesActivity.cs" />
     <Compile Include="PartyDetailActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -161,6 +159,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
+    <AndroidResource Include="Resources\layout\Main.axml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\PartyOrganizerView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -196,9 +198,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\values\Strings.xml">
       <SubType>Designer</SubType>
     </AndroidResource>

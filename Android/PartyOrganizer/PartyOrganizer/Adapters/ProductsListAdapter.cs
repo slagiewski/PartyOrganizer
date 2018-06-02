@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-
 using Android.App;
 using Android.Views;
 using Android.Widget;
+using PartyOrganizer.Core.Model.Party;
 
 namespace PartyOrganizer.Adapters
 {
