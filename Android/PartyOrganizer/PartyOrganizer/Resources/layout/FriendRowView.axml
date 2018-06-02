@@ -13,22 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp">
-      <LinearLayout
-          android:orientation="vertical"
-          android:layout_height="match_parent"
-          android:layout_width="wrap_content"
-          android:padding="5dp">
-          <TextView
-              android:id="@+id/nameAndSurnameTextView"
-              android:layout_height="match_parent"
-              android:layout_width="wrap_content" 
-              android:textColor="@android:color/black"
-              android:textSize="12dp" />
-          <ImageView
-              android:id="@+id/statusImageView"
-              android:layout_width="20dp"
-              android:layout_height="20dp"
-              android:padding="5dp" />
-      </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/nameAndSurnameTextView"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="12dp" />
+            <ImageView
+                android:id="@+id/statusImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="5dp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

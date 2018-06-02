@@ -6,57 +6,114 @@
     android:background="#ffffff"
     android:minWidth="25px"
     android:minHeight="25px">
-    <TextView
-        android:id="@+id/newPartyNameTextView"
-        android:layout_height="wrap_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:text="Party Name"
-        android:textSize="13sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
-    <EditText
-        android:id="@+id/newPartyNameEditText"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textSize="10sp"
-        android:textColor="@android:color/black"
-        android:inputType="text" />
-    <TextView
-        android:id="@+id/newPartyDescriptionTextView"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:text="Party Description"
-        android:textSize="13sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
-    <EditText
-        android:id="@+id/newPartyDescriptionEditText"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textSize="10sp"
-        android:textColor="@android:color/black"
-        android:inputType="text" />
-    <TextView
-        android:id="@+id/newPartyLocationTextView"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:text="Party Location"
-        android:textSize="13sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
-    <EditText
-        android:id="@+id/newPartyLocationEditText"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textSize="10sp"
-        android:textColor="@android:color/black"
-        android:inputType="text" />
-    <Button
-        android:id="@+id/newPartyAddButton"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="Add" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/newPartyNameTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:text="Party Name"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/newPartyNameEditText"
+                android:layout_below="@id/newPartyNameTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="10sp"
+                android:textColor="@android:color/black"
+                android:inputType="text" />
+            <TextView
+                android:id="@+id/newPartyDescriptionTextView"
+                android:layout_below="@id/newPartyNameEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:text="Party Description"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/newPartyDescriptionEditText"
+                android:layout_below="@id/newPartyDescriptionTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="10sp"
+                android:textColor="@android:color/black"
+                android:inputType="text" />
+            <TextView
+                android:id="@+id/newPartyLocationTextView"
+                android:layout_below="@id/newPartyDescriptionEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:text="Party Location"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/newPartyLocationEditText"
+                android:layout_below="@id/newPartyLocationTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="10sp"
+                android:textColor="@android:color/black"
+                android:inputType="text" />
+            <TextView
+                android:id="@+id/newPartyProductsTextView"
+                android:layout_below="@id/newPartyLocationEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:text="Products"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/newPartyProductNameEditText"
+                android:layout_below="@id/newPartyProductsTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="180dp"
+                android:textSize="10sp"
+                android:textColor="@android:color/black"
+                android:inputType="text"
+                android:text="Name" />
+            <EditText
+                android:id="@+id/newPartyProductAmountEditText"
+                android:layout_below="@id/newPartyProductsTextView"
+                android:layout_toRightOf="@+id/newPartyProductNameEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="10sp"
+                android:textColor="@android:color/black"
+                android:inputType="text"
+                android:text="Amount" />
+            <Button
+                android:id="@+id/newPartyAddProductButton"
+                android:layout_below="@id/newPartyProductNameEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Add product" />
+          
+            <ListView
+                android:id="@+id/newPartyProductsListView"
+                android:layout_below="@id/newPartyAddProductButton"
+                android:layout_width="match_parent"
+                android:layout_height="500dp" />
+          <Button
+                android:id="@+id/newPartyAddButton"
+                android:layout_below="@id/newPartyProductsListView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Add Party" />
+            
+        </RelativeLayout>
+    </ScrollView>
 </LinearLayout>

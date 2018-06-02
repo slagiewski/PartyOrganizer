@@ -1,4 +1,5 @@
 ﻿
+using Android;
 using Android.App;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -14,8 +15,6 @@ namespace PartyOrganizer
     [Activity(Label = "MenuActivity", MainLauncher = true)]
     public class MenuActivity : FragmentActivity
     {
-
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
