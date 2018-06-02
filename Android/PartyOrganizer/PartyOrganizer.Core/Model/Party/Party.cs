@@ -1,5 +1,4 @@
-﻿using Firebase.Xamarin.Database;
-using System;
+﻿using PartyOrganizer.Core.Model.Member;
 using System.Collections.Generic;
 
 namespace PartyOrganizer.Core.Model.Party
@@ -12,6 +11,6 @@ namespace PartyOrganizer.Core.Model.Party
 
         public IEnumerable<PartyMember> Members { get; set; }
 
-        public IEnumerable<PartyMember> Pending { get; set; }
+        public IEnumerable<User> Pending { get; set; }
     }
 }

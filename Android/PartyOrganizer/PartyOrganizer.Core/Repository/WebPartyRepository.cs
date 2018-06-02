@@ -1,11 +1,10 @@
-﻿
-
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
-using Newtonsoft.Json;
+using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 
@@ -41,38 +40,10 @@ namespace PartyOrganizer.Core.Repository
                                           .OnceAsync<RawPartyData>();
 
             var firebaseObjectParty = firebaseObjectParties.FirstOrDefault();
+            var rawPartyData = firebaseObjectParty?.Object;
+            var partyId = firebaseObjectParty?.Key;
 
-            var party = new Party();
-
-            party.Id = firebaseObjectParty.Key;
-            party.Content = firebaseObjectParty.Object.Content;
-
-            if (firebaseObjectParty.Object.Members != null)
-            {
-                var members = JsonConvert.DeserializeObject<Dictionary<string, PartyMember>>(firebaseObjectParty.Object.Members.ToString());
-                var membersList = new List<PartyMember>(members.Count);
-                foreach (var member in members)
-                {
-                    member.Value.Id = member.Key;
-                    membersList.Add(member.Value);
-                }
-
-                party.Members = membersList;
-            }   
-
-            if (firebaseObjectParty.Object.Pending != null)
-            {
-                var pendingMembers = JsonConvert.DeserializeObject<Dictionary<string, PartyMember>>(firebaseObjectParty.Object.Pending.ToString());
-                var pendingList = new List<PartyMember>(pendingMembers.Count);
-                foreach (var pendingMember in pendingMembers)
-                {
-                    pendingMember.Value.Id = pendingMember.Key;
-                    pendingList.Add(pendingMember.Value);
-                }
-
-                party.Pending = pendingList;
-            }
-            
+            var party = rawPartyData?.ToParty(partyId);
             return party;
         }
 
@@ -84,10 +55,10 @@ namespace PartyOrganizer.Core.Repository
         public async Task<IEnumerable<LookupParty>> GetPartiesWithUser(string userId)
         {
             var firebaseObjectParties = await _fb
-                                         .Child("users")
-                                         .Child(userId)
-                                         .Child("partiesMeta")
-                                         .OnceAsync<LookupParty>();
+                                             .Child("users")
+                                             .Child(userId)
+                                             .Child("partiesMeta")
+                                             .OnceAsync<LookupParty>();
 
             var lookupParties = new List<LookupParty>(firebaseObjectParties.Count);
 
@@ -99,10 +70,82 @@ namespace PartyOrganizer.Core.Repository
             
             return lookupParties;
         }
+        
+        public async Task<bool> Join(string partyId, User user)
+        {
+
+            var party = await this.GetById(partyId);
+
+            if (party != null)
+            {
+                await _fb
+                      .Child("parties")
+                      .Child(partyId)
+                      .Child("pending")
+                      .Child(user.Id)
+                      .PutAsync<UserBase>(user);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public async Task AcceptRequest(string partyId, User user)
+        {
+            var newPartyMember = new PartyMember
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Image = user.Image,
+                Items = new List<PartyItem>()
+            };
+
+
+            await MoveFromPending(partyId, newPartyMember);
+
+            await AddToLookup(partyId, newPartyMember);
+        }
 
         public Task Remove(Party entity)
         {
             throw new System.NotImplementedException();
+        }
+
+        private async Task AddToLookup(string partyId, PartyMember newPartyMember)
+        {
+            await _fb
+                  .Child("users")
+                  .Child(partyId)
+                  .Child("partiesMeta")
+                  .Child(newPartyMember.Id)
+                  .PutAsync<PartyMember>(new PartyMember
+                  {
+                      Name = newPartyMember.Name,
+                      Image = newPartyMember.Image,
+                      Items = new List<PartyItem>()
+                  });
+        }
+
+        private async Task MoveFromPending(string partyId, PartyMember partyMember)
+        {
+            await _fb
+                  .Child("parties")
+                  .Child(partyId)
+                  .Child("members")
+                  .Child(partyMember.Id)
+                  .PutAsync<PartyMember>(new PartyMember
+                  {
+                      Name = partyMember.Name,
+                      Image = partyMember.Image,
+                      Items = new List<PartyItem>()
+                  });
+
+            await _fb
+                  .Child("parties")
+                  .Child(partyId)
+                  .Child("pending")
+                  .Child(partyMember.Id)
+                  .DeleteAsync();
         }
     }
 }

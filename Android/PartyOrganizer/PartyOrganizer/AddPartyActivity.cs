@@ -12,74 +12,74 @@ namespace PartyOrganizer
     [Activity(Label = "Add Party", MainLauncher = false)]
     public class AddPartyActivity : Activity
     {
-        private IPartyRepository _partyRepository;
+        //private IPartyRepository _partyRepository;
 
-        private EditText _newPartyNameEditText;
-        private EditText _newPartyDescriptionEditText;
-        private EditText _newPartyLocationEditText;
-        private Button _newPartyAddButton;
+        //private EditText _newPartyNameEditText;
+        //private EditText _newPartyDescriptionEditText;
+        //private EditText _newPartyLocationEditText;
+        //private Button _newPartyAddButton;
 
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.AddPartyView);
+        //protected override void OnCreate(Bundle savedInstanceState)
+        //{
+        //    base.OnCreate(savedInstanceState);
+        //    SetContentView(Resource.Layout.AddPartyView);
 
-            _partyRepository = new PartyRepository();
+        //    _partyRepository = new PartyRepository();
 
-            FindViews();
+        //    FindViews();
 
-            HandleEvents();
-        }
+        //    HandleEvents();
+        //}
 
-        private void FindViews()
-        {
-            _newPartyNameEditText = FindViewById<EditText>(Resource.Id.newPartyNameEditText);
-            _newPartyDescriptionEditText = FindViewById<EditText>(Resource.Id.newPartyDescriptionEditText);
-            _newPartyLocationEditText = FindViewById<EditText>(Resource.Id.newPartyLocationEditText);
-            _newPartyAddButton = FindViewById<Button>(Resource.Id.newPartyAddButton);
-        }
+        //private void FindViews()
+        //{
+        //    _newPartyNameEditText = FindViewById<EditText>(Resource.Id.newPartyNameEditText);
+        //    _newPartyDescriptionEditText = FindViewById<EditText>(Resource.Id.newPartyDescriptionEditText);
+        //    _newPartyLocationEditText = FindViewById<EditText>(Resource.Id.newPartyLocationEditText);
+        //    _newPartyAddButton = FindViewById<Button>(Resource.Id.newPartyAddButton);
+        //}
 
-        private void HandleEvents()
-        {
-            _newPartyAddButton.Click += (object sender, EventArgs e) =>
-            {
-                // 1. Validate
-                // 2. Add to the DB
-                // 3. Show success/failure info
-                // 4. Return to the previous activity
+        //private void HandleEvents()
+        //{
+        //    _newPartyAddButton.Click += (object sender, EventArgs e) =>
+        //    {
+        //        // 1. Validate
+        //        // 2. Add to the DB
+        //        // 3. Show success/failure info
+        //        // 4. Return to the previous activity
 
-                PartyInfo party;
+        //        PartyInfo party;
 
-                try
-                {
-                    // Create model wrapper that'll provide proper validation
-                    party = new PartyInfo()
-                    {
-                        Name = _newPartyNameEditText.Text,
-                        Admin = null,
-                        Description = _newPartyDescriptionEditText.Text,
-                        Location = _newPartyLocationEditText.Text
-                    };
+        //        try
+        //        {
+        //            // Create model wrapper that'll provide proper validation
+        //            party = new PartyInfo()
+        //            {
+        //                Name = _newPartyNameEditText.Text,
+        //                Admin = null,
+        //                Description = _newPartyDescriptionEditText.Text,
+        //                Location = _newPartyLocationEditText.Text
+        //            };
 
-                    _partyRepository.Add(party);
-                }
-                catch (Exception ex)
-                {
-                    party = null;
-                    Console.WriteLine(ex.InnerException.Message);
-                }
+        //            _partyRepository.Add(party);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            party = null;
+        //            Console.WriteLine(ex.InnerException.Message);
+        //        }
 
-                if (party != null)
-                {
-                    var intent = new Intent();
-                    intent.SetClass(this, typeof(PartiesActivity));
+        //        if (party != null)
+        //        {
+        //            var intent = new Intent();
+        //            intent.SetClass(this, typeof(PartiesActivity));
 
-                    StartActivity(intent);
-                }
+        //            StartActivity(intent);
+        //        }
 
 
-            };
+        //    };
       
-        }
+        //}
     }
 }

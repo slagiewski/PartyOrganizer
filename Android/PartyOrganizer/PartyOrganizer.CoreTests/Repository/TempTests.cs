@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Firebase.Xamarin.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 
@@ -10,7 +11,7 @@ namespace PartyOrganizer.CoreTests.Repository
     public class TempTests
     {
         readonly IPartyRepositoryAsync repository = new WebPartyRepository();
-        FirebaseClient _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
+        readonly FirebaseClient _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
 
         [TestMethod]
         public async Task GetLookupPartiesAsync()
@@ -28,6 +29,36 @@ namespace PartyOrganizer.CoreTests.Repository
 
             var party = await repository.GetById(id);
                         
+        }
+
+        [TestMethod]
+        public async Task JoinParty()
+        {
+            var partyId = "-LDXoHHc18uqBQd1pi_Z";
+            var user = new User
+            {
+                Id = "AAUdmniSRZOGxnAH0RYahSDBS2E3",
+                Image = "https://graph.facebook.com/1027942604038688/picture",
+                Name = "Jakub"
+
+            };
+
+            var result = await repository.Join(partyId, user);
+        }
+
+        [TestMethod]
+        public async Task AcceptRequest()
+        {
+            var partyId = "-LDXoHHc18uqBQd1pi_Z";
+            var user = new User
+            {
+                Id = "AAUdmniSRZOGxnAH0RYahSDBS2E3",
+                Image = "https://graph.facebook.com/1027942604038688/picture",
+                Name = "Jakub"
+
+            };
+
+            await repository.AcceptRequest(partyId, user);
         }
     }
 }

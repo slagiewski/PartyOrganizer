@@ -14,49 +14,49 @@ namespace PartyOrganizer.Fragments
 {
     public class PartiesFragment : Android.Support.V4.App.Fragment
     {
-        private ListView _partyListView;
-        private List<PartyInfo> _allParties;
-        private IPartyRepository _partyRepository;
+        //private ListView _partyListView;
+        //private List<PartyInfo> _allParties;
+        //private IPartyRepository _partyRepository;
 
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
+        //public override void OnCreate(Bundle savedInstanceState)
+        //{
+        //    base.OnCreate(savedInstanceState);
 
-            // Create your fragment here
-        }
+        //    // Create your fragment here
+        //}
 
-        public override void OnActivityCreated(Bundle savedInstanceState)
-        {
-            base.OnActivityCreated(savedInstanceState);
+        //public override void OnActivityCreated(Bundle savedInstanceState)
+        //{
+        //    base.OnActivityCreated(savedInstanceState);
 
-            _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
+        //    _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
 
-            _partyRepository = new PartyRepository();
+        //    _partyRepository = new PartyRepository();
 
-            _allParties = _partyRepository.GetAll().ToList();
+        //    _allParties = _partyRepository.GetAll().ToList();
 
-            _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
+        //    _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
 
-            HandleEvents();
-        }
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            // Use this to return your custom view for this Fragment
-            return inflater.Inflate(Resource.Layout.PartyOrganizerView, container, false);
-        }
+        //    HandleEvents();
+        //}
+        //public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        //{
+        //    // Use this to return your custom view for this Fragment
+        //    return inflater.Inflate(Resource.Layout.PartyOrganizerView, container, false);
+        //}
 
-        private void HandleEvents()
-        {
-            _partyListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
-            {
-                var party = _allParties[e.Position];
+        //private void HandleEvents()
+        //{
+        //    _partyListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
+        //    {
+        //        var party = _allParties[e.Position];
 
-                var intent = new Intent();
-                intent.SetClass(this.Activity, typeof(PartyDetailActivity));
-                intent.PutExtra("selectedPartyID", party.ID);
+        //        var intent = new Intent();
+        //        intent.SetClass(this.Activity, typeof(PartyDetailActivity));
+        //        intent.PutExtra("selectedPartyID", party.ID);
 
-                StartActivityForResult(intent, 100);
-            };
-        }
+        //        StartActivityForResult(intent, 100);
+        //    };
+        //}
     }
 }

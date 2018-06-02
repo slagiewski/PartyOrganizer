@@ -14,40 +14,40 @@ namespace PartyOrganizer
     [Activity(Label = "Party Organizer", MainLauncher = false)]
     public class PartiesActivity : Activity
     {
-        private ListView _partyListView;
-        private List<PartyInfo> _allParties;
-        private IPartyRepository _partyRepository;
+        //private ListView _partyListView;
+        //private List<PartyInfo> _allParties;
+        //private IPartyRepository _partyRepository;
 
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
+        //protected override void OnCreate(Bundle savedInstanceState)
+        //{
+        //    base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.PartyOrganizerView);
+        //    SetContentView(Resource.Layout.PartyOrganizerView);
 
-            _partyListView = FindViewById<ListView>(Resource.Id.partyOrganizerListView);
+        //    _partyListView = FindViewById<ListView>(Resource.Id.partyOrganizerListView);
 
-            _partyRepository = new PartyRepository();
+        //    _partyRepository = new PartyRepository();
 
-            _allParties = _partyRepository.GetAll().ToList();
+        //    _allParties = _partyRepository.GetAll().ToList();
 
-            _partyListView.Adapter = new PartyListAdapter(this, _allParties);
+        //    _partyListView.Adapter = new PartyListAdapter(this, _allParties);
 
-            HandleEvents();
-        }
+        //    HandleEvents();
+        //}
 
-        private void HandleEvents()
-        {
-            _partyListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
-            {
-                var party = _allParties[e.Position];
+        //private void HandleEvents()
+        //{
+        //    _partyListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
+        //    {
+        //        var party = _allParties[e.Position];
 
-                var intent = new Intent();
-                intent.SetClass(this, typeof(PartyDetailActivity));
-                intent.PutExtra("selectedPartyID", party.ID);
+        //        var intent = new Intent();
+        //        intent.SetClass(this, typeof(PartyDetailActivity));
+        //        intent.PutExtra("selectedPartyID", party.ID);
 
-                StartActivityForResult(intent, 100);
-            };          
-        }
+        //        StartActivityForResult(intent, 100);
+        //    };          
+        //}
     }
 }
 

@@ -73,26 +73,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Interfaces\IEntity.cs" />
     <Compile Include="Model\LocationData.cs" />
+    <Compile Include="Model\Member\UserBase.cs" />
     <Compile Include="Model\Party\Party.cs" />
     <Compile Include="Model\Party\PartyContent.cs" />
     <Compile Include="Model\Party\PartyItem.cs" />
     <Compile Include="Model\Member\PartyMember.cs" />
     <Compile Include="Model\Party\LookupParty.cs" />
-    <Compile Include="Model\Party\PartyInfo.cs" />
     <Compile Include="Model\Party\RawPartyData.cs" />
     <Compile Include="Model\Member\User.cs" />
     <Compile Include="Repository\Interfaces\IPartyRepository.cs" />
     <Compile Include="Repository\Interfaces\IPartyRepositoryAsync.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
     <Compile Include="Repository\Interfaces\IRepositoryAsync.cs" />
-    <Compile Include="Repository\Interfaces\IUserRepository.cs" />
     <Compile Include="Repository\Interfaces\IUserRepositoryAsync.cs" />
-    <Compile Include="Repository\PartyRepository.cs" />
-    <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="Repository\WebPartyRepository.cs" />
-    <Compile Include="Repository\WebUserRepository.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
