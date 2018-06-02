@@ -7,9 +7,7 @@ namespace PartyOrganizer.Core.Repository.Interfaces
 {
     public interface IPartyRepositoryAsync : IRepositoryAsync<Party>
     {
-        Task<IEnumerable<LookupParty>> GetPartiesByUser(string userId);
-
-        Task<IEnumerable<LookupParty>> GetPartiesWithUser(string userId);
+        Task<IEnumerable<PartyLookup>> GetPartiesByUserId(string userId);
 
         Task<bool> Join(string partyId, User user);
 

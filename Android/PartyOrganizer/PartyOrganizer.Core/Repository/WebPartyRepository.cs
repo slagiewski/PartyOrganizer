@@ -19,9 +19,11 @@ namespace PartyOrganizer.Core.Repository
             _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
         }
 
-        public Task<int> Add(Party entity)
+        public async Task Add(Party entity)
         {
-            throw new System.NotImplementedException();
+            await _fb
+                  .Child("parties")
+                  .PostAsync<Party>(entity);
         }
 
         public Task<IEnumerable<Party>> GetAll()
@@ -33,34 +35,32 @@ namespace PartyOrganizer.Core.Repository
         public async Task<Party> GetById(string id)
         {
             var firebaseObjectParties = await _fb
-                                          .Child("parties")
-                                          .OrderByKey()
-                                          .StartAt(id)
-                                          .EndAt(id)
-                                          .OnceAsync<RawPartyData>();
+                                              .Child("parties")
+                                              .OrderByKey()
+                                              .StartAt(id)
+                                              .EndAt(id)
+                                              .OnceAsync<RawPartyData>();
+
+            if (firebaseObjectParties.Count == 0)
+                return null;
 
             var firebaseObjectParty = firebaseObjectParties.FirstOrDefault();
-            var rawPartyData = firebaseObjectParty?.Object;
-            var partyId = firebaseObjectParty?.Key;
+            var rawPartyData = firebaseObjectParty.Object;
+            var partyId = firebaseObjectParty.Key;
 
-            var party = rawPartyData?.ToParty(partyId);
+            var party = rawPartyData.ToParty(partyId);
             return party;
         }
 
-        public Task<IEnumerable<LookupParty>> GetPartiesByUser(string userId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<IEnumerable<LookupParty>> GetPartiesWithUser(string userId)
+        public async Task<IEnumerable<PartyLookup>> GetPartiesByUserId(string userId)
         {
             var firebaseObjectParties = await _fb
                                              .Child("users")
                                              .Child(userId)
                                              .Child("partiesMeta")
-                                             .OnceAsync<LookupParty>();
+                                             .OnceAsync<PartyLookup>();
 
-            var lookupParties = new List<LookupParty>(firebaseObjectParties.Count);
+            var lookupParties = new List<PartyLookup>(firebaseObjectParties.Count);
 
             foreach (var party in firebaseObjectParties)
             {

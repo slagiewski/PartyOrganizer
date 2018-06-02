@@ -17,7 +17,7 @@ namespace PartyOrganizer.CoreTests.Repository
         public async Task GetLookupPartiesAsync()
         {
             var id = "amXgDFj6WcOQkffgtN3pOJupXEz2";
-            var parties = await repository.GetPartiesWithUser(id);
+            var parties = await repository.GetPartiesByUserId(id);
 
 
         }

@@ -1,5 +1,4 @@
 ﻿using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Widget;
 using PartyOrganizer.Adapters;
@@ -34,14 +33,16 @@ namespace PartyOrganizer
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.AddPartyView);
-            FindViews();
-
-            HandleEvents();
+       
             _partyRepository = new WebPartyRepository();
             _partyMembersList = new List<PartyMember>();
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);
-            _newPartyProductListView.Adapter = _dataAdapter;           
+            _newPartyProductListView.Adapter = _dataAdapter;
+
+            FindViews();
+
+            HandleEvents();
         }
 
         private void FindViews()
@@ -65,19 +66,15 @@ namespace PartyOrganizer
                 // 3. Show success/failure info
                 // 4. Return to the previous activity
 
-                Party party;
-                PartyContent partyContent;
-                LocationData location;
-
                 try
                 {
-                    location = new LocationData()
+                    var location = new LocationData()
                     {
                         Name = _newPartyLocationEditText.Text
                     };
 
                     // Create model wrapper that'll provide proper validation
-                    partyContent = new PartyContent()
+                    var partyContent = new PartyContent()
                     {
                         Description = _newPartyDescriptionEditText.Text,
                         // Party admin image
@@ -87,17 +84,16 @@ namespace PartyOrganizer
                         Name = _newPartyNameEditText.Text
                     };
 
-                    party = new Party()
+                    var party = new Party()
                     {
                         Content = partyContent,
                         Members = _partyMembersList,
-                        Pending = _partyPendingList
+                        Pending = null
                     };
                     await _partyRepository.Add(party);
                 }
                 catch (Exception ex)
                 {
-                    party = null;
                     Console.WriteLine(ex.InnerException.Message);
                 }
 
