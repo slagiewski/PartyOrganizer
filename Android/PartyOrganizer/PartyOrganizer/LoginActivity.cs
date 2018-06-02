@@ -16,7 +16,7 @@ using Java.Security;
 
 namespace PartyOrganizer
 {
-    [Activity(Label = "LoginActivity", MainLauncher = false)]
+    [Activity(Label = "LoginActivity", MainLauncher = true)]
     public class LoginActivity : Activity, IFacebookCallback
     {
         private ICallbackManager mCallBackManager;
@@ -35,8 +35,12 @@ namespace PartyOrganizer
         {
             var loginResult = result as LoginResult;
             var accessToken = loginResult.AccessToken;
+            var test1 = loginResult.AccessToken.Token;
+            var test = AccessToken.CurrentAccessToken.Token;
 
-            var profile = Profile.CurrentProfile;
+            var intent = new Intent();
+            intent.SetClass(this, typeof(MenuActivity));
+            StartActivity(intent);
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

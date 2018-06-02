@@ -2356,26 +2356,26 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f0200a4
-			public const int avd_hide_password_1 = 2130837668;
-			
 			// aapt resource value: 0x7f0200a5
-			public const int avd_hide_password_2 = 2130837669;
+			public const int avd_hide_password_1 = 2130837669;
 			
 			// aapt resource value: 0x7f0200a6
-			public const int avd_hide_password_3 = 2130837670;
+			public const int avd_hide_password_2 = 2130837670;
+			
+			// aapt resource value: 0x7f0200a7
+			public const int avd_hide_password_3 = 2130837671;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f0200a7
-			public const int avd_show_password_1 = 2130837671;
-			
 			// aapt resource value: 0x7f0200a8
-			public const int avd_show_password_2 = 2130837672;
+			public const int avd_show_password_1 = 2130837672;
 			
 			// aapt resource value: 0x7f0200a9
-			public const int avd_show_password_3 = 2130837673;
+			public const int avd_show_password_2 = 2130837673;
+			
+			// aapt resource value: 0x7f0200aa
+			public const int avd_show_password_3 = 2130837674;
 			
 			// aapt resource value: 0x7f020055
 			public const int com_facebook_auth_dialog_background = 2130837589;
@@ -2546,73 +2546,76 @@ namespace PartyOrganizer
 			public const int googleg_standard_color_18 = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int messenger_bubble_large_blue = 2130837645;
+			public const int ic_launcher = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
-			public const int messenger_bubble_large_white = 2130837646;
+			public const int messenger_bubble_large_blue = 2130837646;
 			
 			// aapt resource value: 0x7f02008f
-			public const int messenger_bubble_small_blue = 2130837647;
+			public const int messenger_bubble_large_white = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int messenger_bubble_small_white = 2130837648;
+			public const int messenger_bubble_small_blue = 2130837648;
 			
 			// aapt resource value: 0x7f020091
-			public const int messenger_button_blue_bg_round = 2130837649;
+			public const int messenger_bubble_small_white = 2130837649;
 			
 			// aapt resource value: 0x7f020092
-			public const int messenger_button_blue_bg_selector = 2130837650;
+			public const int messenger_button_blue_bg_round = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int messenger_button_send_round_shadow = 2130837651;
+			public const int messenger_button_blue_bg_selector = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int messenger_button_white_bg_round = 2130837652;
+			public const int messenger_button_send_round_shadow = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int messenger_button_white_bg_selector = 2130837653;
+			public const int messenger_button_white_bg_round = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int navigation_empty_icon = 2130837654;
+			public const int messenger_button_white_bg_selector = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int notification_action_background = 2130837655;
+			public const int navigation_empty_icon = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int notification_bg = 2130837656;
+			public const int notification_action_background = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int notification_bg_low = 2130837657;
+			public const int notification_bg = 2130837657;
 			
 			// aapt resource value: 0x7f02009a
-			public const int notification_bg_low_normal = 2130837658;
+			public const int notification_bg_low = 2130837658;
 			
 			// aapt resource value: 0x7f02009b
-			public const int notification_bg_low_pressed = 2130837659;
+			public const int notification_bg_low_normal = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int notification_bg_normal = 2130837660;
+			public const int notification_bg_low_pressed = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int notification_bg_normal_pressed = 2130837661;
+			public const int notification_bg_normal = 2130837661;
 			
 			// aapt resource value: 0x7f02009e
-			public const int notification_icon_background = 2130837662;
-			
-			// aapt resource value: 0x7f0200a2
-			public const int notification_template_icon_bg = 2130837666;
-			
-			// aapt resource value: 0x7f0200a3
-			public const int notification_template_icon_low_bg = 2130837667;
+			public const int notification_bg_normal_pressed = 2130837662;
 			
 			// aapt resource value: 0x7f02009f
-			public const int notification_tile_bg = 2130837663;
+			public const int notification_icon_background = 2130837663;
+			
+			// aapt resource value: 0x7f0200a3
+			public const int notification_template_icon_bg = 2130837667;
+			
+			// aapt resource value: 0x7f0200a4
+			public const int notification_template_icon_low_bg = 2130837668;
 			
 			// aapt resource value: 0x7f0200a0
-			public const int notify_panel_notification_icon_bg = 2130837664;
+			public const int notification_tile_bg = 2130837664;
 			
 			// aapt resource value: 0x7f0200a1
-			public const int party = 2130837665;
+			public const int notify_panel_notification_icon_bg = 2130837665;
+			
+			// aapt resource value: 0x7f0200a2
+			public const int party = 2130837666;
 			
 			static Drawable()
 			{
@@ -2627,8 +2630,8 @@ namespace PartyOrganizer
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0b00b6
-			public const int action0 = 2131427510;
+			// aapt resource value: 0x7f0b00b9
+			public const int action0 = 2131427513;
 			
 			// aapt resource value: 0x7f0b0076
 			public const int action_bar = 2131427446;
@@ -2651,17 +2654,17 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0053
 			public const int action_bar_title = 2131427411;
 			
-			// aapt resource value: 0x7f0b00b3
-			public const int action_container = 2131427507;
+			// aapt resource value: 0x7f0b00b6
+			public const int action_container = 2131427510;
 			
 			// aapt resource value: 0x7f0b0077
 			public const int action_context_bar = 2131427447;
 			
-			// aapt resource value: 0x7f0b00ba
-			public const int action_divider = 2131427514;
+			// aapt resource value: 0x7f0b00bd
+			public const int action_divider = 2131427517;
 			
-			// aapt resource value: 0x7f0b00b4
-			public const int action_image = 2131427508;
+			// aapt resource value: 0x7f0b00b7
+			public const int action_image = 2131427511;
 			
 			// aapt resource value: 0x7f0b0003
 			public const int action_menu_divider = 2131427331;
@@ -2678,11 +2681,11 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0055
 			public const int action_mode_close_button = 2131427413;
 			
-			// aapt resource value: 0x7f0b00b5
-			public const int action_text = 2131427509;
+			// aapt resource value: 0x7f0b00b8
+			public const int action_text = 2131427512;
 			
-			// aapt resource value: 0x7f0b00c3
-			public const int actions = 2131427523;
+			// aapt resource value: 0x7f0b00c6
+			public const int actions = 2131427526;
 			
 			// aapt resource value: 0x7f0b0056
 			public const int activity_chooser_view_content = 2131427414;
@@ -2696,8 +2699,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0010
 			public const int adjust_width = 2131427344;
 			
-			// aapt resource value: 0x7f0b00d4
-			public const int adminTextView = 2131427540;
+			// aapt resource value: 0x7f0b00d7
+			public const int adminTextView = 2131427543;
 			
 			// aapt resource value: 0x7f0b006a
 			public const int alertTitle = 2131427434;
@@ -2714,8 +2717,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0023
 			public const int automatic = 2131427363;
 			
-			// aapt resource value: 0x7f0b00d7
-			public const int avatarImageView = 2131427543;
+			// aapt resource value: 0x7f0b00da
+			public const int avatarImageView = 2131427546;
 			
 			// aapt resource value: 0x7f0b0038
 			public const int beginning = 2131427384;
@@ -2732,11 +2735,11 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b005d
 			public const int buttonPanel = 2131427421;
 			
-			// aapt resource value: 0x7f0b00b7
-			public const int cancel_action = 2131427511;
+			// aapt resource value: 0x7f0b00ba
+			public const int cancel_action = 2131427514;
 			
-			// aapt resource value: 0x7f0b0095
-			public const int cancel_button = 2131427477;
+			// aapt resource value: 0x7f0b0098
+			public const int cancel_button = 2131427480;
 			
 			// aapt resource value: 0x7f0b0020
 			public const int center = 2131427360;
@@ -2750,8 +2753,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b006d
 			public const int checkbox = 2131427437;
 			
-			// aapt resource value: 0x7f0b00bf
-			public const int chronometer = 2131427519;
+			// aapt resource value: 0x7f0b00c2
+			public const int chronometer = 2131427522;
 			
 			// aapt resource value: 0x7f0b004b
 			public const int clip_horizontal = 2131427403;
@@ -2762,47 +2765,47 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b003c
 			public const int collapseActionView = 2131427388;
 			
-			// aapt resource value: 0x7f0b0099
-			public const int com_facebook_body_frame = 2131427481;
+			// aapt resource value: 0x7f0b009c
+			public const int com_facebook_body_frame = 2131427484;
 			
-			// aapt resource value: 0x7f0b009b
-			public const int com_facebook_button_xout = 2131427483;
-			
-			// aapt resource value: 0x7f0b0094
-			public const int com_facebook_device_auth_instructions = 2131427476;
-			
-			// aapt resource value: 0x7f0b0091
-			public const int com_facebook_fragment_container = 2131427473;
-			
-			// aapt resource value: 0x7f0b0096
-			public const int com_facebook_login_activity_progress_bar = 2131427478;
+			// aapt resource value: 0x7f0b009e
+			public const int com_facebook_button_xout = 2131427486;
 			
 			// aapt resource value: 0x7f0b0097
-			public const int com_facebook_smart_instructions_0 = 2131427479;
+			public const int com_facebook_device_auth_instructions = 2131427479;
 			
-			// aapt resource value: 0x7f0b0098
-			public const int com_facebook_smart_instructions_or = 2131427480;
+			// aapt resource value: 0x7f0b0094
+			public const int com_facebook_fragment_container = 2131427476;
 			
-			// aapt resource value: 0x7f0b009d
-			public const int com_facebook_tooltip_bubble_view_bottom_pointer = 2131427485;
-			
-			// aapt resource value: 0x7f0b009c
-			public const int com_facebook_tooltip_bubble_view_text_body = 2131427484;
+			// aapt resource value: 0x7f0b0099
+			public const int com_facebook_login_activity_progress_bar = 2131427481;
 			
 			// aapt resource value: 0x7f0b009a
-			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131427482;
+			public const int com_facebook_smart_instructions_0 = 2131427482;
 			
-			// aapt resource value: 0x7f0b0092
-			public const int confirmation_code = 2131427474;
+			// aapt resource value: 0x7f0b009b
+			public const int com_facebook_smart_instructions_or = 2131427483;
 			
 			// aapt resource value: 0x7f0b00a0
-			public const int container = 2131427488;
+			public const int com_facebook_tooltip_bubble_view_bottom_pointer = 2131427488;
+			
+			// aapt resource value: 0x7f0b009f
+			public const int com_facebook_tooltip_bubble_view_text_body = 2131427487;
+			
+			// aapt resource value: 0x7f0b009d
+			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131427485;
+			
+			// aapt resource value: 0x7f0b0095
+			public const int confirmation_code = 2131427477;
+			
+			// aapt resource value: 0x7f0b00a3
+			public const int container = 2131427491;
 			
 			// aapt resource value: 0x7f0b0060
 			public const int contentPanel = 2131427424;
 			
-			// aapt resource value: 0x7f0b00a1
-			public const int coordinator = 2131427489;
+			// aapt resource value: 0x7f0b00a4
+			public const int coordinator = 2131427492;
 			
 			// aapt resource value: 0x7f0b0067
 			public const int custom = 2131427431;
@@ -2819,20 +2822,20 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0059
 			public const int default_activity_button = 2131427417;
 			
-			// aapt resource value: 0x7f0b00a3
-			public const int design_bottom_sheet = 2131427491;
+			// aapt resource value: 0x7f0b00a6
+			public const int design_bottom_sheet = 2131427494;
+			
+			// aapt resource value: 0x7f0b00ad
+			public const int design_menu_item_action_area = 2131427501;
+			
+			// aapt resource value: 0x7f0b00ac
+			public const int design_menu_item_action_area_stub = 2131427500;
+			
+			// aapt resource value: 0x7f0b00ab
+			public const int design_menu_item_text = 2131427499;
 			
 			// aapt resource value: 0x7f0b00aa
-			public const int design_menu_item_action_area = 2131427498;
-			
-			// aapt resource value: 0x7f0b00a9
-			public const int design_menu_item_action_area_stub = 2131427497;
-			
-			// aapt resource value: 0x7f0b00a8
-			public const int design_menu_item_text = 2131427496;
-			
-			// aapt resource value: 0x7f0b00a7
-			public const int design_navigation_view = 2131427495;
+			public const int design_navigation_view = 2131427498;
 			
 			// aapt resource value: 0x7f0b002b
 			public const int disableHome = 2131427371;
@@ -2846,8 +2849,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0039
 			public const int end = 2131427385;
 			
-			// aapt resource value: 0x7f0b00c9
-			public const int end_padder = 2131427529;
+			// aapt resource value: 0x7f0b00cc
+			public const int end_padder = 2131427532;
 			
 			// aapt resource value: 0x7f0b0040
 			public const int enterAlways = 2131427392;
@@ -2876,14 +2879,14 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0051
 			public const int @fixed = 2131427409;
 			
-			// aapt resource value: 0x7f0b00ac
-			public const int friendImageView = 2131427500;
-			
-			// aapt resource value: 0x7f0b00dd
-			public const int friends = 2131427549;
-			
 			// aapt resource value: 0x7f0b00af
-			public const int friendsListView = 2131427503;
+			public const int friendImageView = 2131427503;
+			
+			// aapt resource value: 0x7f0b00e0
+			public const int friends = 2131427552;
+			
+			// aapt resource value: 0x7f0b00b2
+			public const int friendsListView = 2131427506;
 			
 			// aapt resource value: 0x7f0b0005
 			public const int home = 2131427333;
@@ -2894,8 +2897,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b005b
 			public const int icon = 2131427419;
 			
-			// aapt resource value: 0x7f0b00c4
-			public const int icon_group = 2131427524;
+			// aapt resource value: 0x7f0b00c7
+			public const int icon_group = 2131427527;
 			
 			// aapt resource value: 0x7f0b0012
 			public const int icon_only = 2131427346;
@@ -2906,8 +2909,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0058
 			public const int image = 2131427416;
 			
-			// aapt resource value: 0x7f0b00c0
-			public const int info = 2131427520;
+			// aapt resource value: 0x7f0b00c3
+			public const int info = 2131427523;
 			
 			// aapt resource value: 0x7f0b001e
 			public const int inline = 2131427358;
@@ -2918,8 +2921,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0026
 			public const int large = 2131427366;
 			
-			// aapt resource value: 0x7f0b009f
-			public const int largeLabel = 2131427487;
+			// aapt resource value: 0x7f0b00a2
+			public const int largeLabel = 2131427490;
 			
 			// aapt resource value: 0x7f0b0021
 			public const int left = 2131427361;
@@ -2927,11 +2930,11 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0017
 			public const int light = 2131427351;
 			
-			// aapt resource value: 0x7f0b00c5
-			public const int line1 = 2131427525;
+			// aapt resource value: 0x7f0b00c8
+			public const int line1 = 2131427528;
 			
-			// aapt resource value: 0x7f0b00c7
-			public const int line3 = 2131427527;
+			// aapt resource value: 0x7f0b00ca
+			public const int line3 = 2131427530;
 			
 			// aapt resource value: 0x7f0b0029
 			public const int listMode = 2131427369;
@@ -2939,20 +2942,20 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b005a
 			public const int list_item = 2131427418;
 			
-			// aapt resource value: 0x7f0b00b0
-			public const int login_button = 2131427504;
+			// aapt resource value: 0x7f0b00b3
+			public const int login_button = 2131427507;
 			
-			// aapt resource value: 0x7f0b00cb
-			public const int mainScrollView = 2131427531;
+			// aapt resource value: 0x7f0b00ce
+			public const int mainScrollView = 2131427534;
 			
-			// aapt resource value: 0x7f0b00dc
-			public const int masked = 2131427548;
+			// aapt resource value: 0x7f0b00df
+			public const int masked = 2131427551;
 			
-			// aapt resource value: 0x7f0b00b9
-			public const int media_actions = 2131427513;
+			// aapt resource value: 0x7f0b00bc
+			public const int media_actions = 2131427516;
 			
-			// aapt resource value: 0x7f0b00b2
-			public const int messenger_send_button = 2131427506;
+			// aapt resource value: 0x7f0b00b5
+			public const int messenger_send_button = 2131427509;
 			
 			// aapt resource value: 0x7f0b003a
 			public const int middle = 2131427386;
@@ -2963,11 +2966,11 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0031
 			public const int multiply = 2131427377;
 			
-			// aapt resource value: 0x7f0b00ad
-			public const int nameAndSurnameTextView = 2131427501;
+			// aapt resource value: 0x7f0b00b0
+			public const int nameAndSurnameTextView = 2131427504;
 			
-			// aapt resource value: 0x7f0b00a6
-			public const int navigation_header_container = 2131427494;
+			// aapt resource value: 0x7f0b00a9
+			public const int navigation_header_container = 2131427497;
 			
 			// aapt resource value: 0x7f0b003e
 			public const int never = 2131427390;
@@ -2975,11 +2978,17 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0025
 			public const int never_display = 2131427365;
 			
-			// aapt resource value: 0x7f0b0090
-			public const int newPartyAddButton = 2131427472;
+			// aapt resource value: 0x7f0b0093
+			public const int newPartyAddButton = 2131427475;
 			
-			// aapt resource value: 0x7f0b008e
-			public const int newPartyAddProductButton = 2131427470;
+			// aapt resource value: 0x7f0b0091
+			public const int newPartyAddProductButton = 2131427473;
+			
+			// aapt resource value: 0x7f0b008b
+			public const int newPartyDateDescTextView = 2131427467;
+			
+			// aapt resource value: 0x7f0b008c
+			public const int newPartyDateTimeTextView = 2131427468;
 			
 			// aapt resource value: 0x7f0b0088
 			public const int newPartyDescriptionEditText = 2131427464;
@@ -2999,17 +3008,20 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0085
 			public const int newPartyNameTextView = 2131427461;
 			
-			// aapt resource value: 0x7f0b008d
-			public const int newPartyProductAmountEditText = 2131427469;
-			
-			// aapt resource value: 0x7f0b008c
-			public const int newPartyProductNameEditText = 2131427468;
+			// aapt resource value: 0x7f0b0090
+			public const int newPartyProductAmountEditText = 2131427472;
 			
 			// aapt resource value: 0x7f0b008f
-			public const int newPartyProductsListView = 2131427471;
+			public const int newPartyProductNameEditText = 2131427471;
 			
-			// aapt resource value: 0x7f0b008b
-			public const int newPartyProductsTextView = 2131427467;
+			// aapt resource value: 0x7f0b0092
+			public const int newPartyProductsListView = 2131427474;
+			
+			// aapt resource value: 0x7f0b008e
+			public const int newPartyProductsTextView = 2131427470;
+			
+			// aapt resource value: 0x7f0b008d
+			public const int newPartySetDateTimeButton = 2131427469;
 			
 			// aapt resource value: 0x7f0b0011
 			public const int none = 2131427345;
@@ -3017,14 +3029,14 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0027
 			public const int normal = 2131427367;
 			
-			// aapt resource value: 0x7f0b00c2
-			public const int notification_background = 2131427522;
+			// aapt resource value: 0x7f0b00c5
+			public const int notification_background = 2131427525;
 			
-			// aapt resource value: 0x7f0b00bc
-			public const int notification_main_column = 2131427516;
+			// aapt resource value: 0x7f0b00bf
+			public const int notification_main_column = 2131427519;
 			
-			// aapt resource value: 0x7f0b00bb
-			public const int notification_main_column_container = 2131427515;
+			// aapt resource value: 0x7f0b00be
+			public const int notification_main_column_container = 2131427518;
 			
 			// aapt resource value: 0x7f0b0018
 			public const int open_graph = 2131427352;
@@ -3038,44 +3050,44 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b005f
 			public const int parentPanel = 2131427423;
 			
-			// aapt resource value: 0x7f0b00de
-			public const int parties = 2131427550;
-			
-			// aapt resource value: 0x7f0b00ce
-			public const int partyAdminTextView = 2131427534;
-			
-			// aapt resource value: 0x7f0b00cc
-			public const int partyAvatarImageView = 2131427532;
-			
-			// aapt resource value: 0x7f0b00d0
-			public const int partyDateTextView = 2131427536;
-			
-			// aapt resource value: 0x7f0b00d3
-			public const int partyImageView = 2131427539;
-			
-			// aapt resource value: 0x7f0b00cf
-			public const int partyLocationTextView = 2131427535;
+			// aapt resource value: 0x7f0b00e1
+			public const int parties = 2131427553;
 			
 			// aapt resource value: 0x7f0b00d1
-			public const int partyLongDescriptionTextView = 2131427537;
+			public const int partyAdminTextView = 2131427537;
+			
+			// aapt resource value: 0x7f0b00cf
+			public const int partyAvatarImageView = 2131427535;
+			
+			// aapt resource value: 0x7f0b00d3
+			public const int partyDateTextView = 2131427539;
+			
+			// aapt resource value: 0x7f0b00d6
+			public const int partyImageView = 2131427542;
 			
 			// aapt resource value: 0x7f0b00d2
-			public const int partyOrganizerListView = 2131427538;
+			public const int partyLocationTextView = 2131427538;
 			
-			// aapt resource value: 0x7f0b00cd
-			public const int partyShortDescriptionTextView = 2131427533;
+			// aapt resource value: 0x7f0b00d4
+			public const int partyLongDescriptionTextView = 2131427540;
+			
+			// aapt resource value: 0x7f0b00d5
+			public const int partyOrganizerListView = 2131427541;
+			
+			// aapt resource value: 0x7f0b00d0
+			public const int partyShortDescriptionTextView = 2131427536;
 			
 			// aapt resource value: 0x7f0b004a
 			public const int pin = 2131427402;
 			
-			// aapt resource value: 0x7f0b00d6
-			public const int productAmountTextView = 2131427542;
+			// aapt resource value: 0x7f0b00d9
+			public const int productAmountTextView = 2131427545;
 			
-			// aapt resource value: 0x7f0b00d5
-			public const int productNameTextView = 2131427541;
+			// aapt resource value: 0x7f0b00d8
+			public const int productNameTextView = 2131427544;
 			
-			// aapt resource value: 0x7f0b0093
-			public const int progress_bar = 2131427475;
+			// aapt resource value: 0x7f0b0096
+			public const int progress_bar = 2131427478;
 			
 			// aapt resource value: 0x7f0b0006
 			public const int progress_circular = 2131427334;
@@ -3089,11 +3101,11 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0022
 			public const int right = 2131427362;
 			
-			// aapt resource value: 0x7f0b00c1
-			public const int right_icon = 2131427521;
+			// aapt resource value: 0x7f0b00c4
+			public const int right_icon = 2131427524;
 			
-			// aapt resource value: 0x7f0b00bd
-			public const int right_side = 2131427517;
+			// aapt resource value: 0x7f0b00c0
+			public const int right_side = 2131427520;
 			
 			// aapt resource value: 0x7f0b0032
 			public const int screen = 2131427378;
@@ -3161,14 +3173,14 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0028
 			public const int small = 2131427368;
 			
-			// aapt resource value: 0x7f0b009e
-			public const int smallLabel = 2131427486;
+			// aapt resource value: 0x7f0b00a1
+			public const int smallLabel = 2131427489;
 			
-			// aapt resource value: 0x7f0b00a5
-			public const int snackbar_action = 2131427493;
+			// aapt resource value: 0x7f0b00a8
+			public const int snackbar_action = 2131427496;
 			
-			// aapt resource value: 0x7f0b00a4
-			public const int snackbar_text = 2131427492;
+			// aapt resource value: 0x7f0b00a7
+			public const int snackbar_text = 2131427495;
 			
 			// aapt resource value: 0x7f0b0044
 			public const int snap = 2131427396;
@@ -3194,11 +3206,11 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0048
 			public const int start = 2131427400;
 			
-			// aapt resource value: 0x7f0b00ae
-			public const int statusImageView = 2131427502;
+			// aapt resource value: 0x7f0b00b1
+			public const int statusImageView = 2131427505;
 			
-			// aapt resource value: 0x7f0b00b8
-			public const int status_bar_latest_event_content = 2131427512;
+			// aapt resource value: 0x7f0b00bb
+			public const int status_bar_latest_event_content = 2131427515;
 			
 			// aapt resource value: 0x7f0b0070
 			public const int submenuarrow = 2131427440;
@@ -3209,14 +3221,14 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b002a
 			public const int tabMode = 2131427370;
 			
-			// aapt resource value: 0x7f0b00ca
-			public const int tabs = 2131427530;
+			// aapt resource value: 0x7f0b00cd
+			public const int tabs = 2131427533;
 			
-			// aapt resource value: 0x7f0b00c8
-			public const int text = 2131427528;
+			// aapt resource value: 0x7f0b00cb
+			public const int text = 2131427531;
 			
-			// aapt resource value: 0x7f0b00c6
-			public const int text2 = 2131427526;
+			// aapt resource value: 0x7f0b00c9
+			public const int text2 = 2131427529;
 			
 			// aapt resource value: 0x7f0b0064
 			public const int textSpacerNoButtons = 2131427428;
@@ -3224,8 +3236,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0063
 			public const int textSpacerNoTitle = 2131427427;
 			
-			// aapt resource value: 0x7f0b00ab
-			public const int text_input_password_toggle = 2131427499;
+			// aapt resource value: 0x7f0b00ae
+			public const int text_input_password_toggle = 2131427502;
 			
 			// aapt resource value: 0x7f0b000c
 			public const int textinput_counter = 2131427340;
@@ -3233,8 +3245,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b000d
 			public const int textinput_error = 2131427341;
 			
-			// aapt resource value: 0x7f0b00be
-			public const int time = 2131427518;
+			// aapt resource value: 0x7f0b00c1
+			public const int time = 2131427521;
 			
 			// aapt resource value: 0x7f0b005c
 			public const int title = 2131427420;
@@ -3251,8 +3263,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0068
 			public const int topPanel = 2131427432;
 			
-			// aapt resource value: 0x7f0b00a2
-			public const int touch_outside = 2131427490;
+			// aapt resource value: 0x7f0b00a5
+			public const int touch_outside = 2131427493;
 			
 			// aapt resource value: 0x7f0b000a
 			public const int transition_current_scene = 2131427338;
@@ -3269,23 +3281,23 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0030
 			public const int useLogo = 2131427376;
 			
-			// aapt resource value: 0x7f0b00da
-			public const int userEmailTextView = 2131427546;
+			// aapt resource value: 0x7f0b00dd
+			public const int userEmailTextView = 2131427549;
 			
-			// aapt resource value: 0x7f0b00d8
-			public const int userFullNameTextView = 2131427544;
+			// aapt resource value: 0x7f0b00db
+			public const int userFullNameTextView = 2131427547;
 			
-			// aapt resource value: 0x7f0b00d9
-			public const int userLocationTextView = 2131427545;
+			// aapt resource value: 0x7f0b00dc
+			public const int userLocationTextView = 2131427548;
 			
 			// aapt resource value: 0x7f0b000e
 			public const int view_offset_helper = 2131427342;
 			
-			// aapt resource value: 0x7f0b00b1
-			public const int viewpager = 2131427505;
+			// aapt resource value: 0x7f0b00b4
+			public const int viewpager = 2131427508;
 			
-			// aapt resource value: 0x7f0b00db
-			public const int visible = 2131427547;
+			// aapt resource value: 0x7f0b00de
+			public const int visible = 2131427550;
 			
 			// aapt resource value: 0x7f0b0014
 			public const int wide = 2131427348;

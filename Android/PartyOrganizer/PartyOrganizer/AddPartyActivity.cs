@@ -1,42 +1,56 @@
-﻿using Android.App;
-using Android.Content;
+﻿using System;
+using System.Collections.Generic;
+using Android.App;
 using Android.OS;
 using Android.Widget;
+using static Android.App.DatePickerDialog;
+using static Android.App.TimePickerDialog;
+using Xamarin.Facebook;
 using PartyOrganizer.Adapters;
 using PartyOrganizer.Core.Model;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
+
+
 
 namespace PartyOrganizer
 {
     [Activity(Label = "Add Party", MainLauncher = false)]
-    public class AddPartyActivity : Activity
+    public class AddPartyActivity : Activity, IOnDateSetListener, IOnTimeSetListener
     {
         private IPartyRepositoryAsync _partyRepository;
 
+        private Profile _profile;
         private List<PartyItem> _productList;
         private List<PartyMember> _partyMembersList;
         private List<PartyMember> _partyPendingList;
+        private DateTime _partyTime;
         private ProductsListAdapter _dataAdapter;
         private EditText _newPartyNameEditText;
         private EditText _newPartyDescriptionEditText;
         private EditText _newPartyLocationEditText;
         private Button _newPartyAddButton;
         private Button _newPartyAddProductButton;
+        private Button _newPartySetDateTimeButton;
+        private TextView _newPartyDateTimeTextView;
         private EditText _newPartyProductNameEditText;
         private EditText _newPartyProductAmountEditText;
         private ListView _newPartyProductListView;
+
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.AddPartyView);
-            FindViews();
 
+            FindViews();
             HandleEvents();
+
+            _profile = Profile.CurrentProfile;
+            _partyTime = DateTime.UtcNow;
+            _newPartyDateTimeTextView.Text = _partyTime.ToString();
             _partyRepository = new WebPartyRepository();
             _partyMembersList = new List<PartyMember>();
             _productList = new List<PartyItem>();
@@ -54,6 +68,8 @@ namespace PartyOrganizer
             _newPartyProductNameEditText = FindViewById<EditText>(Resource.Id.newPartyProductNameEditText);
             _newPartyProductAmountEditText = FindViewById<EditText>(Resource.Id.newPartyProductAmountEditText);
             _newPartyProductListView = FindViewById<ListView>(Resource.Id.newPartyProductsListView);
+            _newPartySetDateTimeButton = FindViewById<Button>(Resource.Id.newPartySetDateTimeButton);
+            _newPartyDateTimeTextView = FindViewById<TextView>(Resource.Id.newPartyDateTimeTextView);
         }
 
         private void HandleEvents()
@@ -76,6 +92,7 @@ namespace PartyOrganizer
                         Name = _newPartyLocationEditText.Text
                     };
 
+                    Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                     // Create model wrapper that'll provide proper validation
                     partyContent = new PartyContent()
                     {
@@ -84,8 +101,9 @@ namespace PartyOrganizer
                         // Image =
                         Items = _productList,
                         Location = location,
-                        Name = _newPartyNameEditText.Text
-                    };
+                        Name = _newPartyNameEditText.Text,
+                        Unix = unixTimestamp
+                };
 
                     party = new Party()
                     {
@@ -118,7 +136,33 @@ namespace PartyOrganizer
                 _productList.Add(product);
                 _dataAdapter.NotifyDataSetChanged();
             };
-      
+
+            _newPartySetDateTimeButton.Click += (object sender, EventArgs e) =>
+            {
+                var year = DateTime.UtcNow.Year;
+                var month = DateTime.UtcNow.Month;
+                var day = DateTime.UtcNow.Day;
+
+                DatePickerDialog date = new DatePickerDialog(this, this, year, month, day);
+                date.Show();
+            };
+        }
+
+        public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
+        {
+            _partyTime = new DateTime(year, month, dayOfMonth);
+            
+            var hourOfDay = DateTime.UtcNow.Hour;
+            var minute = DateTime.UtcNow.Minute;
+
+            TimePickerDialog time = new TimePickerDialog(this, this, hourOfDay, minute, true);
+            time.Show();
+        }
+
+        public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
+        {
+            _partyTime = new DateTime(_partyTime.Year, _partyTime.Month, _partyTime.Day, hourOfDay, minute, 0);
+            _newPartyDateTimeTextView.Text = _partyTime.ToString();
         }
     }
 }

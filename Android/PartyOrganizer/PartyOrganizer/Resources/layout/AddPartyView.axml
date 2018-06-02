@@ -17,6 +17,7 @@
                 android:id="@+id/newPartyNameTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:background="@android:color/holo_blue_bright"
                 android:layout_margin="20dp"
                 android:text="Party Name"
                 android:textSize="13sp"
@@ -67,8 +68,36 @@
                 android:textColor="@android:color/black"
                 android:inputType="text" />
             <TextView
-                android:id="@+id/newPartyProductsTextView"
+                android:id="@+id/newPartyDateDescTextView"
                 android:layout_below="@id/newPartyLocationEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:text="Date"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/newPartyDateTimeTextView"
+                android:layout_below="@id/newPartyDateDescTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_margin="20dp"
+                android:text="DD:MM:YYYY"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/newPartySetDateTimeButton"
+                android:layout_below="@id/newPartyDateTimeTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Set Date" />
+            <TextView
+                android:id="@+id/newPartyProductsTextView"
+                android:layout_below="@id/newPartySetDateTimeButton"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_margin="20dp"
@@ -101,19 +130,17 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:text="Add product" />
-          
             <ListView
                 android:id="@+id/newPartyProductsListView"
                 android:layout_below="@id/newPartyAddProductButton"
                 android:layout_width="match_parent"
                 android:layout_height="500dp" />
-          <Button
+            <Button
                 android:id="@+id/newPartyAddButton"
                 android:layout_below="@id/newPartyProductsListView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:text="Add Party" />
-            
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
