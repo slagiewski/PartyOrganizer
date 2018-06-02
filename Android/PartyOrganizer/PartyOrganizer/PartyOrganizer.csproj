@@ -212,12 +212,6 @@
     <Folder Include="Resources\mipmap-xxxhdpi\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PartyOrganizer.Core\PartyOrganizer.Core.csproj">
-      <Project>{9A78702B-EF2D-4A9C-8C2D-22CBB37CAF3C}</Project>
-      <Name>PartyOrganizer.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\friends.png" />
     <AndroidResource Include="Resources\drawable-mdpi\friends.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\friends.png" />
@@ -232,6 +226,12 @@
     <AndroidResource Include="Resources\layout\PagerSlidingTabStrip.xml" />
     <Content Include="Resources\raw\letsparty1.png" />
     <AndroidResource Include="Resources\values\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PartyOrganizer.Core\PartyOrganizer.Core.csproj">
+      <Project>{9a78702b-ef2d-4a9c-8c2d-22cbb37caf3c}</Project>
+      <Name>PartyOrganizer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Compat.25.4.0.2\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Compat.25.4.0.2\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets')" />
