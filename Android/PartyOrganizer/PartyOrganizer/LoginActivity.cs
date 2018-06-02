@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using Xamarin.Facebook.Login.Widget;
 using Java.Lang;
+using Xamarin.Facebook.Login;
+using Java.Security;
 
 namespace PartyOrganizer
 {
@@ -31,7 +33,10 @@ namespace PartyOrganizer
 
         public void OnSuccess(Java.Lang.Object result)
         {
-            
+            var loginResult = result as LoginResult;
+            var accessToken = loginResult.AccessToken;
+
+            var profile = Profile.CurrentProfile;
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -44,9 +49,6 @@ namespace PartyOrganizer
         {
             base.OnCreate(savedInstanceState);
 
-            //facebook init
-            
-
             SetContentView(Resource.Layout.LoginView);
 
             var button = FindViewById<LoginButton>(Resource.Id.login_button);
@@ -57,6 +59,18 @@ namespace PartyOrganizer
 
             button.RegisterCallback(mCallBackManager, this);
 
+            // resolve keyHash
+
+            //var info = this.PackageManager.GetPackageInfo("com.test.PartyOrganizer", Android.Content.PM.PackageInfoFlags.Signatures);
+
+            //foreach (var signature in info.Signatures)
+            //{
+            //    var md = MessageDigest.GetInstance("SHA");
+            //    md.Update(signature.ToByteArray());
+
+            //    var keyHash = Convert.ToBase64String(md.Digest());
+
+            //}
         }
     }
 }
