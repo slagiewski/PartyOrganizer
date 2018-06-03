@@ -16,7 +16,7 @@ namespace PartyOrganizer.CoreTests.Repository
         public async Task GetLookupPartiesAsync()
         {
             var id = "amXgDFj6WcOQkffgtN3pOJupXEz2";
-            var parties = await repository.GetPartiesByUserId(id);
+            var parties = await repository.GetPartiesByUserId();
 
 
         }
@@ -30,34 +30,34 @@ namespace PartyOrganizer.CoreTests.Repository
                         
         }
 
-        [TestMethod]
-        public async Task JoinParty()
-        {
-            var partyId = "-LDXoHHc18uqBQd1pi_Z";
-            var user = new User
-            {
-                Id = "AAUdmniSRZOGxnAH0RYahSDBS2E3",
-                Image = "https://graph.facebook.com/1027942604038688/picture",
-                Name = "Jakub"
+        //[TestMethod]
+        //public async Task JoinParty()
+        //{
+        ////    var partyId = "-LDXoHHc18uqBQd1pi_Z";
+        ////    var user = new User
+        ////    {
+        ////        Id = "AAUdmniSRZOGxnAH0RYahSDBS2E3",
+        ////        Image = "https://graph.facebook.com/1027942604038688/picture",
+        ////        Name = "Jakub"
 
-            };
+        ////    };
 
-            var result = await repository.Join(partyId, user);
-        }
+        ////    var result = await repository.Join(partyId, user);
+        //}
 
-        [TestMethod]
-        public async Task AcceptRequest()
-        {
-            var partyId = "-LDXoHHc18uqBQd1pi_Z";
-            var user = new User
-            {
-                Id = "AAUdmniSRZOGxnAH0RYahSDBS2E3",
-                Image = "https://graph.facebook.com/1027942604038688/picture",
-                Name = "Jakub"
+        //[TestMethod]
+        //public async Task AcceptRequest()
+        //{
+        //    //var partyId = "-LDXoHHc18uqBQd1pi_Z";
+        //    //var user = new User
+        //    //{
+        //    //    Id = "AAUdmniSRZOGxnAH0RYahSDBS2E3",
+        //    //    Image = "https://graph.facebook.com/1027942604038688/picture",
+        //    //    Name = "Jakub"
 
-            };
+        //    //};
 
-            await repository.AcceptRequest(partyId, user);
-        }
+        //    //await repository.AcceptRequest(user);
+        //}
     }
 }

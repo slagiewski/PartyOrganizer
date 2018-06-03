@@ -5,7 +5,7 @@ namespace PartyOrganizer.Core.Auth
 {
     public static class FirebaseAuthLinkWrapper
     {
-        private const string APIKEY = "";
+        private const string APIKEY = "AIzaSyDERJNDUI8FYT_u_q8yGhwcKXok1xhcHKs";
 
         public static async Task<FirebaseAuthLink> Create(FirebaseAuthType authType, string oauthAccessToken)
         {

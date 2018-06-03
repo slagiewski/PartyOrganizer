@@ -1,12 +1,8 @@
 ﻿using System;
-
-using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Auth;
 using Square.Picasso;
 using Xamarin.Facebook;
@@ -17,13 +13,11 @@ namespace PartyOrganizer.Fragments
     public class MyProfileFragment : Android.Support.V4.App.Fragment, IFacebookCallback
     {
         private ICallbackManager _callBackManager;
-        private ImageView _profilImage;
+        private ImageView _profileImage;
         private TextView _nameTextView;
         private Button _addPartyButton;
         private Button _joinPartyButton;
-        private LoginButton _loginButton;
-
-        
+        private LoginButton _loginButton;        
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,15 +36,18 @@ namespace PartyOrganizer.Fragments
             base.OnActivityCreated(savedInstanceState);
 
             FindViews();
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            HandleEvents();
+
             _callBackManager = CallbackManagerFactory.Create();
             _loginButton.SetReadPermissions("user_friends");
             _loginButton.RegisterCallback(_callBackManager, this);
-            Picasso.With(this.Activity)
-                   .Load(authLink.User.PhotoUrl)
-                   .Into(_profilImage);
+            _nameTextView.Text = Profile.CurrentProfile.Name;
 
-            _nameTextView.Text = authLink.User.DisplayName;
+            var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+
+            Picasso.With(this.Context)
+                   .Load(authLink.User.PhotoUrl)
+                   .Into(_profileImage);
         }
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
@@ -61,11 +58,28 @@ namespace PartyOrganizer.Fragments
 
         private void FindViews()
         {
-            _profilImage = this.View.FindViewById<ImageView>(Resource.Id.profileImageView);
+            _profileImage = this.View.FindViewById<ImageView>(Resource.Id.profileImageView);
             _nameTextView = this.View.FindViewById<TextView>(Resource.Id.userTextView);
             _addPartyButton = this.View.FindViewById<Button>(Resource.Id.addPartyButton);
             _joinPartyButton = this.View.FindViewById<Button>(Resource.Id.joinPartyButton);
             _loginButton = this.View.FindViewById<LoginButton>(Resource.Id.loginProfileButton);
+        }
+
+        private void HandleEvents()
+        {
+            _addPartyButton.Click += (s, e) =>
+            {
+                var intent = new Intent();
+                intent.SetClass(this.Context, typeof(AddPartyActivity));
+                StartActivity(intent);
+            };
+
+            //_joinPartyButton.Click += (s, e) =>
+            //{
+            //    var intent = new Intent();
+            //    intent.SetClass(this.Context, typeof(JoinPartyActivity));
+            //    StartActivity(intent);
+            //};
         }
 
         public void OnError(FacebookException error)

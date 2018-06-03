@@ -20,15 +20,13 @@ namespace PartyOrganizer
 
         public void OnError(FacebookException error)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public void OnSuccess(Java.Lang.Object result)
         {
-            var intent = new Intent();
-            intent.SetClass(this, typeof(MenuActivity));
-            Profile.FetchProfileForCurrentAccessToken();
-            StartActivity(intent);
+            ChangeActivity();
+            // Profile.FetchProfileForCurrentAccessToken();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -40,7 +38,7 @@ namespace PartyOrganizer
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+                
             SetContentView(Resource.Layout.LoginView);
 
             var button = FindViewById<LoginButton>(Resource.Id.login_button);
@@ -50,14 +48,12 @@ namespace PartyOrganizer
             button.SetReadPermissions("user_friends");
 
             button.RegisterCallback(mCallBackManager, this);
-            
-            if(isLoggedIn())
+
+            if (Profile.CurrentProfile != null && AccessToken.CurrentAccessToken?.Token != null)
             {
-                var intent = new Intent();
-                intent.SetClass(this, typeof(MenuActivity));
-                StartActivity(intent);
-                //Finish();
+                ChangeActivity();
             }
+
             // resolve keyHash
 
             //var info = this.PackageManager.GetPackageInfo("com.test.PartyOrganizer", Android.Content.PM.PackageInfoFlags.Signatures);
@@ -70,12 +66,14 @@ namespace PartyOrganizer
             //    var keyHash = Convert.ToBase64String(md.Digest());
 
             //}
+
         }
 
-        private bool isLoggedIn()
+        private void ChangeActivity()
         {
-            AccessToken accessToken = AccessToken.CurrentAccessToken;
-            return accessToken != null;
+            var intent = new Intent();
+            intent.SetClass(this, typeof(MenuActivity));
+            StartActivity(intent);
         }
     }
 }

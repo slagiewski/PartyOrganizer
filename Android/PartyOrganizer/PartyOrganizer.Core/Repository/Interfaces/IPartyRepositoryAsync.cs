@@ -7,11 +7,11 @@ namespace PartyOrganizer.Core.Repository.Interfaces
 {
     public interface IPartyRepositoryAsync : IRepositoryAsync<Party>
     {
-        Task<IEnumerable<PartyLookup>> GetPartiesByUserId(string userId);
+        Task<IEnumerable<PartyLookup>> GetPartiesByUserId();
 
-        Task<bool> Join(string partyId, User user);
+        Task<bool> Join(string partyId);
 
-        Task AcceptRequest(string partyId, User user);
+        Task<bool> AcceptRequest(Party party, User user);
 
     }
 }

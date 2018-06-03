@@ -25,12 +25,12 @@ namespace PartyOrganizer.Core.Repository
             _partyRepository = new WebPartyRepository(authLink);
         }
 
-        public Task Add(Party entity)
+        public Task<string> Add(Party entity)
         {
             return _partyRepository.Add(entity);
         }
 
-        public async Task<IEnumerable<Party>> GetAll()
+        public Task<IEnumerable<Party>> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -61,12 +61,7 @@ namespace PartyOrganizer.Core.Repository
             }
         }
 
-        public Task<IEnumerable<PartyLookup>> GetPartiesByUser(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<PartyLookup>> GetPartiesByUserId(string userId)
+        public async Task<IEnumerable<PartyLookup>> GetPartiesByUserId()
         {
             using (var db = new LiteDatabase(_dbPath))
             {
@@ -74,7 +69,7 @@ namespace PartyOrganizer.Core.Repository
                 
                 if (true)
                 {
-                    var parties = await _partyRepository.GetPartiesByUserId(userId);
+                    var parties = await _partyRepository.GetPartiesByUserId();
                     if (parties != null)
                         partieslookupTable.Upsert(parties);
                     return parties;
@@ -93,17 +88,17 @@ namespace PartyOrganizer.Core.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> Join(string partyId, Model.Member.User user)
+        public Task<bool> Join(string partyId)
         {
-            return _partyRepository.Join(partyId, user);
+            return _partyRepository.Join(partyId);
         }
 
-        public Task AcceptRequest(string partyId, Model.Member.User user)
+        public Task<bool> AcceptRequest(Party party, Model.Member.User user)
         {
-            return _partyRepository.AcceptRequest(partyId, user);
+            return _partyRepository.AcceptRequest(party, user);
         }
 
-        private async Task<bool> CheckConnection()
+        private bool CheckConnection()
         {
             // If offline - check if the time difference is below [5] seconds
             // 
