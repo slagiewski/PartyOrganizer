@@ -22,6 +22,7 @@ import { editPartyItems, getPartyData, acceptPendingUser, clearData } from '../a
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
 import MaxAmountIcon from 'material-ui-icons/PlaylistAddCheck';
+import EditIcon from 'material-ui-icons/Edit';
 
 const Member = withStyles( theme => ({
   wrapper: {
@@ -87,6 +88,8 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   headline: {
+    display: 'flex',
+    justifyContent: 'center',
     padding: theme.spacing.unit*2
   },
   info: {
@@ -137,6 +140,11 @@ const styles = theme => ({
   },
   pendingBar: {
     backgroundColor: '#4dd0e1'
+  },
+  editIcon: {
+    height: 40,
+    width: 40,
+    color: '#00aabb',
   },
   '@media (max-width: 1000px)': {
     root: {
@@ -250,7 +258,7 @@ class PartyPage extends React.Component{
         <div className={classes.infoWrapper}>
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
-            <Button onClick={this.formOpen}>edit</Button>
+            <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>

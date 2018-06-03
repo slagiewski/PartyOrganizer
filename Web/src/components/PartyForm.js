@@ -168,9 +168,16 @@ class PartyForm extends React.Component{
   }
 
   removeItem = (index) => {
-    this.setState((prevState)=>({
-      order: prevState.order.filter((item) => item != index)
-    }));
+    this.setState((prevState)=>{
+      let newItems = {};
+      prevState.order.map((item, i)=>{
+        if (item !== index) newItems[i] = prevState.items[item];
+      })
+      return ({
+        order: Object.keys(newItems),
+        items: newItems
+      })
+    });
   }
 
   handleSubmit = () => {
