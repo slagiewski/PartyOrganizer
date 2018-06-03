@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.OS;
 using Android.Views;
@@ -16,30 +17,25 @@ namespace PartyOrganizer.Fragments
 {
     public class PartiesFragment : Android.Support.V4.App.Fragment
     {
+        private PartyListAdapter _adapter;
         private ListView _partyListView;
         private List<PartyLookup> _allParties;
         private IPartyRepositoryAsync _partyRepository;
 
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
-        }
+        public override void OnCreate(Bundle savedInstanceState) =>
+             base.OnCreate(savedInstanceState);
+        
 
         public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-
-            _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
-
             var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
 
             _partyRepository = new WebPartyRepository(authLink);
-
             _allParties = (await _partyRepository.GetPartiesByUserId()).ToList();
-
-            _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
+            _adapter = new PartyListAdapter(this.Activity, _allParties);
+            _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
+            _partyListView.Adapter = _adapter;
 
             HandleEvents();
         }
@@ -61,6 +57,19 @@ namespace PartyOrganizer.Fragments
 
                 StartActivityForResult(intent, 100);
             };
+
+            // TODO
+
+            //_refreshButton.Click += async (s, e) =>
+            //{
+            //    await Refresh();
+            //};
+        }
+
+        public async Task Refresh()
+        {
+            _allParties = (await _partyRepository.GetPartiesByUserId()).ToList();
+            _adapter.NotifyDataSetChanged();
         }
     }
 }

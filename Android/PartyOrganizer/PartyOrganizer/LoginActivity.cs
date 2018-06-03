@@ -38,7 +38,7 @@ namespace PartyOrganizer
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+                
             SetContentView(Resource.Layout.LoginView);
 
             var button = FindViewById<LoginButton>(Resource.Id.login_button);
@@ -72,7 +72,7 @@ namespace PartyOrganizer
         private void ChangeActivity()
         {
             var intent = new Intent();
-            intent.SetClass(this, typeof(AddPartyActivity));
+            intent.SetClass(this, typeof(MenuActivity));
             StartActivity(intent);
         }
     }
