@@ -25,7 +25,7 @@ namespace PartyOrganizer
                 new List<Android.Support.V4.App.Fragment>
                 {
                     new PartiesFragment(),
-                    //new FriendsFragment()
+                    new MyProfileFragment()
                 });
 
             //var tabs = FindViewById<TabLayout>(Resource.Id.tabs);
