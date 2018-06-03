@@ -227,6 +227,7 @@ class PartyPage extends React.Component{
 
   render() {
     const { classes, party, members, pending } = this.props;
+    console.log(this.props);
     if (!this.state.render) return <LoadingPage/>;
     return (
       <div className={classes.root}>
@@ -296,7 +297,7 @@ class PartyPage extends React.Component{
         <div className={classes.guestsWrapper}>
           <Paper>
             {
-              pending && 
+              pending &&
               <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
             }                        
             {Object.keys(pending).map((user)=>{
@@ -332,7 +333,7 @@ class PartyPage extends React.Component{
 const mapStateToProps = (state) => ({
   party: state.party.content,
   members: state.party.members,
-  pending: state.party.pending || false
+  pending: state.party.members ? (state.party.members[state.auth.uid].type === 'host' && (state.party.pending || false)) : false
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
