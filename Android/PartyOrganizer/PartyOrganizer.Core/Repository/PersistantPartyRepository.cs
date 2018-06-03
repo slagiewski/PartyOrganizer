@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Firebase.Xamarin.Auth;
 using LiteDB;
 using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Model.Party;
@@ -19,15 +20,9 @@ namespace PartyOrganizer.Core.Repository
 
         private static readonly DateTime _lastConnectionCheck;
 
-
-
-        static PersistantPartyRepository()
+        public PersistantPartyRepository(FirebaseAuthLink authLink)
         {
-        }
-
-        public PersistantPartyRepository()
-        {
-            _partyRepository = new WebPartyRepository();
+            _partyRepository = new WebPartyRepository(authLink);
         }
 
         public Task Add(Party entity)
@@ -98,12 +93,12 @@ namespace PartyOrganizer.Core.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> Join(string partyId, User user)
+        public Task<bool> Join(string partyId, Model.Member.User user)
         {
             return _partyRepository.Join(partyId, user);
         }
 
-        public Task AcceptRequest(string partyId, User user)
+        public Task AcceptRequest(string partyId, Model.Member.User user)
         {
             return _partyRepository.AcceptRequest(partyId, user);
         }

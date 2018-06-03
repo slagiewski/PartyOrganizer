@@ -10,8 +10,7 @@ namespace PartyOrganizer.CoreTests.Repository
     [TestClass]
     public class TempTests
     {
-        readonly IPartyRepositoryAsync repository = new WebPartyRepository();
-        readonly FirebaseClient _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
+        readonly IPartyRepositoryAsync repository;// = new WebPartyRepository();
 
         [TestMethod]
         public async Task GetLookupPartiesAsync()

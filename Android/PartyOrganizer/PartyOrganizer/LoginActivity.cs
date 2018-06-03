@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xamarin.Facebook;
+﻿using Xamarin.Facebook;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Xamarin.Facebook.Login.Widget;
-using Java.Lang;
 using Xamarin.Facebook.Login;
-using Java.Security;
 
 namespace PartyOrganizer
 {
