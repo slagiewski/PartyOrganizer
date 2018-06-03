@@ -6,6 +6,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Firebase.Xamarin.Auth;
+using PartyOrganizer.Core.Auth;
+using Square.Picasso;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login.Widget;
 
@@ -34,20 +37,20 @@ namespace PartyOrganizer.Fragments
             return inflater.Inflate(Resource.Layout.MyProfileView, container, false);
         }
 
-        public override void OnActivityCreated(Bundle savedInstanceState)
+        public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
             FindViews();
-
+            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
             _callBackManager = CallbackManagerFactory.Create();
             _loginButton.SetReadPermissions("user_friends");
             _loginButton.RegisterCallback(_callBackManager, this);
-            //Picasso.With(_context)
-            //       .Load(Profile.CurrentProfile.LinkUri)
-            //       .Into(convertView.FindViewById<ImageView>(Resource.Id.partyImageView));
+            Picasso.With(this.Activity)
+                   .Load(authLink.User.PhotoUrl)
+                   .Into(_profilImage);
 
-            //_nameTextView.Text = AccessToken;
+            _nameTextView.Text = authLink.User.DisplayName;
         }
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)

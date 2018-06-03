@@ -5,15 +5,16 @@
     android:layout_height="match_parent">
     <ImageView
         android:src="@android:drawable/ic_menu_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/profileImageView" />
     <TextView
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/userTextView" />
+        android:id="@+id/userTextView"
+        android:textAlignment="center" />
     <Button
         android:text="Add Party"
         android:layout_width="match_parent"
