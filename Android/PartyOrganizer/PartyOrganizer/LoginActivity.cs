@@ -20,14 +20,13 @@ namespace PartyOrganizer
 
         public void OnError(FacebookException error)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public void OnSuccess(Java.Lang.Object result)
         {
-            var intent = new Intent();
-            intent.SetClass(this, typeof(MenuActivity));
-            StartActivity(intent);
+            ChangeActivity();
+            // Profile.FetchProfileForCurrentAccessToken();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -50,6 +49,11 @@ namespace PartyOrganizer
 
             button.RegisterCallback(mCallBackManager, this);
 
+            if (Profile.CurrentProfile != null && AccessToken.CurrentAccessToken?.Token != null)
+            {
+                ChangeActivity();
+            }
+
             // resolve keyHash
 
             //var info = this.PackageManager.GetPackageInfo("com.test.PartyOrganizer", Android.Content.PM.PackageInfoFlags.Signatures);
@@ -62,6 +66,14 @@ namespace PartyOrganizer
             //    var keyHash = Convert.ToBase64String(md.Digest());
 
             //}
+
+        }
+
+        private void ChangeActivity()
+        {
+            var intent = new Intent();
+            intent.SetClass(this, typeof(AddPartyActivity));
+            StartActivity(intent);
         }
     }
 }

@@ -13,6 +13,7 @@ using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Core.Auth;
 using Firebase.Xamarin.Auth;
+using Android.Content;
 
 namespace PartyOrganizer
 {
@@ -20,11 +21,9 @@ namespace PartyOrganizer
     public class AddPartyActivity : Activity, IOnDateSetListener, IOnTimeSetListener
     {
         private IPartyRepositoryAsync _partyRepository;
+        private FirebaseAuthLink _authLink;
 
-        private Profile _profile;
         private List<PartyItem> _productList;
-        private List<PartyMember> _partyMembersList;
-        private List<PartyMember> _partyPendingList;
         private DateTime _partyTime;
         private ProductsListAdapter _dataAdapter;
         private EditText _newPartyNameEditText;
@@ -36,9 +35,7 @@ namespace PartyOrganizer
         private TextView _newPartyDateTimeTextView;
         private EditText _newPartyProductNameEditText;
         private EditText _newPartyProductAmountEditText;
-        private ListView _newPartyProductListView;
-
-        
+        private ListView _newPartyProductListView;        
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -48,14 +45,12 @@ namespace PartyOrganizer
             FindViews();
             HandleEvents();
 
-            _profile = Profile.CurrentProfile;
             _partyTime = DateTime.UtcNow;
             _newPartyDateTimeTextView.Text = _partyTime.ToString();
 
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(authLink);
+            _authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            _partyRepository = new WebPartyRepository(_authLink);
 
-            _partyMembersList = new List<PartyMember>();
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);
             _newPartyProductListView.Adapter = _dataAdapter;           
@@ -96,8 +91,7 @@ namespace PartyOrganizer
                     var partyContent = new PartyContent()
                     {
                         Description = _newPartyDescriptionEditText.Text,
-                        // Party admin image
-                        // Image =
+                        Image = _authLink.User.PhotoUrl,
                         Items = _productList,
                         Location = location,
                         Name = _newPartyNameEditText.Text,
@@ -107,32 +101,41 @@ namespace PartyOrganizer
                     var party = new Party()
                     {
                         Content = partyContent,
-                        Members = _partyMembersList,
-                        Pending = null
                     };
-                    await _partyRepository.Add(party);
+
+                    var newPartyId = await _partyRepository.Add(party);
+
+                    if (newPartyId != null)
+                    {
+                        var intent = new Intent();
+                        intent.SetClass(this, typeof(MenuActivity));
+                        StartActivity(intent);
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.InnerException.Message);
+                    Console.WriteLine(ex.Message);
                 }
 
-                //if (party != null)
-                //{
-                //    var intent = new Intent();
-                //    intent.SetClass(this, typeof(PartiesActivity));
-
-                //    StartActivity(intent);
-                //}
             };                
 
             _newPartyAddProductButton.Click += (object sender, EventArgs e) =>
             {
-                var productName = _newPartyProductNameEditText.Text;
-                var productAmount = Int32.Parse(_newPartyProductAmountEditText.Text);
-                var product = new PartyItem(productAmount, productName);
-                _productList.Add(product);
-                _dataAdapter.NotifyDataSetChanged();
+                try
+                {
+                    var productName = _newPartyProductNameEditText.Text;
+                    var productAmount = Int32.Parse(_newPartyProductAmountEditText.Text);
+                    var product = new PartyItem(productAmount, productName);
+                    _productList.Add(product);
+                    _dataAdapter.NotifyDataSetChanged();
+                }
+                catch(Exception ex)
+                {
+
+                    Console.WriteLine(ex.Message);
+                }
+                
             };
 
             _newPartySetDateTimeButton.Click += (object sender, EventArgs e) =>

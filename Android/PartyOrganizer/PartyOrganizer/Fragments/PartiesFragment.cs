@@ -37,7 +37,7 @@ namespace PartyOrganizer.Fragments
 
             _partyRepository = new WebPartyRepository(authLink);
 
-            _allParties = (await _partyRepository.GetPartiesByUserId("AAUdmniSRZOGxnAH0RYahSDBS2E3")).ToList();
+            _allParties = (await _partyRepository.GetPartiesByUserId()).ToList();
 
             _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
 

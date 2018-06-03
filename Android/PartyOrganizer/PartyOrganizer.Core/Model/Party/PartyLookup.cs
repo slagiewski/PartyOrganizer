@@ -1,4 +1,4 @@
-﻿namespace PartyOrganizer.Core.Model.Party
+﻿    namespace PartyOrganizer.Core.Model.Party
 {
     public class PartyLookup
     {
