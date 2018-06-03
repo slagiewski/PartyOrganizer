@@ -33,13 +33,9 @@ namespace PartyOrganizer
 
         public void OnSuccess(Java.Lang.Object result)
         {
-            var loginResult = result as LoginResult;
-            var accessToken = loginResult.AccessToken;
-            var test1 = loginResult.AccessToken.Token;
-            var test = AccessToken.CurrentAccessToken.Token;
-
             var intent = new Intent();
             intent.SetClass(this, typeof(MenuActivity));
+            Profile.FetchProfileForCurrentAccessToken();
             StartActivity(intent);
         }
 
@@ -62,7 +58,14 @@ namespace PartyOrganizer
             button.SetReadPermissions("user_friends");
 
             button.RegisterCallback(mCallBackManager, this);
-
+            
+            if(isLoggedIn())
+            {
+                var intent = new Intent();
+                intent.SetClass(this, typeof(MenuActivity));
+                StartActivity(intent);
+                //Finish();
+            }
             // resolve keyHash
 
             //var info = this.PackageManager.GetPackageInfo("com.test.PartyOrganizer", Android.Content.PM.PackageInfoFlags.Signatures);
@@ -75,6 +78,12 @@ namespace PartyOrganizer
             //    var keyHash = Convert.ToBase64String(md.Digest());
 
             //}
+        }
+
+        private bool isLoggedIn()
+        {
+            AccessToken accessToken = AccessToken.CurrentAccessToken;
+            return accessToken != null;
         }
     }
 }

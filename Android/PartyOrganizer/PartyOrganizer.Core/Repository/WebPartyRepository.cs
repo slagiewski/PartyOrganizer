@@ -18,12 +18,12 @@ namespace PartyOrganizer.Core.Repository
 
         static WebPartyRepository()
         {
-            _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
+            _fb = new FirebaseClient("https://fir-testwithauth.firebaseio.com/");
         }
 
         private static async Task Authorize()
         {
-            var authProvider = new FirebaseAuthProvider(new FirebaseConfig(""));
+            var authProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyDERJNDUI8FYT_u_q8yGhwcKXok1xhcHKs"));
             _auth = await authProvider.SignInWithOAuthAsync(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
         }
 
@@ -43,7 +43,7 @@ namespace PartyOrganizer.Core.Repository
 
         public async Task<Party> GetById(string id)
         {
-            //await Authorize();
+            await Authorize();
             var firebaseObjectParties = await _fb
                                               .Child("parties")
                                               .OrderByKey()

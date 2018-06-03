@@ -147,6 +147,7 @@
     <Compile Include="Adapters\ViewPagerFragmentsAdapter.cs" />
     <Compile Include="AddPartyActivity.cs" />
     <Compile Include="Fragments\FriendsFragment.cs" />
+    <Compile Include="Fragments\MyProfileFragment.cs" />
     <Compile Include="Fragments\PartiesFragment.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MenuActivity.cs" />
@@ -194,6 +195,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\LoginView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MyProfileView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
