@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xamarin.Facebook;
+﻿using Xamarin.Facebook;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Xamarin.Facebook.Login.Widget;
-using Java.Lang;
 using Xamarin.Facebook.Login;
-using Java.Security;
 
 namespace PartyOrganizer
 {
@@ -33,11 +25,6 @@ namespace PartyOrganizer
 
         public void OnSuccess(Java.Lang.Object result)
         {
-            var loginResult = result as LoginResult;
-            var accessToken = loginResult.AccessToken;
-            var test1 = loginResult.AccessToken.Token;
-            var test = AccessToken.CurrentAccessToken.Token;
-
             var intent = new Intent();
             intent.SetClass(this, typeof(MenuActivity));
             StartActivity(intent);

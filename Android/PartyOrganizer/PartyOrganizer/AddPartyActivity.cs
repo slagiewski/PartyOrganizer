@@ -11,8 +11,8 @@ using PartyOrganizer.Core.Model;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
-
-
+using PartyOrganizer.Core.Auth;
+using Firebase.Xamarin.Auth;
 
 namespace PartyOrganizer
 {
@@ -40,7 +40,7 @@ namespace PartyOrganizer
 
         
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.AddPartyView);
@@ -51,7 +51,10 @@ namespace PartyOrganizer
             _profile = Profile.CurrentProfile;
             _partyTime = DateTime.UtcNow;
             _newPartyDateTimeTextView.Text = _partyTime.ToString();
-            _partyRepository = new WebPartyRepository();
+
+            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            _partyRepository = new WebPartyRepository(authLink);
+
             _partyMembersList = new List<PartyMember>();
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);

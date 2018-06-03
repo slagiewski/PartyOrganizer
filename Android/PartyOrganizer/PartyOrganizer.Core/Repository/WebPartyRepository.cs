@@ -8,28 +8,27 @@ using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 using Firebase.Xamarin.Auth;
+using PartyOrganizer.Core.Auth;
 
 namespace PartyOrganizer.Core.Repository
 {
     public class WebPartyRepository : IPartyRepositoryAsync
     {
         static private FirebaseClient _fb;
-        static private FirebaseAuthLink _auth;
+        private readonly FirebaseAuthLink _auth;
 
         static WebPartyRepository()
         {
-            _fb = new FirebaseClient("https://fir-test-420af.firebaseio.com/");
+            _fb = new FirebaseClient("https://fir-testwithauth.firebaseio.com/");
         }
 
-        private static async Task Authorize()
+        public WebPartyRepository(FirebaseAuthLink authLink)
         {
-            var authProvider = new FirebaseAuthProvider(new FirebaseConfig(""));
-            _auth = await authProvider.SignInWithOAuthAsync(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            _auth = authLink;
         }
 
         public async Task Add(Party entity)
         {
-            await Authorize();
             await _fb
                   .Child("parties")
                   .WithAuth(_auth.FirebaseToken)
@@ -43,7 +42,6 @@ namespace PartyOrganizer.Core.Repository
 
         public async Task<Party> GetById(string id)
         {
-            //await Authorize();
             var firebaseObjectParties = await _fb
                                               .Child("parties")
                                               .OrderByKey()
@@ -71,6 +69,7 @@ namespace PartyOrganizer.Core.Repository
                                               .Child("users")
                                               .Child(userId)
                                               .Child("partiesMeta")
+                                              .WithAuth(_auth.FirebaseToken)
                                               .OnceAsync<PartyLookup>();
 
             var lookupParties = new List<PartyLookup>(firebaseObjectParties.Count);
@@ -112,7 +111,6 @@ namespace PartyOrganizer.Core.Repository
                 Image = user.Image,
                 Items = new List<PartyItem>()
             };
-
 
             await MoveFromPending(partyId, newPartyMember);
 
