@@ -4,6 +4,7 @@ import moment from 'moment';
 import Avatar from 'material-ui/Avatar';
 import Map from './Map';
 import LoadingPage from './LoadingPage';
+import PartyForm from './PartyForm';
 import { Marker } from "react-google-maps";
 import ItemList from './ItemList';
 import Paper from 'material-ui/Paper';
@@ -166,7 +167,8 @@ class PartyPage extends React.Component{
   state = {
     showItemSelect: false,
     amount: 1,
-    render: false
+    render: false,
+    formOpen: false
   }
 
   componentDidMount(){
@@ -225,15 +227,34 @@ class PartyPage extends React.Component{
     }
   }
 
+  formOpen = () => {
+    this.setState({ formOpen: true })
+  }
+
+  formClose = () => {
+    this.setState({ formOpen: false })
+  }
+
   render() {
+    if (!this.state.render) return <LoadingPage/>;    
     const { classes, party, members, pending } = this.props;
-    console.log(this.props);
-    if (!this.state.render) return <LoadingPage/>;
+    const partyData = {
+      name: party.name,
+      location: party.location,
+      date: moment.unix(party.unix),
+      time: `${moment.unix(party.unix).hours()}${moment.unix(party.unix).minutes()}`,
+      description: party.description,
+      items: party.items,
+      itemOrder: party.order
+    }
+
     return (
       <div className={classes.root}>
+        {this.state.formOpen && <PartyForm data={partyData} open={true} handleClose={this.formClose}/>}
         <div className={classes.infoWrapper}>
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
+            <Button onClick={this.formOpen}>edit</Button>
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>
@@ -299,17 +320,19 @@ class PartyPage extends React.Component{
             {
               pending &&
               <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
-            }                        
-            {Object.keys(pending).map((user)=>{
-              return <Member 
-                      isMember={false}
-                      uid={user}
-                      acceptPendingUser={this.props.acceptPendingUser}
-                      key={user} 
-                      name={pending[user].name} 
-                      image={pending[user].image}
-                    />
-            })}
+            }
+            <div style={{display: 'flex', flexWrap: 'wrap'}}>                        
+              {Object.keys(pending).map((user)=>{
+                return <Member 
+                        isMember={false}
+                        uid={user}
+                        acceptPendingUser={this.props.acceptPendingUser}
+                        key={user} 
+                        name={pending[user].name} 
+                        image={pending[user].image}
+                      />
+              })}
+            </div>
             <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>  
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               {Object.keys(members).map((member)=>{
@@ -333,6 +356,7 @@ class PartyPage extends React.Component{
 const mapStateToProps = (state) => ({
   party: state.party.content,
   members: state.party.members,
+  isHost: state.party.members && state.party.members[state.auth.uid].type === 'host',
   pending: state.party.members ? (state.party.members[state.auth.uid].type === 'host' && (state.party.pending || false)) : false
 });
 

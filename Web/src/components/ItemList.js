@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import { Spring } from 'react-spring';
 import { Gesture } from 'react-with-gesture';
 import { withStyles } from 'material-ui/styles';
 import { Typography } from 'material-ui';
+
 import DoneIcon from 'material-ui-icons/Done';
-
-
+import DeleteIcon from 'material-ui-icons/Delete';
 
 const tileHeight = 55;
 const clamp = (n, min, max) => Math.max(Math.min(n, max), min);
@@ -140,6 +141,7 @@ class ItemList extends React.Component {
                     }}>
                     <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography>
                     <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} {disabled ? <DoneIcon/> : `x${items[i].amount}`}</Typography>
+                    {!this.props.fixed && <IconButton><DeleteIcon onClick={() => this.props.removeItem(i)}/></IconButton>}
                   </div>
               )}}
             </Spring>

@@ -114,14 +114,23 @@ const styles = theme => ({
 });
 
 class PartyForm extends React.Component{
-  state = {
-    activeStep: 0,
-    loading: false,
-    itemOrder: [],
-    items: {},
-    name: '',
-    time: '00:00',
-    description: ''
+
+  constructor(props){
+    super(props);
+    const defaultState = {
+      activeStep: 0,
+      loading: false,
+      itemOrder: [],
+      items: {},
+      name: '',
+      time: '00:00',
+      description: ''
+    }
+
+    this.state = {
+      ...defaultState,
+      ...this.props.data
+    }
   }
 
   handleChange = name => event => {
@@ -156,6 +165,14 @@ class PartyForm extends React.Component{
     this.setState({
       itemOrder: order
     })
+  }
+
+  removeItem = (index) => {
+    console.log(this.state.itemOrder);
+    console.log(index);
+    this.setState((prevState)=>({
+      itemOrder: prevState.itemOrder.filter((item) => item != index)
+    }), () => console.log(this.state.itemOrder));
   }
 
   handleSubmit = () => {
@@ -289,7 +306,7 @@ class PartyForm extends React.Component{
           Add a shopping list for your party and order it from most to least important
         </DialogContentText>
         <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
-        <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder}/>
+        <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder} removeItem={this.removeItem}/>
       </React.Fragment>
     )
 
