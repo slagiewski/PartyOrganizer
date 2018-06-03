@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { newParty } from '../actions/parties';
+import { newParty, editParty } from '../actions/parties';
 
 import { LocationSearchBox } from './Map';
 import { DayPickerSingleDateController, isInclusivelyAfterDay } from 'react-dates';
@@ -120,7 +120,7 @@ class PartyForm extends React.Component{
     const defaultState = {
       activeStep: 0,
       loading: false,
-      itemOrder: [],
+      order: [],
       items: {},
       name: '',
       time: '00:00',
@@ -147,9 +147,9 @@ class PartyForm extends React.Component{
 
   handleNewItem = (item) => {
     this.setState((prevState)=>{
-      const id = prevState.itemOrder.length + 1;
+      const id = prevState.order.length + 1;
       return {
-        itemOrder: [...prevState.itemOrder, id],
+        order: [...prevState.order, id],
         items: {
           ...prevState.items,
           [id]: {
@@ -161,33 +161,42 @@ class PartyForm extends React.Component{
     });
   }
 
-  handleChangeItemOrder = (order) => {
+  handleChangeOrder = (order) => {
     this.setState({
-      itemOrder: order
+      order: order
     })
   }
 
   removeItem = (index) => {
-    console.log(this.state.itemOrder);
-    console.log(index);
     this.setState((prevState)=>({
-      itemOrder: prevState.itemOrder.filter((item) => item != index)
-    }), () => console.log(this.state.itemOrder));
+      order: prevState.order.filter((item) => item != index)
+    }));
   }
 
   handleSubmit = () => {
     this.setState({ loading: true });
-    const { name, unix, location, description } = this.state;
+    const { name, unix, location, description, order, items } = this.state;
     const party = {
       name,
       unix,
       location,
-      description
+      description,
+      order,
+      items
     }
-    this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items)).then(()=>{
+
+    if (this.props.edit) {
+      this.props.editParty(party).then(()=>{
       this.setState({ loading: false });
       this.props.handleClose();
-    });
+      });
+    }
+    else {
+      this.props.newParty(party).then(()=>{
+      this.setState({ loading: false });
+      this.props.handleClose();
+      });
+    }
   }
 
   handleFormControl = () => {
@@ -223,6 +232,7 @@ class PartyForm extends React.Component{
 
   render() {
     const { classes, fullScreen, open } = this.props;
+    console.log(this.state);
 
     // const staticMapURL = this.props.form.meetingLocation ? `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}&zoom=14&scale=1&size=600x300&maptype=roadmap&key=AIzaSyCwqkpgtZSg4uCWIws9SgSgTlLVpxaOY7w&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}` : '';
 
@@ -305,8 +315,8 @@ class PartyForm extends React.Component{
         <DialogContentText>
           Add a shopping list for your party and order it from most to least important
         </DialogContentText>
-        <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
-        <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder} removeItem={this.removeItem}/>
+        <ItemsPanel onNewItem={this.handleNewItem}/>
+        <ItemList fixed={false} order={this.state.order} items={this.state.items} onMoved={this.handleChangeOrder} removeItem={this.removeItem}/>
       </React.Fragment>
     )
 
@@ -365,4 +375,9 @@ class PartyForm extends React.Component{
   }
 }
 
-export default connect((state)=>({partyID: state.party}))(withMobileDialog()(withStyles(styles)(PartyForm)));
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  newParty: (party) => dispatch(newParty(party)),
+  editParty: (party) => dispatch(editParty(ownProps.id, party))
+})
+
+export default connect(null, mapDispatchToProps)(withMobileDialog()(withStyles(styles)(PartyForm)));

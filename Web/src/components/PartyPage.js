@@ -239,18 +239,14 @@ class PartyPage extends React.Component{
     if (!this.state.render) return <LoadingPage/>;    
     const { classes, party, members, pending } = this.props;
     const partyData = {
-      name: party.name,
-      location: party.location,
-      date: moment.unix(party.unix),
-      time: `${moment.unix(party.unix).hours()}${moment.unix(party.unix).minutes()}`,
-      description: party.description,
-      items: party.items,
-      itemOrder: party.order
+      ...party,
+      date: moment.unix(party.unix).startOf('day'),
+      time: `${moment.unix(party.unix).hours()}:${moment.unix(party.unix).minutes()}`,
     }
 
     return (
       <div className={classes.root}>
-        {this.state.formOpen && <PartyForm data={partyData} open={true} handleClose={this.formClose}/>}
+        {this.state.formOpen && <PartyForm id={this.props.match.params.id} data={partyData} edit={true} open={true} handleClose={this.formClose}/>}
         <div className={classes.infoWrapper}>
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>

@@ -7,7 +7,7 @@ export const addParty = (id, party) => ({
   party
 });
 
-export const newParty = (partyInfo, order, items) => {
+export const newParty = (partyInfo) => {
   return (dispatch, getState) => {
     const state = getState().auth;
     const uid = state.uid;      
@@ -18,8 +18,6 @@ export const newParty = (partyInfo, order, items) => {
     const party = {
       content: {
         ...partyInfo,
-        order,
-        items,
         image
       },
       members: {
@@ -51,6 +49,29 @@ export const newParty = (partyInfo, order, items) => {
     // return database.ref(`parties`).push(party).then((ref) => {
     //   dispatch(addParty(ref.key, party));
     // });
+  }
+}
+
+export const editParty = (id, party) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const host = state.auth.name;
+    const image = state.auth.photo;
+
+    const metaParty = {
+      name: party.name,
+      location: party.location.name,
+      unix: party.unix,
+      host,
+      image
+    }
+    let updates = {}
+    updates[`/parties/${id}/content`] = { ...party, image };
+    Object.keys(state.party.members).forEach((member) => updates[`/users/${member}/partiesMeta/${id}`] = metaParty);
+
+    return database.ref().update(updates).then(()=>{
+      dispatch(addParty(id, metaParty));
+    });
   }
 }
 
