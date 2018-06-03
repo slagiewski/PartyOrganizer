@@ -2990,29 +2990,23 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0094
 			public const int newPartyAddButton = 2131427476;
 			
-			// aapt resource value: 0x7f0b0091
-			public const int newPartyAddProductButton = 2131427473;
+			// aapt resource value: 0x7f0b0092
+			public const int newPartyAddProductButton = 2131427474;
+			
+			// aapt resource value: 0x7f0b008a
+			public const int newPartyDateDescTextView = 2131427466;
 			
 			// aapt resource value: 0x7f0b008b
-			public const int newPartyDateDescTextView = 2131427467;
-			
-			// aapt resource value: 0x7f0b008c
-			public const int newPartyDateTimeTextView = 2131427468;
+			public const int newPartyDateTimeTextView = 2131427467;
 			
 			// aapt resource value: 0x7f0b0088
 			public const int newPartyDescriptionEditText = 2131427464;
 			
-			// aapt resource value: 0x7f0b0087
-			public const int newPartyDescriptionTextView = 2131427463;
-			
-			// aapt resource value: 0x7f0b0092
-			public const int newPartyListViewLinearLayout = 2131427474;
-			
-			// aapt resource value: 0x7f0b008a
-			public const int newPartyLocationEditText = 2131427466;
-			
 			// aapt resource value: 0x7f0b0089
-			public const int newPartyLocationTextView = 2131427465;
+			public const int newPartyLocationEditText = 2131427465;
+			
+			// aapt resource value: 0x7f0b0087
+			public const int newPartyLocationTextView = 2131427463;
 			
 			// aapt resource value: 0x7f0b0086
 			public const int newPartyNameEditText = 2131427462;
@@ -3020,20 +3014,26 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b0085
 			public const int newPartyNameTextView = 2131427461;
 			
+			// aapt resource value: 0x7f0b0091
+			public const int newPartyProductAmountEditText = 2131427473;
+			
 			// aapt resource value: 0x7f0b0090
-			public const int newPartyProductAmountEditText = 2131427472;
+			public const int newPartyProductNameEditText = 2131427472;
 			
 			// aapt resource value: 0x7f0b008f
-			public const int newPartyProductNameEditText = 2131427471;
+			public const int newPartyProductsAmountTextView = 2131427471;
 			
 			// aapt resource value: 0x7f0b0093
 			public const int newPartyProductsListView = 2131427475;
 			
 			// aapt resource value: 0x7f0b008e
-			public const int newPartyProductsTextView = 2131427470;
+			public const int newPartyProductsNameTextView = 2131427470;
 			
 			// aapt resource value: 0x7f0b008d
-			public const int newPartySetDateTimeButton = 2131427469;
+			public const int newPartyProductsTextView = 2131427469;
+			
+			// aapt resource value: 0x7f0b008c
+			public const int newPartySetDateTimeButton = 2131427468;
 			
 			// aapt resource value: 0x7f0b0011
 			public const int none = 2131427345;

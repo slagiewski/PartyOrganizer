@@ -32,7 +32,11 @@ namespace PartyOrganizer.Fragments
             var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
 
             _partyRepository = new WebPartyRepository(authLink);
-            _allParties = (await _partyRepository.GetPartiesByUserId()).ToList();
+            var receivedParties = await _partyRepository.GetPartiesByUserId();
+            if (receivedParties != null)
+                _allParties = receivedParties.ToList();
+            else
+                _allParties = new List<PartyLookup>();
             _adapter = new PartyListAdapter(this.Activity, _allParties);
             _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
             _partyListView.Adapter = _adapter;

@@ -41,10 +41,10 @@ namespace PartyOrganizer.Fragments
             _callBackManager = CallbackManagerFactory.Create();
             _loginButton.SetReadPermissions("user_friends");
             _loginButton.RegisterCallback(_callBackManager, this);
-            _nameTextView.Text = Profile.CurrentProfile.Name;
 
             var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
 
+            _nameTextView.Text = authLink.User.DisplayName;
             Picasso.With(this.Context)
                    .Load(authLink.User.PhotoUrl)
                    .Into(_profileImage);

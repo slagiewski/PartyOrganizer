@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/newPartyNameTextView"
                 android:layout_height="wrap_content"
@@ -30,18 +31,16 @@
                 android:textColor="@android:color/black"
                 android:inputType="text" />
             <TextView
-                android:id="@+id/newPartyDescriptionTextView"
-                android:layout_below="@id/newPartyNameEditText"
+                android:id="@+id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_margin="20dp"
-                android:text="Party Description"
+                android:text="Party Location"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
             <EditText
                 android:id="@+id/newPartyDescriptionEditText"
-                android:layout_below="@id/newPartyDescriptionTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="10sp"
@@ -49,7 +48,6 @@
                 android:inputType="text" />
             <TextView
                 android:id="@+id/newPartyLocationTextView"
-                android:layout_below="@id/newPartyDescriptionEditText"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_margin="20dp"
@@ -59,7 +57,6 @@
                 android:textStyle="bold" />
             <EditText
                 android:id="@+id/newPartyLocationEditText"
-                android:layout_below="@id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="10sp"
@@ -67,7 +64,6 @@
                 android:inputType="text" />
             <TextView
                 android:id="@+id/newPartyDateDescTextView"
-                android:layout_below="@id/newPartyLocationEditText"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_margin="20dp"
@@ -77,10 +73,9 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/newPartyDateTimeTextView"
-                android:layout_below="@id/newPartyDateDescTextView"
-                android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:gravity="center"
                 android:layout_margin="5dp"
                 android:text="DD:MM:YYYY"
                 android:textSize="13sp"
@@ -88,66 +83,78 @@
                 android:textStyle="bold" />
             <Button
                 android:id="@+id/newPartySetDateTimeButton"
-                android:layout_below="@id/newPartyDateTimeTextView"
-                android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Set Date" />
             <TextView
                 android:id="@+id/newPartyProductsTextView"
-                android:layout_below="@id/newPartySetDateTimeButton"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:text="Products"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
-            <EditText
-                android:id="@+id/newPartyProductNameEditText"
-                android:layout_below="@id/newPartyProductsTextView"
-                android:layout_height="wrap_content"
-                android:layout_width="180dp"
-                android:layout_marginLeft="16dp"
-                android:textSize="10sp"
-                android:textColor="@android:color/black"
-                android:inputType="text"
-                android:text="Name" />
-            <EditText
-                android:id="@+id/newPartyProductAmountEditText"
-                android:layout_below="@id/newPartyProductsTextView"
-                android:layout_toRightOf="@+id/newPartyProductNameEditText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@android:color/black"
-                android:inputType="number"
-                android:text="Amount" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/newPartyProductsNameTextView"
+                    android:layout_height="wrap_content"
+                    android:layout_width="180dp"
+                    android:layout_margin="10dp"
+                    android:text="Products"
+                    android:textSize="8sp"
+                    android:textColor="@android:color/black" />
+                <TextView
+                    android:id="@+id/newPartyProductsAmountTextView"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Amount"
+                    android:textSize="8sp"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/newPartyProductNameEditText"
+                    android:layout_height="wrap_content"
+                    android:layout_width="180dp"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="10sp"
+                    android:textColor="@android:color/black"
+                    android:inputType="text"
+                    android:text="" />
+                <EditText
+                    android:id="@+id/newPartyProductAmountEditText"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="@android:color/black"
+                    android:inputType="number"
+                    android:text="" />
+            </LinearLayout>
             <Button
                 android:id="@+id/newPartyAddProductButton"
-                android:layout_below="@id/newPartyProductNameEditText"
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:text="Add product" />
-            <LinearLayout
-                android:id="@+id/newPartyListViewLinearLayout"
+            <ListView
+                android:id="@+id/newPartyProductsListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp">
-                <ListView
-                    android:id="@+id/newPartyProductsListView"
-                    android:layout_below="@id/newPartyAddProductButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp" />
-            </LinearLayout>
+                android:layout_height="500dp" />
             <Button
                 android:id="@+id/newPartyAddButton"
-                android:layout_below="@id/newPartyListViewLinearLayout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:text="Add Party" />
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
