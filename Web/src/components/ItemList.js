@@ -136,7 +136,7 @@ class ItemList extends React.Component {
                     style={{
                       boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                       transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-                      zIndex: i === originalPosOfLastPressed ? 99 : i,
+                      zIndex: i === originalPosOfLastPressed ? 99 : 1,
                       ...style
                     }}>
                     <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography>

@@ -15,10 +15,11 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
-
-//actions
+// formatting
+import { pluralize } from '../utils/formatting';
+// actions
 import { editPartyItems, getPartyData, acceptPendingUser, clearData } from '../actions/parties';
-//icons
+// icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
 import MaxAmountIcon from 'material-ui-icons/PlaylistAddCheck';
@@ -337,7 +338,7 @@ class PartyPage extends React.Component{
                       />
               })}
             </div>
-            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>  
+            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{pluralize('member', Object.keys(members).length)}</Typography>  
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               {Object.keys(members).map((member)=>{
                 return <Member 

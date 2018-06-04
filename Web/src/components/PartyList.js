@@ -21,7 +21,7 @@ class PartyList extends React.Component {
 
     return (
       <Paper className={classes.paper}>
-        {Object.keys(parties).map((party)=>
+        {Object.keys(parties).sort( (a,b)=> parties[a].unix > parties[b].unix ).map((party)=>
           <Link key={party} to={`/party/${party}/`} style={{textDecoration: 'none'}}><PartyTile {...parties[party]}/></Link>            
         )}
       </Paper>

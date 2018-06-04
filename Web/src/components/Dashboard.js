@@ -304,7 +304,7 @@ class Dashboard extends React.Component {
     return (
       <React.Fragment>
         {this.props.hasParties ? main : <NewUserDashboard openForm={this.formOpen} openDialog={this.dialogOpen}/>}
-        {this.state.formOpen && <PartyForm open={true} handleClose={this.formClose}/>}
+        {this.state.formOpen && <PartyForm edit={false} open={true} handleClose={this.formClose}/>}
         {this.state.dialogOpen && <JoinDialog open={true} handleClose={this.dialogClose} handleSubmit={this.dialogSubmit}/>}      
         <Snackbar
           open={this.state.openSnackbar}

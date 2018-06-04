@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import uuid from 'uuid';
 import { newParty, editParty } from '../actions/parties';
 
 import { LocationSearchBox } from './Map';
@@ -147,7 +148,7 @@ class PartyForm extends React.Component{
 
   handleNewItem = (item) => {
     this.setState((prevState)=>{
-      const id = prevState.order.length + 1;
+      const id = uuid();
       return {
         order: [...prevState.order, id],
         items: {
@@ -169,13 +170,8 @@ class PartyForm extends React.Component{
 
   removeItem = (index) => {
     this.setState((prevState)=>{
-      let newItems = {};
-      prevState.order.map((item, i)=>{
-        if (item !== index) newItems[i] = prevState.items[item];
-      })
       return ({
-        order: Object.keys(newItems),
-        items: newItems
+        order: prevState.order.filter((item)=> index !== item)
       })
     });
   }
@@ -239,7 +235,6 @@ class PartyForm extends React.Component{
 
   render() {
     const { classes, fullScreen, open } = this.props;
-    console.log(this.state);
 
     // const staticMapURL = this.props.form.meetingLocation ? `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}&zoom=14&scale=1&size=600x300&maptype=roadmap&key=AIzaSyCwqkpgtZSg4uCWIws9SgSgTlLVpxaOY7w&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C${this.props.form.meetingLocation.lat},+${this.props.form.meetingLocation.lng}` : '';
 
