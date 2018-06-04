@@ -98,6 +98,11 @@ namespace PartyOrganizer.Core.Repository
             return _partyRepository.AcceptRequest(party, user);
         }
 
+        public Task<bool> RefuseRequest(Party party, Model.Member.User user)
+        {
+            return _partyRepository.RefuseRequest(party, user);
+        }
+
         private bool CheckConnection()
         {
             // If offline - check if the time difference is below [5] seconds
@@ -108,5 +113,7 @@ namespace PartyOrganizer.Core.Repository
 
             return internetStatus;
         }
+
+
     }
 }

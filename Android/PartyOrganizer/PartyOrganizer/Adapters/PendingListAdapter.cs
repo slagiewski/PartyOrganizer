@@ -1,31 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Android.App;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Model.Member;
+using PartyOrganizer.Core.Model.Party;
+using PartyOrganizer.Core.Repository.Interfaces;
 using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
     class PendingListAdapter : BaseAdapter<User>
     {
-        private List<User> _partyPendings;
+        private List<User> _pendingUsers;
+        private Party _party;
+        private IPartyRepositoryAsync _partyRepository;
         private Activity _context;
         private ImageView _partyPendingImageView;
         private TextView _partyPendingNameTextView;
         private Button _partyPendingRefuseButton;
         private Button _partyPendingAcceptButton;
 
-        public PendingListAdapter(Activity context, List<User> partyPendings)
+        public PendingListAdapter(Activity context, List<User> pendingUsers,
+            IPartyRepositoryAsync partyRepository, Party party)
         {
             this._context = context;
-            _partyPendings = partyPendings;
+            _pendingUsers = pendingUsers;
+            _partyRepository = partyRepository;
+            _party = party;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            var partyPending = _partyPendings[position];
+            var pendingUser = _pendingUsers[position];
 
             if (convertView == null)
             {
@@ -35,25 +41,26 @@ namespace PartyOrganizer.Adapters
             FindViews(convertView);
 
             Picasso.With(_context)
-                   .Load(partyPending.Image)
+                   .Load(pendingUser.Image)
                    .Into(_partyPendingImageView);
-            _partyPendingNameTextView.Text = partyPending.Name;
+            _partyPendingNameTextView.Text = pendingUser.Name;
 
-            //HandleEvents();
+            HandleEvents(pendingUser);
 
             return convertView;
         }
 
-        private void HandleEvents()
+        // Move it up in the hierarchy
+        private void HandleEvents(User pendingUser)
         {
-            _partyPendingRefuseButton.Click += (object sender, EventArgs e) =>
+            _partyPendingRefuseButton.Click += (s, e) =>
             {
-                // TODO: implement take amount method
+                _partyRepository.RefuseRequest(_party, pendingUser);
             };
 
-            _partyPendingAcceptButton.Click += (object sender, EventArgs e) =>
+            _partyPendingAcceptButton.Click += (s, e) =>
             {
-                // TODO: implement take amount method
+                _partyRepository.AcceptRequest(_party, pendingUser);
             };
         }
 
@@ -65,11 +72,10 @@ namespace PartyOrganizer.Adapters
             _partyPendingAcceptButton = convertView.FindViewById<Button>(Resource.Id.partyPendingAcceptButton);
         }
 
-        public override int Count => _partyPendings.Count;
+        public override int Count => _pendingUsers.Count;
 
-        public override User this[int position] => _partyPendings[position];
+        public override User this[int position] => _pendingUsers[position];
 
-        public override long GetItemId(int position) =>
-            position;
+        public override long GetItemId(int position) => position;
     }
 }

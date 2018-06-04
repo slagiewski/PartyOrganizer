@@ -41,7 +41,7 @@ namespace PartyOrganizer.Fragments
             else
                 _allPartyPendings = new List<Core.Model.Member.User>();
 
-            _adapter = new PendingListAdapter(this.Activity, _allPartyPendings);
+            _adapter = new PendingListAdapter(this.Activity, _allPartyPendings, _partyRepository, _selectedParty);
             _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
             _partyPendingsListView.Adapter = _adapter;
         }
