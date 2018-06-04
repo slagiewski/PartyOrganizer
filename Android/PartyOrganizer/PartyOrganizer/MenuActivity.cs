@@ -32,9 +32,7 @@ namespace PartyOrganizer
                 {
                     _partiesFragment,
                     _myProfileFragment
-                });
-
-            
+                });            
         }
         
         public async Task Refresh()
