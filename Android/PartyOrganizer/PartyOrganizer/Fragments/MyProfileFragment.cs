@@ -11,7 +11,7 @@ using Xamarin.Facebook.Login.Widget;
 
 namespace PartyOrganizer.Fragments
 {
-    public class MyProfileFragment : Android.Support.V4.App.Fragment, IFacebookCallback
+    public class MyProfileFragment : Android.Support.V4.App.Fragment
     {
         private ICallbackManager _callBackManager;
         private ImageView _profileImage;
@@ -23,8 +23,6 @@ namespace PartyOrganizer.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -38,14 +36,10 @@ namespace PartyOrganizer.Fragments
 
             FindViews();
             HandleEvents();
-
-            _callBackManager = CallbackManagerFactory.Create();
-            _loginButton.SetReadPermissions("user_friends");
-            _loginButton.RegisterCallback(_callBackManager, this);
             
             var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-
             _nameTextView.Text = authLink.User.DisplayName;
+
             Picasso.With(this.Context)
                    .Load(authLink.User.PhotoUrl)
                    .Into(_profileImage);
@@ -54,7 +48,6 @@ namespace PartyOrganizer.Fragments
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            _callBackManager.OnActivityResult(requestCode, (int)resultCode, data);
         }
 
         private void FindViews()
@@ -91,22 +84,5 @@ namespace PartyOrganizer.Fragments
             //};
         }
 
-        public void OnError(FacebookException error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnSuccess(Java.Lang.Object result)
-        {
-            //var intent = new Intent();
-            //intent.SetClass(this.Activity, typeof(LoginActivity));
-            //StartActivity(intent);
-            //this.Activity.Finish();
-        }
-
-        public void OnCancel()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

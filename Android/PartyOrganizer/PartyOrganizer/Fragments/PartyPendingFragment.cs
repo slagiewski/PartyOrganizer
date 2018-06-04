@@ -21,29 +21,37 @@ namespace PartyOrganizer.Fragments
         private IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
 
+        public PartyPendingFragment(Party party)
+        {
+            _selectedParty = party;
+        }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
         }
 
-        public override async void OnActivityCreated(Bundle savedInstanceState)
+        public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(authLink);
+            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            //_partyRepository = new WebPartyRepository(authLink);
 
-            var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            _selectedParty = await _partyRepository.GetById(selectedPartyID);
-            var receivedPendings = _selectedParty.Pending;
-            if (receivedPendings != null)
-                _allPartyPendings = receivedPendings.ToList();
-            else
-                _allPartyPendings = new List<Core.Model.Member.User>();
-
-            _adapter = new PendingListAdapter(this.Activity, _allPartyPendings, _partyRepository, _selectedParty);
-            _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
-            _partyPendingsListView.Adapter = _adapter;
+            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
+            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
+            //var pendingUsers = _selectedParty.Pending;
+            //if (pendingUsers != null)
+            _allPartyPendings = _selectedParty.Pending?.ToList();
+            //else
+            //    _allPartyPendings = new List<Core.Model.Member.User>();
+            if (_allPartyPendings != null)
+            {
+                _adapter = new PendingListAdapter(this.Activity, _allPartyPendings, _partyRepository, _selectedParty);
+                _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
+                _partyPendingsListView.Adapter = _adapter;
+            }
+            
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

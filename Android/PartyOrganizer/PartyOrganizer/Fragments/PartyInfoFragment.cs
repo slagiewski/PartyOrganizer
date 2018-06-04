@@ -20,18 +20,23 @@ namespace PartyOrganizer.Fragments
         private TextView _partyDateTextView;
         private TextView _partyLocationTextView;
 
+        public PartyInfoFragment(Party party)
+        {
+            _selectedParty = party;
+        }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);   
         }
 
-        public override async void OnActivityCreated(Bundle savedInstanceState)
+        public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(authLink);
-            var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            _selectedParty = await _partyRepository.GetById(selectedPartyID);
+            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            //_partyRepository = new WebPartyRepository(authLink);
+            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
+            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
 
             FindViews();
             BindData();

@@ -21,20 +21,25 @@ namespace PartyOrganizer.Fragments
         private IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
 
+        public PartyMembersFragment(Party party)
+        {
+            _selectedParty = party;
+        }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
         }
 
-        public override async void OnActivityCreated(Bundle savedInstanceState)
+        public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(authLink);
+            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            //_partyRepository = new WebPartyRepository(authLink);
 
-            var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            _selectedParty = await _partyRepository.GetById(selectedPartyID);
+            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
+            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
             _allPartyMembers = _selectedParty.Members.ToList();
 
             _adapter = new MemberListAdapter(this.Activity, _allPartyMembers);

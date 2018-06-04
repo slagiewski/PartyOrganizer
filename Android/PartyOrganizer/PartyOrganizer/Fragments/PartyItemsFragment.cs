@@ -21,6 +21,11 @@ namespace PartyOrganizer.Fragments
         private IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
 
+        public PartyItemsFragment(Party party)
+        {
+            _selectedParty = party;
+        }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,20 +33,23 @@ namespace PartyOrganizer.Fragments
             // Create your fragment here
         }
 
-        public override async void OnActivityCreated(Bundle savedInstanceState)
+        public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(authLink);
+            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            //_partyRepository = new WebPartyRepository(authLink);
 
-            var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            _selectedParty = await _partyRepository.GetById(selectedPartyID);
-            _allPartyItems = _selectedParty.Content.Items.ToList();
+            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
+            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
+            _allPartyItems = _selectedParty.Content?.Items?.ToList();
 
-            _adapter = new ItemListAdapter(this.Activity, _allPartyItems);
-            _partyItemsListView = this.View.FindViewById<ListView>(Resource.Id.partyItemsListView);
-            _partyItemsListView.Adapter = _adapter;
+            if(_allPartyItems != null)
+            {
+                _adapter = new ItemListAdapter(this.Activity, _allPartyItems);
+                _partyItemsListView = this.View.FindViewById<ListView>(Resource.Id.partyItemsListView);
+                _partyItemsListView.Adapter = _adapter;
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

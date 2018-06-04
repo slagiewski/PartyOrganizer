@@ -27,10 +27,15 @@ namespace PartyOrganizer
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PartyDetailView);
 
-            _partyInfoFragment = new PartyInfoFragment();
-            _partyItemsFragment = new PartyItemsFragment();
-            _partyMembersFragment = new PartyMembersFragment();
-            _partyPendingFragment = new PartyPendingFragment();
+            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            _partyRepository = new WebPartyRepository(authLink);
+            var selectedPartyID = Intent.Extras.GetString("selectedPartyID");
+            var party = await _partyRepository.GetById(selectedPartyID);
+
+            _partyInfoFragment = new PartyInfoFragment(party);
+            _partyItemsFragment = new PartyItemsFragment(party);
+            _partyMembersFragment = new PartyMembersFragment(party);
+            _partyPendingFragment = new PartyPendingFragment(party);
 
             var viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
             viewPager.Adapter = new ViewPagerFragmentsAdapter(SupportFragmentManager,
@@ -41,11 +46,6 @@ namespace PartyOrganizer
                     _partyMembersFragment,
                     _partyPendingFragment
                 });
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(authLink);
-            var selectedPartyID = Intent.Extras.GetString("selectedPartyID");
-            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
-
         }
     }
 }
