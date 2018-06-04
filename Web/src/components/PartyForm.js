@@ -155,7 +155,7 @@ class PartyForm extends React.Component{
           ...prevState.items,
           [id]: {
             name: item.name,
-            amount: item.amount
+            amount: parseInt(item.amount, 10)
           }
         }
       }
