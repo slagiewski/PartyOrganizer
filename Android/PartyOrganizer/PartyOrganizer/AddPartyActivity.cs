@@ -53,6 +53,7 @@ namespace PartyOrganizer
 
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);
+
             _newPartyProductListView.Adapter = _dataAdapter;           
         }
 

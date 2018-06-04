@@ -27,6 +27,8 @@
                 android:id="@+id/newPartyNameEditText"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
                 android:inputType="text" />
@@ -35,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_margin="20dp"
-                android:text="Party Location"
+                android:text="Party Description"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
@@ -43,9 +45,11 @@
                 android:id="@+id/newPartyDescriptionEditText"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="textMultiLine"
                 android:textSize="10sp"
-                android:textColor="@android:color/black"
-                android:inputType="text" />
+                android:textColor="@android:color/black" />
             <TextView
                 android:id="@+id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
@@ -59,6 +63,8 @@
                 android:id="@+id/newPartyLocationEditText"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
                 android:inputType="text" />
@@ -103,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginLeft="12dp">
+                android:layout_marginLeft="11dp">
                 <TextView
                     android:id="@+id/newPartyProductsNameTextView"
                     android:layout_height="wrap_content"
@@ -116,7 +122,7 @@
                 <TextView
                     android:id="@+id/newPartyProductsAmountTextView"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_margin="10dp"
                     android:text="Amount"
                     android:textSize="11sp"
@@ -139,7 +145,7 @@
                 <EditText
                     android:id="@+id/newPartyProductAmountEditText"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:textSize="9sp"
                     android:textColor="@android:color/black"
                     android:inputType="number"
@@ -154,10 +160,10 @@
             <ListView
                 android:id="@+id/newPartyProductsListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
             <Button
                 android:id="@+id/newPartyAddButton"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:text="Add Party" />
