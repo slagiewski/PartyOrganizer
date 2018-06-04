@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_margin="20dp"
-                android:text="Add Party"
+                android:text="Party Name"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
@@ -75,7 +75,7 @@
                 android:id="@+id/newPartyDateTimeTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:text="DD:MM:YYYY"
                 android:textSize="13sp"
@@ -84,14 +84,17 @@
             <Button
                 android:id="@+id/newPartySetDateTimeButton"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Set Date" />
+                android:text="Set Date"
+                android:layout_marginBottom="10dp" />
+        <!--Products-->
             <TextView
                 android:id="@+id/newPartyProductsTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="Products"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
@@ -99,14 +102,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginLeft="12dp">
                 <TextView
                     android:id="@+id/newPartyProductsNameTextView"
                     android:layout_height="wrap_content"
                     android:layout_width="180dp"
                     android:layout_margin="10dp"
-                    android:text="Products"
-                    android:textSize="8sp"
+                    android:text="Product Name"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:textColor="@android:color/black" />
                 <TextView
                     android:id="@+id/newPartyProductsAmountTextView"
@@ -114,7 +119,8 @@
                     android:layout_width="wrap_content"
                     android:layout_margin="10dp"
                     android:text="Amount"
-                    android:textSize="8sp"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:textColor="@android:color/black" />
             </LinearLayout>
             <LinearLayout
@@ -126,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="180dp"
                     android:layout_marginLeft="16dp"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textColor="@android:color/black"
                     android:inputType="text"
                     android:text="" />
@@ -134,7 +140,7 @@
                     android:id="@+id/newPartyProductAmountEditText"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textColor="@android:color/black"
                     android:inputType="number"
                     android:text="" />
@@ -148,7 +154,7 @@
             <ListView
                 android:id="@+id/newPartyProductsListView"
                 android:layout_width="match_parent"
-                android:layout_height="500dp" />
+                android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/newPartyAddButton"
                 android:layout_height="wrap_content"

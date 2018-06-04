@@ -6,6 +6,7 @@ using Android.Widget;
 using PartyOrganizer.Core.Auth;
 using Square.Picasso;
 using Xamarin.Facebook;
+using Xamarin.Facebook.Login;
 using Xamarin.Facebook.Login.Widget;
 
 namespace PartyOrganizer.Fragments
@@ -41,7 +42,7 @@ namespace PartyOrganizer.Fragments
             _callBackManager = CallbackManagerFactory.Create();
             _loginButton.SetReadPermissions("user_friends");
             _loginButton.RegisterCallback(_callBackManager, this);
-
+            
             var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
 
             _nameTextView.Text = authLink.User.DisplayName;
@@ -71,6 +72,14 @@ namespace PartyOrganizer.Fragments
             {
                 var intent = new Intent();
                 intent.SetClass(this.Context, typeof(AddPartyActivity));
+                StartActivity(intent);
+            };
+
+            _loginButton.Click += (s, e) =>
+            {
+                LoginManager.Instance.LogOut();
+                var intent = new Intent();
+                intent.SetClass(this.Context, typeof(LoginActivity));
                 StartActivity(intent);
             };
 
