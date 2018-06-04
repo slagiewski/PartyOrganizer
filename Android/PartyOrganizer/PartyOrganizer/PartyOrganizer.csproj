@@ -174,13 +174,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\FriendsListAdapter.cs" />
+    <Compile Include="Adapters\ItemListAdapter.cs" />
+    <Compile Include="Adapters\MemberListAdapter.cs" />
     <Compile Include="Adapters\PartyListAdapter.cs" />
+    <Compile Include="Adapters\PendingListAdapter.cs" />
     <Compile Include="Adapters\ProductsListAdapter.cs" />
     <Compile Include="Adapters\ViewPagerFragmentsAdapter.cs" />
     <Compile Include="AddPartyActivity.cs" />
     <Compile Include="Fragments\FriendsFragment.cs" />
     <Compile Include="Fragments\MyProfileFragment.cs" />
     <Compile Include="Fragments\PartiesFragment.cs" />
+    <Compile Include="Fragments\PartyInfoFragment.cs" />
+    <Compile Include="Fragments\PartyItemsFragment.cs" />
+    <Compile Include="Fragments\PartyMembersFragment.cs" />
+    <Compile Include="Fragments\PartyPendingFragment.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MenuActivity.cs" />
     <Compile Include="PartyDetailActivity.cs" />
@@ -230,6 +237,27 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MyProfileView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyInfoView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyItemsView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyItemRowView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyMembersView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyMemberRowView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyPendingView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PartyPendingRowView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
