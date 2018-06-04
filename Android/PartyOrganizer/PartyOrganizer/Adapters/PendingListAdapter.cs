@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Model.Member;
@@ -45,7 +39,7 @@ namespace PartyOrganizer.Adapters
                    .Into(_partyPendingImageView);
             _partyPendingNameTextView.Text = partyPending.Name;
 
-            HandleEvents();
+            //HandleEvents();
 
             return convertView;
         }

@@ -35,14 +35,14 @@ namespace PartyOrganizer.Fragments
 
             var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
             _selectedParty = await _partyRepository.GetById(selectedPartyID);
-            var receivedPendings = _selectedParty.Pending.ToList();
+            var receivedPendings = _selectedParty.Pending;
             if (receivedPendings != null)
-                _allPartyPendings = _selectedParty.Pending.ToList();
+                _allPartyPendings = receivedPendings.ToList();
             else
                 _allPartyPendings = new List<Core.Model.Member.User>();
 
             _adapter = new PendingListAdapter(this.Activity, _allPartyPendings);
-            _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyMembersListView);
+            _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
             _partyPendingsListView.Adapter = _adapter;
         }
 
