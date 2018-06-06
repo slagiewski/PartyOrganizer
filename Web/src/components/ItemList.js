@@ -141,7 +141,7 @@ class ItemList extends React.Component {
                     }}>
                     <Typography color="inherit" variant="body2">{order.indexOf(i) + 1}</Typography>
                     <Typography color="inherit" variant="headline" style={{marginLeft: 25}}>{items[i].name} {disabled ? <DoneIcon/> : `x${items[i].amount}`}</Typography>
-                    {!this.props.fixed && <IconButton><DeleteIcon onClick={() => this.props.removeItem(i)}/></IconButton>}
+                    {!this.props.fixed && <IconButton style={{marginLeft: 'auto', color: '#f1f1f1'}}><DeleteIcon onClick={() => this.props.removeItem(i)}/></IconButton>}
                   </div>
               )}}
             </Spring>
