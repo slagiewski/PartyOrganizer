@@ -431,7 +431,7 @@ class PartyPage extends React.Component{
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => state.party && ({
   party: state.party.content,
   members: state.party.members,
   isHost: state.party.members && state.party.members[state.auth.uid].type === 'host',

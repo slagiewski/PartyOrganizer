@@ -79,7 +79,7 @@ export const removeParty = (id) => {
   return (dispatch, getState) => {
     const state = getState();
     let updates = {};
-    updates[`/parties/${id}/content`] = {};
+    updates[`/parties/${id}`] = {};
     Object.keys(state.party.members).forEach((member) => updates[`/users/${member}/partiesMeta/${id}`] = {});
 
     return database.ref().update(updates).then(()=>{
