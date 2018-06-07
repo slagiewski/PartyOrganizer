@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { newParty } from '../actions/parties';
+import uuid from 'uuid';
+import { newParty, editParty } from '../actions/parties';
 
 import { LocationSearchBox } from './Map';
 import { DayPickerSingleDateController, isInclusivelyAfterDay } from 'react-dates';
@@ -114,14 +115,23 @@ const styles = theme => ({
 });
 
 class PartyForm extends React.Component{
-  state = {
-    activeStep: 0,
-    loading: false,
-    itemOrder: [],
-    items: {},
-    name: '',
-    time: '00:00',
-    description: ''
+
+  constructor(props){
+    super(props);
+    const defaultState = {
+      activeStep: 0,
+      loading: false,
+      order: [],
+      items: {},
+      name: '',
+      time: '00:00',
+      description: ''
+    }
+
+    this.state = {
+      ...defaultState,
+      ...this.props.data
+    }
   }
 
   handleChange = name => event => {
@@ -138,39 +148,58 @@ class PartyForm extends React.Component{
 
   handleNewItem = (item) => {
     this.setState((prevState)=>{
-      const id = prevState.itemOrder.length + 1;
+      const id = uuid();
       return {
-        itemOrder: [...prevState.itemOrder, id],
+        order: [...prevState.order, id],
         items: {
           ...prevState.items,
           [id]: {
             name: item.name,
-            amount: item.amount
+            amount: parseInt(item.amount, 10)
           }
         }
       }
     });
   }
 
-  handleChangeItemOrder = (order) => {
+  handleChangeOrder = (order) => {
     this.setState({
-      itemOrder: order
+      order: order
     })
+  }
+
+  removeItem = (index) => {
+    this.setState((prevState)=>{
+      return ({
+        order: prevState.order.filter((item)=> index !== item)
+      })
+    });
   }
 
   handleSubmit = () => {
     this.setState({ loading: true });
-    const { name, unix, location, description } = this.state;
+    const { name, unix, location, description, order, items } = this.state;
     const party = {
       name,
       unix,
       location,
-      description
+      description,
+      order,
+      items
     }
-    this.props.dispatch(newParty(party, this.state.itemOrder, this.state.items)).then(()=>{
+
+    if (this.props.edit) {
+      this.props.editParty(party).then(()=>{
       this.setState({ loading: false });
       this.props.handleClose();
-    });
+      });
+    }
+    else {
+      this.props.newParty(party).then(()=>{
+      this.setState({ loading: false });
+      this.props.handleClose();
+      });
+    }
   }
 
   handleFormControl = () => {
@@ -288,8 +317,8 @@ class PartyForm extends React.Component{
         <DialogContentText>
           Add a shopping list for your party and order it from most to least important
         </DialogContentText>
-        <ItemsPanel partyID={this.props.partyID} onNewItem={this.handleNewItem}/>
-        <ItemList fixed={false} order={this.state.itemOrder} items={this.state.items} onMoved={this.handleChangeItemOrder}/>
+        <ItemsPanel onNewItem={this.handleNewItem}/>
+        <ItemList fixed={false} order={this.state.order} items={this.state.items} onMoved={this.handleChangeOrder} removeItem={this.removeItem}/>
       </React.Fragment>
     )
 
@@ -348,4 +377,9 @@ class PartyForm extends React.Component{
   }
 }
 
-export default connect((state)=>({partyID: state.party}))(withMobileDialog()(withStyles(styles)(PartyForm)));
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  newParty: (party) => dispatch(newParty(party)),
+  editParty: (party) => dispatch(editParty(ownProps.id, party))
+})
+
+export default connect(null, mapDispatchToProps)(withMobileDialog()(withStyles(styles)(PartyForm)));

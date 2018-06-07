@@ -4,28 +4,38 @@ import moment from 'moment';
 import Avatar from 'material-ui/Avatar';
 import Map from './Map';
 import LoadingPage from './LoadingPage';
+import PartyForm from './PartyForm';
 import { Marker } from "react-google-maps";
 import ItemList from './ItemList';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
+import { Spring } from 'react-spring'
 
-//actions
-import { editPartyItems, getPartyData, acceptPendingUser, clearData } from '../actions/parties';
-//icons
+// formatting
+import { pluralize } from '../utils/formatting';
+// actions
+import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty } from '../actions/parties';
+// icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
 import MaxAmountIcon from 'material-ui-icons/PlaylistAddCheck';
+import EditIcon from 'material-ui-icons/Edit';
+import ClearIcon from 'material-ui-icons/Clear';
+import ExpandIcon from 'material-ui-icons/ExpandMore';
+import LessIcon from 'material-ui-icons/ExpandLess';
 
 const Member = withStyles( theme => ({
   wrapper: {
     display: 'flex',
-    height: 80,
+    position: 'relative',
+    overflow: 'hidden',
+    minHeight: 70,
     width: 300,
     borderBottom: `2px solid ${theme.palette.primary.main}`, 
     borderRight: `2px solid ${theme.palette.primary.main}`,      
@@ -36,39 +46,98 @@ const Member = withStyles( theme => ({
     height: 44,
     margin: theme.spacing.unit
   },
+  list: {
+    paddingBottom: 25
+  },
+  iconButton: {
+    width: 30,
+    height: 30,
+  },
+  expand: {
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    backgroundColor: theme.palette.primary.main,
+    height: 20
+  },
   '@media (max-width: 600px)': {
     wrapper: {
       width: '100%'
     }
   }    
-}))((props) => {
-  const { classes, items, isMember } = props;
+}))(class extends React.Component {
+  state = {
+    toggle: false
+  }
 
-  const member = (
-    <React.Fragment>
-      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
-      <div>
-        <Typography>{props.name} <i>{props.type}</i></Typography>
-        <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}, `)}</Typography>        
-      </div>
-    </React.Fragment>
-  );
+  toggle = () => {
+    console.log('wew');
+    this.setState((prevState)=>({
+      toggle: !prevState.toggle
+    }));
+  }
 
-  const pendingUser = (
-    <React.Fragment>
-      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
-      <div>
-        <Typography>{props.name} </Typography>
-        <Button onClick={() => props.acceptPendingUser({ name: props.name.split(' ')[0], image: props.image, uid: props.uid })}>Accept</Button>
-        <Button>Decline</Button>        
+  render(){
+    const { classes, items, isMember, name, image, type, uid } = this.props;
+
+    const member = ({ height }) => (
+      <div className={classes.wrapper} style={{ height }}>
+        <React.Fragment>
+          <Avatar alt={name} src={image} className={classes.avatar} />
+          <div>
+            <Typography>{name} <i>{type}</i></Typography>
+            <List className={classes.list}>
+            {Object.keys(items || {}).map((item)=> 
+              <ListItem
+                dense
+                divider
+                disableGutters
+              >
+                {items[item].name} x{items[item].amount}
+                <ListItemSecondaryAction>
+                  <IconButton className={classes.iconButton} aria-label="Clear" onClick={() => this.props.editPartyItems(item, items[item].amount, false)}>
+                    <ClearIcon style={{fontSize: 15}}/>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )}
+            </List>      
+          </div>
+        </React.Fragment>
+        {Object.keys(items || {}).length > 1 &&
+        <div className={classes.expand}>
+          <IconButton style={{ width: 20, height: 20 }} onClick={this.toggle}>
+            { this.state.toggle ? <LessIcon style={{color: '#fff'}}/> : <ExpandIcon style={{color: '#fff'}}/> }
+          </IconButton>
+        </div>
+        }
       </div>
-    </React.Fragment>
-  )
-  return (
-    <div className={classes.wrapper}>
-      {isMember ? member : pendingUser}
-    </div>
-  )
+    );
+  
+    const pendingUser = () => (
+      <div className={classes.wrapper}>
+        <React.Fragment>
+          <Avatar alt={name} src={image} className={classes.avatar} />
+          <div>
+            <Typography>{name} </Typography>
+            <Button onClick={() => this.props.acceptPendingUser({ name: name.split(' ')[0], image: image, uid: uid })}>Accept</Button>
+            <Button>Decline</Button>        
+          </div>
+        </React.Fragment>
+      </div>
+    )
+    return (
+      <Spring 
+        to={{
+          height: this.state.toggle ? 'auto' : 70
+        }}
+        children={isMember ? member : pendingUser}
+      />
+    )
+  }
 });
 
 const styles = theme => ({
@@ -86,6 +155,8 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   headline: {
+    display: 'flex',
+    justifyContent: 'center',
     padding: theme.spacing.unit*2
   },
   info: {
@@ -137,6 +208,11 @@ const styles = theme => ({
   pendingBar: {
     backgroundColor: '#4dd0e1'
   },
+  editIcon: {
+    height: 40,
+    width: 40,
+    color: '#00aabb',
+  },
   '@media (max-width: 1000px)': {
     root: {
       flexDirection: 'column'
@@ -166,7 +242,8 @@ class PartyPage extends React.Component{
   state = {
     showItemSelect: false,
     amount: 1,
-    render: false
+    render: false,
+    formOpen: false
   }
 
   componentDidMount(){
@@ -225,14 +302,36 @@ class PartyPage extends React.Component{
     }
   }
 
+  formOpen = () => {
+    this.setState({ formOpen: true })
+  }
+
+  formClose = () => {
+    this.setState({ formOpen: false })
+  }
+
+  handleRemoveParty = () => {
+    this.setState({ render: false }, 
+      () => this.props.removeParty().then(() => this.props.history.push('/dashboard')));
+  }
+
   render() {
+    if (!this.state.render) return <LoadingPage/>;    
     const { classes, party, members, pending } = this.props;
-    if (!this.state.render) return <LoadingPage/>;
+    const partyData = {
+      ...party,
+      date: moment.unix(party.unix).startOf('day'),
+      time: `${moment.unix(party.unix).hours()}:${moment.unix(party.unix).minutes()}`,
+    }
+
     return (
       <div className={classes.root}>
+        {this.state.formOpen && <PartyForm id={this.props.match.params.id} data={partyData} edit={true} open={true} handleClose={this.formClose}/>}
         <div className={classes.infoWrapper}>
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
+            <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
+            <Button onClick={this.handleRemoveParty}>REMOVE PARTY (temporary)</Button>
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>
@@ -296,25 +395,28 @@ class PartyPage extends React.Component{
         <div className={classes.guestsWrapper}>
           <Paper>
             {
-              pending && 
+              pending &&
               <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
-            }                        
-            {Object.keys(pending).map((user)=>{
-              return <Member 
-                      isMember={false}
-                      uid={user}
-                      acceptPendingUser={this.props.acceptPendingUser}
-                      key={user} 
-                      name={pending[user].name} 
-                      image={pending[user].image}
-                    />
-            })}
-            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{Object.keys(members).length} members</Typography>  
+            }
+            <div style={{display: 'flex', flexWrap: 'wrap'}}>                        
+              {Object.keys(pending).map((user)=>{
+                return <Member 
+                        isMember={false}
+                        uid={user}
+                        acceptPendingUser={this.props.acceptPendingUser}
+                        key={user} 
+                        name={pending[user].name} 
+                        image={pending[user].image}
+                      />
+              })}
+            </div>
+            <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{pluralize('member', Object.keys(members).length)}</Typography>  
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               {Object.keys(members).map((member)=>{
                 return <Member 
                         isMember={true}
                         key={member} 
+                        editPartyItems={this.props.editPartyItems}
                         type={members[member].type}
                         name={members[member].name} 
                         image={members[member].image}
@@ -329,16 +431,18 @@ class PartyPage extends React.Component{
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => state.party && ({
   party: state.party.content,
   members: state.party.members,
-  pending: state.party.pending || false
+  isHost: state.party.members && state.party.members[state.auth.uid].type === 'host',
+  pending: state.party.members ? (state.party.members[state.auth.uid].type === 'host' && (state.party.pending || false)) : false
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  editPartyItems: (itemID, amount) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount)),
+  editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
   acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  removeParty: () => dispatch(removeParty(ownProps.match.params.id)),
   clearData: () => dispatch(clearData())
 })
 

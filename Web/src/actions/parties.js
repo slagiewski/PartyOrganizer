@@ -7,7 +7,7 @@ export const addParty = (id, party) => ({
   party
 });
 
-export const newParty = (partyInfo, order, items) => {
+export const newParty = (partyInfo) => {
   return (dispatch, getState) => {
     const state = getState().auth;
     const uid = state.uid;      
@@ -18,8 +18,6 @@ export const newParty = (partyInfo, order, items) => {
     const party = {
       content: {
         ...partyInfo,
-        order,
-        items,
         image
       },
       members: {
@@ -54,11 +52,53 @@ export const newParty = (partyInfo, order, items) => {
   }
 }
 
+export const editParty = (id, party) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const host = state.auth.name;
+    const image = state.auth.photo;
+
+    const metaParty = {
+      name: party.name,
+      location: party.location.name,
+      unix: party.unix,
+      host,
+      image
+    }
+    let updates = {};
+    updates[`/parties/${id}/content`] = { ...party, image };
+    Object.keys(state.party.members).forEach((member) => updates[`/users/${member}/partiesMeta/${id}`] = metaParty);
+
+    return database.ref().update(updates).then(()=>{
+      dispatch(addParty(id, metaParty));
+    });
+  }
+}
+
+export const removeParty = (id) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    let updates = {};
+    updates[`/parties/${id}`] = {};
+    Object.keys(state.party.members).forEach((member) => updates[`/users/${member}/partiesMeta/${id}`] = {});
+
+    return database.ref().update(updates).then(()=>{
+      dispatch(clearData());
+      dispatch(removePartyMeta(id));
+    });
+  }
+}
+
 // SET PARTIES
 export const setParties = (parties) => ({
   type: 'SET_META_PARTIES',
   parties
 });
+
+export const removePartyMeta = (id) => ({
+  type: 'REMOVE_META_PARTY',
+  id
+})
 
 export const clearData = () => ({
   type: 'CLEAR_DATA'
@@ -101,7 +141,7 @@ const updateItem = (updatedItem) => ({
   ...updatedItem
 });
 
-export const editPartyItems = (partyID, itemID, chosenAmount) => {
+export const editPartyItems = (partyID, itemID, chosenAmount, subtract = true) => {
   return (dispatch, getState) => {
     const state = getState();
     const uid = state.auth.uid;
@@ -111,13 +151,13 @@ export const editPartyItems = (partyID, itemID, chosenAmount) => {
     return database.ref(`parties/${partyID}/content/items/${itemID}`).once('value').then((snapshot)=>{
       const totalAmount = snapshot.val().amount;
       const userTotalAmount = get(['party', 'members', uid, 'items', itemID, 'amount'], state);  
-      const amountLeft = parseInt(totalAmount, 10) - parseInt(chosenAmount, 10);
-      const userAmount = parseInt(userTotalAmount, 10) + parseInt(chosenAmount, 10);
+      const amountLeft = subtract ? parseInt(totalAmount, 10) - parseInt(chosenAmount, 10) : parseInt(totalAmount, 10) + parseInt(chosenAmount, 10);
+      const userAmount = subtract ? parseInt(userTotalAmount, 10) + parseInt(chosenAmount, 10) : 0;
   
       // Write the new data simultaneously
       var updates = {};
       updates[`/${partyID}/content/items/${itemID}/amount`] = amountLeft;
-      updates[`/${partyID}/members/${uid}/items/${itemID}`] = { name: itemName, amount:userAmount };
+      updates[`/${partyID}/members/${uid}/items/${itemID}`] = subtract ? { name: itemName, amount:userAmount } : {};
   
       return database.ref('parties').update(updates);
     })
