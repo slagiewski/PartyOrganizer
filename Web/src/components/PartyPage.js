@@ -98,7 +98,7 @@ const Member = withStyles( theme => ({
               >
                 {items[item].name} x{items[item].amount}
                 <ListItemSecondaryAction>
-                  <IconButton className={classes.iconButton} aria-label="Clear">
+                  <IconButton className={classes.iconButton} aria-label="Clear" onClick={() => this.props.editPartyItems(item, items[item].amount, false)}>
                     <ClearIcon style={{fontSize: 15}}/>
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -107,11 +107,13 @@ const Member = withStyles( theme => ({
             </List>      
           </div>
         </React.Fragment>
+        {Object.keys(items || {}).length > 1 &&
         <div className={classes.expand}>
           <IconButton style={{ width: 20, height: 20 }} onClick={this.toggle}>
             { this.state.toggle ? <LessIcon style={{color: '#fff'}}/> : <ExpandIcon style={{color: '#fff'}}/> }
           </IconButton>
         </div>
+        }
       </div>
     );
   
@@ -408,6 +410,7 @@ class PartyPage extends React.Component{
                 return <Member 
                         isMember={true}
                         key={member} 
+                        editPartyItems={this.props.editPartyItems}
                         type={members[member].type}
                         name={members[member].name} 
                         image={members[member].image}
@@ -430,7 +433,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  editPartyItems: (itemID, amount) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount)),
+  editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
   acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
   clearData: () => dispatch(clearData())
