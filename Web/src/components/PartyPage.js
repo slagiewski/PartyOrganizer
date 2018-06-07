@@ -10,11 +10,13 @@ import ItemList from './ItemList';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import { InputAdornment } from 'material-ui/Input';
+import { Spring } from 'react-spring'
+
 // formatting
 import { pluralize } from '../utils/formatting';
 // actions
@@ -24,10 +26,15 @@ import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
 import MaxAmountIcon from 'material-ui-icons/PlaylistAddCheck';
 import EditIcon from 'material-ui-icons/Edit';
+import ClearIcon from 'material-ui-icons/Clear';
+import ExpandIcon from 'material-ui-icons/ExpandMore';
+import LessIcon from 'material-ui-icons/ExpandLess';
 
 const Member = withStyles( theme => ({
   wrapper: {
     display: 'flex',
+    position: 'relative',
+    overflow: 'hidden',
     height: 80,
     width: 300,
     borderBottom: `2px solid ${theme.palette.primary.main}`, 
@@ -39,39 +46,96 @@ const Member = withStyles( theme => ({
     height: 44,
     margin: theme.spacing.unit
   },
+  list: {
+    paddingBottom: 25
+  },
+  iconButton: {
+    width: 30,
+    height: 30,
+  },
+  expand: {
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    backgroundColor: theme.palette.primary.main,
+    height: 20
+  },
   '@media (max-width: 600px)': {
     wrapper: {
       width: '100%'
     }
   }    
-}))((props) => {
-  const { classes, items, isMember } = props;
+}))(class extends React.Component {
+  state = {
+    toggle: false
+  }
 
-  const member = (
-    <React.Fragment>
-      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
-      <div>
-        <Typography>{props.name} <i>{props.type}</i></Typography>
-        <Typography>Brings: {Object.keys(items || {}).map((item)=> `${items[item].name} x${items[item].amount}, `)}</Typography>        
-      </div>
-    </React.Fragment>
-  );
+  toggle = () => {
+    console.log('wew');
+    this.setState((prevState)=>({
+      toggle: !prevState.toggle
+    }));
+  }
 
-  const pendingUser = (
-    <React.Fragment>
-      <Avatar alt={props.name} src={props.image} className={classes.avatar} />
-      <div>
-        <Typography>{props.name} </Typography>
-        <Button onClick={() => props.acceptPendingUser({ name: props.name.split(' ')[0], image: props.image, uid: props.uid })}>Accept</Button>
-        <Button>Decline</Button>        
+  render(){
+    const { classes, items, isMember, name, image, type, uid } = this.props;
+
+    const member = ({ height }) => (
+      <div className={classes.wrapper} style={{ height }}>
+        <React.Fragment>
+          <Avatar alt={name} src={image} className={classes.avatar} />
+          <div>
+            <Typography>{name} <i>{type}</i></Typography>
+            <List className={classes.list}>
+            {Object.keys(items || {}).map((item)=> 
+              <ListItem
+                dense
+                divider
+                disableGutters
+              >
+                {items[item].name} x{items[item].amount}
+                <ListItemSecondaryAction>
+                  <IconButton className={classes.iconButton} aria-label="Clear">
+                    <ClearIcon style={{fontSize: 15}}/>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )}
+            </List>      
+          </div>
+        </React.Fragment>
+        <div className={classes.expand}>
+          <IconButton style={{ width: 20, height: 20 }} onClick={this.toggle}>
+            { this.state.toggle ? <LessIcon style={{color: '#fff'}}/> : <ExpandIcon style={{color: '#fff'}}/> }
+          </IconButton>
+        </div>
       </div>
-    </React.Fragment>
-  )
-  return (
-    <div className={classes.wrapper}>
-      {isMember ? member : pendingUser}
-    </div>
-  )
+    );
+  
+    const pendingUser = () => (
+      <div className={classes.wrapper}>
+        <React.Fragment>
+          <Avatar alt={name} src={image} className={classes.avatar} />
+          <div>
+            <Typography>{name} </Typography>
+            <Button onClick={() => this.props.acceptPendingUser({ name: name.split(' ')[0], image: image, uid: uid })}>Accept</Button>
+            <Button>Decline</Button>        
+          </div>
+        </React.Fragment>
+      </div>
+    )
+    return (
+      <Spring 
+        to={{
+          height: this.state.toggle ? 'auto' : 80
+        }}
+        children={isMember ? member : pendingUser}
+      />
+    )
+  }
 });
 
 const styles = theme => ({
