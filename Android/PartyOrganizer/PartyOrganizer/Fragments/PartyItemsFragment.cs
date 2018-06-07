@@ -17,13 +17,16 @@ namespace PartyOrganizer.Fragments
     {
         private ItemListAdapter _adapter;
         private ListView _partyItemsListView;
-        private List<PartyItem> _allPartyItems;
+        private Dictionary<string, PartyItem> _allPartyItems;
         private IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
+        private FirebaseAuthLink _auth;
 
-        public PartyItemsFragment(Party party)
+        public PartyItemsFragment(Party party, IPartyRepositoryAsync partyRepository, FirebaseAuthLink auth)
         {
             _selectedParty = party;
+            _partyRepository = partyRepository;
+            _auth = auth;
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -42,11 +45,11 @@ namespace PartyOrganizer.Fragments
 
             //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
             //_selectedParty = await _partyRepository.GetById(selectedPartyID);
-            _allPartyItems = _selectedParty.Content?.Items?.ToList();
+            _allPartyItems = _selectedParty.Content.Items; //_selectedParty.Content?.Items;
 
             if(_allPartyItems != null)
             {
-                _adapter = new ItemListAdapter(this.Activity, _allPartyItems, _partyRepository, _selectedParty);
+                _adapter = new ItemListAdapter(this.Activity, _allPartyItems, _partyRepository, _selectedParty, _auth);
                 _partyItemsListView = this.View.FindViewById<ListView>(Resource.Id.partyItemsListView);
                 _partyItemsListView.Adapter = _adapter;
             }

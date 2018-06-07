@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace PartyOrganizer.Core.Model.Party
 {
@@ -8,7 +9,7 @@ namespace PartyOrganizer.Core.Model.Party
 
         public string Image { get; set; } = "171448/cyberscooty-let-s-party-1.png";
 
-        public IEnumerable<PartyItem> Items { get; set; }
+        public Dictionary<string, PartyItem> Items { get; set; }
 
         public LocationData Location { get; set; }
 

@@ -10,7 +10,7 @@ namespace PartyOrganizer.CoreTests.Repository
     [TestClass]
     public class TempTests
     {
-        readonly IPartyRepositoryAsync repository;// = new WebPartyRepository();
+        readonly IPartyRepositoryAsync repository = new WebPartyRepository(null);
 
         [TestMethod]
         public async Task GetLookupPartiesAsync()
@@ -24,7 +24,7 @@ namespace PartyOrganizer.CoreTests.Repository
         [TestMethod]
         public async Task GetPartyByIdAsync()
         {
-            var id = "-LDYmodu8aySj6HK9H0n";
+            var id = "-LDXoHHc18uqBQd1pi_Z";
 
             var party = await repository.GetById(id);
                         

@@ -7,7 +7,7 @@ namespace PartyOrganizer.Core.Model.Party
     {
         public string Type { get; set; } = "guest";
 
-        public IEnumerable<PartyItem> Items{ get; set; }
+        public Dictionary<string, PartyItem> Items{ get; set; }
         
     }
 }

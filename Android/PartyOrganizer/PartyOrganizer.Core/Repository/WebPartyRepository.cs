@@ -198,21 +198,39 @@ namespace PartyOrganizer.Core.Repository
                 Debug.WriteLine("RefuseRequest Error: " + ex.Message);
                 return false;
             }
-            
+
         }
 
-        public async Task<Party> UpdatePartyItems(Party party)
+        public async Task<Party> UpdatePartyItem(Party party, KeyValuePair<string, PartyItem> partyItem, int amountToSubstract)
         {
-            // 1. Update party->member->items
-            // 2. Return new Party
+            // Substract value from parties/partyId/content/items/id/amount
+            // Add partyItem to parties/partyId/members/userId/items
             try
             {
                 await _fb
                       .Child("parties")
                       .Child(party.Id)
+                      .Child("content")
+                      .Child("items")
+                      .Child(partyItem.Key)
+                      .PatchAsync<PartyItem>(new PartyItem
+                      {
+                          Amount = partyItem.Value.Amount - amountToSubstract,
+                          Name = partyItem.Value.Name
+                      });
+
+                await _fb
+                      .Child("parties")
+                      .Child(party.Id)
                       .Child("members")
                       .Child(_auth.User.LocalId)
-                      .PatchAsync<IEnumerable<PartyItem>>(party.Content.Items);
+                      .Child("items")
+                      .Child(partyItem.Key)  
+                      .PutAsync<PartyItem>(new PartyItem
+                      {
+                          Amount = amountToSubstract,
+                          Name = partyItem.Value.Name
+                      });
 
                 var newParty =  await this.GetById(party.Id);
                 return newParty;
@@ -343,5 +361,7 @@ namespace PartyOrganizer.Core.Repository
             }
            
         }
+
+
     }
 }

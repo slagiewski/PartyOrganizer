@@ -6,11 +6,6 @@
 
         public string Name { get; set; }
 
-        public PartyItem(int amount, string name)
-        {
-            this.Amount = amount;
-            this.Name = name;
-        }
     }
     
 }

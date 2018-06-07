@@ -15,7 +15,7 @@ namespace PartyOrganizer.Fragments
 {
     public class PartyMembersFragment : Android.Support.V4.App.Fragment
     {
-        private readonly MemberListAdapter _adapter;
+        private MemberListAdapter _adapter;
         private ListView _partyMembersListView;
         private List<PartyMember> _allPartyMembers;
         private IPartyRepositoryAsync _partyRepository;

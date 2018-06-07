@@ -33,9 +33,9 @@ namespace PartyOrganizer
             var party = await _partyRepository.GetById(selectedPartyID);
 
             _partyInfoFragment = new PartyInfoFragment(party);
-            _partyItemsFragment = new PartyItemsFragment(party);
+            _partyItemsFragment = new PartyItemsFragment(party, _partyRepository, authLink);
             _partyMembersFragment = new PartyMembersFragment(party);
-            _partyPendingFragment = new PartyPendingFragment(party);
+            _partyPendingFragment = new PartyPendingFragment(party, _partyRepository, authLink);
 
             var viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
             viewPager.Adapter = new ViewPagerFragmentsAdapter(SupportFragmentManager,

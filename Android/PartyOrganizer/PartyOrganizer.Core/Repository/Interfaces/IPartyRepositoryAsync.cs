@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using PartyOrganizer.Core.Model.Member;
 using PartyOrganizer.Core.Model.Party;
@@ -15,6 +16,6 @@ namespace PartyOrganizer.Core.Repository.Interfaces
 
         Task<bool> RefuseRequest(Party party, User user);
 
-        Task<Party> UpdatePartyItems(Party party);
+        Task<Party> UpdatePartyItem(Party party, KeyValuePair<string, PartyItem> partyItem, int amountToSubstract);
     }
 }

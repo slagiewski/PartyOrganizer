@@ -18,12 +18,15 @@ namespace PartyOrganizer.Fragments
         private PendingListAdapter _adapter;
         private ListView _partyPendingsListView;
         private List<Core.Model.Member.User> _allPartyPendings;
-        private IPartyRepositoryAsync _partyRepository;
-        private Party _selectedParty;
+        private readonly IPartyRepositoryAsync _partyRepository;
+        private readonly FirebaseAuthLink _authLink;
+        private readonly Party _selectedParty;
 
-        public PartyPendingFragment(Party party)
+        public PartyPendingFragment(Party party, IPartyRepositoryAsync partyRepository, FirebaseAuthLink authLink)
         {
             _selectedParty = party;
+            _partyRepository = partyRepository;
+            _authLink = authLink;
         }
 
         public override void OnCreate(Bundle savedInstanceState)
