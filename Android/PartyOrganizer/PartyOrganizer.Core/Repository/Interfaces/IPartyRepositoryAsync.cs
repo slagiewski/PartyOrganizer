@@ -15,5 +15,6 @@ namespace PartyOrganizer.Core.Repository.Interfaces
 
         Task<bool> RefuseRequest(Party party, User user);
 
+        Task<Party> UpdatePartyItems(Party party);
     }
 }

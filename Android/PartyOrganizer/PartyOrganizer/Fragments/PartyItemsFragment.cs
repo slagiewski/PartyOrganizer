@@ -46,7 +46,7 @@ namespace PartyOrganizer.Fragments
 
             if(_allPartyItems != null)
             {
-                _adapter = new ItemListAdapter(this.Activity, _allPartyItems);
+                _adapter = new ItemListAdapter(this.Activity, _allPartyItems, _partyRepository, _selectedParty);
                 _partyItemsListView = this.View.FindViewById<ListView>(Resource.Id.partyItemsListView);
                 _partyItemsListView.Adapter = _adapter;
             }

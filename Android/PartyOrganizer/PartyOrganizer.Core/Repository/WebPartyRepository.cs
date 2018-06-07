@@ -53,7 +53,6 @@ namespace PartyOrganizer.Core.Repository
                 Debug.WriteLine("Add error: " + ex.Message);
                 return null;
             }
-            
         }
 
         public Task<IEnumerable<Party>> GetAll()
@@ -200,6 +199,29 @@ namespace PartyOrganizer.Core.Repository
                 return false;
             }
             
+        }
+
+        public async Task<Party> UpdatePartyItems(Party party)
+        {
+            // 1. Update party->member->items
+            // 2. Return new Party
+            try
+            {
+                await _fb
+                      .Child("parties")
+                      .Child(party.Id)
+                      .Child("members")
+                      .Child(_auth.User.LocalId)
+                      .PatchAsync<IEnumerable<PartyItem>>(party.Content.Items);
+
+                var newParty =  await this.GetById(party.Id);
+                return newParty;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("UpdatePartyItems error: " + ex.Message);
+                return null;
+            }
         }
 
         private async Task AddPartyMetaData(Party party, FirebaseObject<Party> firebaseObjectNewParty)

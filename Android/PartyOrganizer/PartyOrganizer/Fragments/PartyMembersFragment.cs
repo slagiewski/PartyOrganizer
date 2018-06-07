@@ -15,11 +15,11 @@ namespace PartyOrganizer.Fragments
 {
     public class PartyMembersFragment : Android.Support.V4.App.Fragment
     {
-        private MemberListAdapter _adapter;
+        private readonly MemberListAdapter _adapter;
         private ListView _partyMembersListView;
         private List<PartyMember> _allPartyMembers;
         private IPartyRepositoryAsync _partyRepository;
-        private Party _selectedParty;
+        private readonly Party _selectedParty;
 
         public PartyMembersFragment(Party party)
         {

@@ -103,6 +103,11 @@ namespace PartyOrganizer.Core.Repository
             return _partyRepository.RefuseRequest(party, user);
         }
 
+        public Task<Party> UpdatePartyItems(Party party)
+        {
+            return _partyRepository.UpdatePartyItems(party);
+        }
+
         private bool CheckConnection()
         {
             // If offline - check if the time difference is below [5] seconds
@@ -113,7 +118,6 @@ namespace PartyOrganizer.Core.Repository
 
             return internetStatus;
         }
-
 
     }
 }
