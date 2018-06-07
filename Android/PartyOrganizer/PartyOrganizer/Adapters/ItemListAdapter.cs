@@ -53,11 +53,9 @@ namespace PartyOrganizer.Adapters
                 {
                     var amount = Convert.ToInt32(_partyItemTakeAmountEditText.Text);
 
-                    
                     if (!String.IsNullOrWhiteSpace(_partyItemNameTextView.Text) && amount > 0 && amount <= _party.Content.Items[partyItem.Key].Amount)
                     {
                         _partyRepository.UpdatePartyItem(this._party, partyItem, amount);
-
                     }
 
 

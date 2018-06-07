@@ -228,7 +228,7 @@ namespace PartyOrganizer.Core.Repository
                       .Child(partyItem.Key)  
                       .PutAsync<PartyItem>(new PartyItem
                       {
-                          Amount = amountToSubstract,
+                          Amount = amountToSubstract + party.Members.FirstOrDefault(u => u.Id == _auth.User.LocalId).Items[partyItem.Key].Amount,
                           Name = partyItem.Value.Name
                       });
 
