@@ -20,7 +20,7 @@ import { Spring } from 'react-spring'
 // formatting
 import { pluralize } from '../utils/formatting';
 // actions
-import { editPartyItems, getPartyData, acceptPendingUser, clearData } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty } from '../actions/parties';
 // icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -35,7 +35,7 @@ const Member = withStyles( theme => ({
     display: 'flex',
     position: 'relative',
     overflow: 'hidden',
-    height: 80,
+    minHeight: 70,
     width: 300,
     borderBottom: `2px solid ${theme.palette.primary.main}`, 
     borderRight: `2px solid ${theme.palette.primary.main}`,      
@@ -132,7 +132,7 @@ const Member = withStyles( theme => ({
     return (
       <Spring 
         to={{
-          height: this.state.toggle ? 'auto' : 80
+          height: this.state.toggle ? 'auto' : 70
         }}
         children={isMember ? member : pendingUser}
       />
@@ -310,6 +310,11 @@ class PartyPage extends React.Component{
     this.setState({ formOpen: false })
   }
 
+  handleRemoveParty = () => {
+    this.setState({ render: false }, 
+      () => this.props.removeParty().then(() => this.props.history.push('/dashboard')));
+  }
+
   render() {
     if (!this.state.render) return <LoadingPage/>;    
     const { classes, party, members, pending } = this.props;
@@ -326,6 +331,7 @@ class PartyPage extends React.Component{
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
             <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
+            <Button onClick={this.handleRemoveParty}>REMOVE PARTY (temporary)</Button>
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>
@@ -436,6 +442,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
   acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  removeParty: () => dispatch(removeParty(ownProps.match.params.id)),
   clearData: () => dispatch(clearData())
 })
 

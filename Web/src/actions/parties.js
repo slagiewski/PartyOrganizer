@@ -65,7 +65,7 @@ export const editParty = (id, party) => {
       host,
       image
     }
-    let updates = {}
+    let updates = {};
     updates[`/parties/${id}/content`] = { ...party, image };
     Object.keys(state.party.members).forEach((member) => updates[`/users/${member}/partiesMeta/${id}`] = metaParty);
 
@@ -75,11 +75,30 @@ export const editParty = (id, party) => {
   }
 }
 
+export const removeParty = (id) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    let updates = {};
+    updates[`/parties/${id}/content`] = {};
+    Object.keys(state.party.members).forEach((member) => updates[`/users/${member}/partiesMeta/${id}`] = {});
+
+    return database.ref().update(updates).then(()=>{
+      dispatch(clearData());
+      dispatch(removePartyMeta(id));
+    });
+  }
+}
+
 // SET PARTIES
 export const setParties = (parties) => ({
   type: 'SET_META_PARTIES',
   parties
 });
+
+export const removePartyMeta = (id) => ({
+  type: 'REMOVE_META_PARTY',
+  id
+})
 
 export const clearData = () => ({
   type: 'CLEAR_DATA'
