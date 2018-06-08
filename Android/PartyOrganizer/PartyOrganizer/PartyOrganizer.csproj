@@ -289,6 +289,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\party.png" />
     <AndroidResource Include="Resources\menu\ToolbarMenu.xml" />
     <AndroidResource Include="Resources\layout\PagerSlidingTabStrip.xml" />
+    <AndroidResource Include="Resources\drawable\CustomBorder.xml" />
     <Content Include="Resources\raw\letsparty1.png" />
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>

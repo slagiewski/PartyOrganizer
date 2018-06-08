@@ -3,7 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="@drawable/CustomBorder">
     <ImageView
         android:id="@+id/partyImageView"
         android:layout_width="70dp"
