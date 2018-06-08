@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Views;
@@ -76,12 +77,24 @@ namespace PartyOrganizer.Fragments
                 StartActivity(intent);
             };
 
-            //_joinPartyButton.Click += (s, e) =>
-            //{
-            //    var intent = new Intent();
-            //    intent.SetClass(this.Context, typeof(JoinPartyActivity));
-            //    StartActivity(intent);
-            //};
+            _joinPartyButton.Click += (s, e) =>
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this.Activity);
+
+                alert.SetTitle("Join party");
+                alert.SetMessage("Enter party id");
+
+                // Set an EditText view to get user input 
+                EditText input = new EditText(this.Activity);
+                alert.SetView(input);
+
+                alert.SetPositiveButton("Join", (sx, ex) =>
+                {
+                    Console.WriteLine("something happended");
+                });
+
+                alert.Show();
+            };
         }
 
     }
