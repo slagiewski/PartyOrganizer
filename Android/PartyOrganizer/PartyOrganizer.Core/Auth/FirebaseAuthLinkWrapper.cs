@@ -16,11 +16,12 @@ namespace PartyOrganizer.Core.Auth
         {
             if (CheckConnection())
             {
-                if (AuthLink != null || !CheckConnection())
+                if (AuthLink != null)
                     return AuthLink;
 
                 await Initialize(authType, oauthAccessToken);
-                Save();
+
+                //Save();
                 return AuthLink;
             }
             else

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.OS;
 using Android.Views;
@@ -34,15 +35,25 @@ namespace PartyOrganizer.Fragments
             base.OnActivityCreated(savedInstanceState);
 
             FindViews();
-            HandleEvents();
-            
-            var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _nameTextView.Text = authLink?.User?.DisplayName;
 
+            HandleEvents();
+
+            await BindData();
+        }
+
+        private async Task BindData()
+        {
+            var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            
             if (authLink != null)
+            {
+                _nameTextView.Text = authLink.User?.DisplayName;
+
                 Picasso.With(this.Context)
                        .Load(authLink.User.PhotoUrl)
                        .Into(_profileImage);
+            }
+                
         }
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
@@ -76,12 +87,12 @@ namespace PartyOrganizer.Fragments
                 StartActivity(intent);
             };
 
-            //_joinPartyButton.Click += (s, e) =>
-            //{
-            //    var intent = new Intent();
-            //    intent.SetClass(this.Context, typeof(JoinPartyActivity));
-            //    StartActivity(intent);
-            //};
+            _joinPartyButton.Click += (s, e) =>
+            {
+                var intent = new Intent();
+               // intent.SetClass(this.Context, typeof());
+                StartActivity(intent);
+            };
         }
 
     }

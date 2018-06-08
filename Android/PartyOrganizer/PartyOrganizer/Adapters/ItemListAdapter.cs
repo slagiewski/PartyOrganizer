@@ -37,16 +37,28 @@ namespace PartyOrganizer.Adapters
                 convertView = _context.LayoutInflater.Inflate(Resource.Layout.PartyItemRowView, null);
             }
 
-            var _partyItemNameTextView = convertView.FindViewById<TextView>(Resource.Id.partyItemNameTextView);
-            var _partyItemAmountTextView = convertView.FindViewById<TextView>(Resource.Id.partyItemAmountTextView);
-            var _partyItemTakeAmountEditText = convertView.FindViewById<EditText>(Resource.Id.partyItemTakeAmountEditText);
-            var _partyItemTakeAmountButton = convertView.FindViewById<Button>(Resource.Id.partyItemTakeAmountButton);
+            FindViews(convertView, out TextView _partyItemNameTextView, out TextView _partyItemAmountTextView, out EditText _partyItemTakeAmountEditText, out Button _partyItemTakeAmountButton);
 
             var partyItem = _partyItems.ElementAt(position);
 
             _partyItemNameTextView.Text = partyItem.Value.Name;
             _partyItemAmountTextView.Text = partyItem.Value.Amount.ToString();
 
+            HandleEvents(_partyItemNameTextView, _partyItemTakeAmountEditText, _partyItemTakeAmountButton, partyItem);
+
+            return convertView;
+        }
+
+        private void FindViews(View convertView, out TextView _partyItemNameTextView, out TextView _partyItemAmountTextView, out EditText _partyItemTakeAmountEditText, out Button _partyItemTakeAmountButton)
+        {
+            _partyItemNameTextView = convertView.FindViewById<TextView>(Resource.Id.partyItemNameTextView);
+            _partyItemAmountTextView = convertView.FindViewById<TextView>(Resource.Id.partyItemAmountTextView);
+            _partyItemTakeAmountEditText = convertView.FindViewById<EditText>(Resource.Id.partyItemTakeAmountEditText);
+            _partyItemTakeAmountButton = convertView.FindViewById<Button>(Resource.Id.partyItemTakeAmountButton);
+        }
+
+        private void HandleEvents(TextView _partyItemNameTextView, EditText _partyItemTakeAmountEditText, Button _partyItemTakeAmountButton, KeyValuePair<string, PartyItem> partyItem)
+        {
             _partyItemTakeAmountButton.Click += (s, e) =>
             {
                 try
@@ -57,78 +69,18 @@ namespace PartyOrganizer.Adapters
                     {
                         _partyRepository.UpdatePartyItem(this._party, partyItem, amount);
                     }
-
-
-                    
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine("TakeAmount error: " + ex.Message);
-
                 }
-                
-
             };
-
-            return convertView;
-        }
-
-        private void HandleEvents(Party party, PartyItem partyItem, int position)
-        {
-            //_partyItemTakeAmountButton.Click += (s, e) =>
-            //{
-            //    try
-            //    {
-            //        var currentAmount = 0;
-
-            //        foreach (var member in party.Members)
-            //        {
-            //            var item = member.Items?.FirstOrDefault(p => p.Name == partyItem.Name);
-            //            if (item != null)
-            //            {
-            //                currentAmount += item.Amount;
-            //            }
-            //        }
-
-            //        var amountLeft = partyItem.Amount - currentAmount;
-
-            //        var amount = Convert.ToInt32(_partyItemTakeAmountEditText.Text);
-            //        if (!String.IsNullOrWhiteSpace(_partyItemNameTextView.Text) && amount > 0 && amount <= amountLeft)
-            //        {
-            //            var userId = _authLink.User.LocalId;
-            //            var newParty = new Party
-            //            {
-            //                // Change item amount value
-            //                Id = party.Id,
-            //                Members = party.Members,
-            //                Pending = party.Pending,
-            //                Content = party.Content
-            //            };
-
-            //            var item = newParty
-            //                        .Members
-            //                        .FirstOrDefault(u => u.Id == userId)
-            //                        ?.Items
-            //                        .FirstOrDefault(i => i.Name == partyItem.Name);
-
-            //            item.Amount -= amount;
-
-            //            _partyRepository.UpdatePartyItems(newParty);
-            //        }
-                //}
-                //catch (Exception ex)
-                //{
-                //    Debug.WriteLine("TakeAmount error: " + ex.Message);
-                //}
-
-            //};
         }
 
         public override int Count => _partyItems.Count;
 
         public override PartyItem this[int position] => _partyItems.ElementAt(position).Value;
 
-        public override long GetItemId(int position) =>
-            position;
+        public override long GetItemId(int position) => position;
     }
 }

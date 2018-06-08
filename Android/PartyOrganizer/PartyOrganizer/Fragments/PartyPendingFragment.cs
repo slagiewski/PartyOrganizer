@@ -17,7 +17,7 @@ namespace PartyOrganizer.Fragments
     {
         private PendingListAdapter _adapter;
         private ListView _partyPendingsListView;
-        private List<Core.Model.Member.User> _allPartyPendings;
+        private List<Core.Model.Member.User> _pendingUsers;
         private readonly IPartyRepositoryAsync _partyRepository;
         private readonly FirebaseAuthLink _authLink;
         private readonly Party _selectedParty;
@@ -38,19 +38,11 @@ namespace PartyOrganizer.Fragments
         {
             base.OnActivityCreated(savedInstanceState);
 
-            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            //_partyRepository = new WebPartyRepository(authLink);
+            _pendingUsers = _selectedParty.Pending?.ToList();
 
-            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
-            //var pendingUsers = _selectedParty.Pending;
-            //if (pendingUsers != null)
-            _allPartyPendings = _selectedParty.Pending?.ToList();
-            //else
-            //    _allPartyPendings = new List<Core.Model.Member.User>();
-            if (_allPartyPendings != null)
+            if (_pendingUsers != null)
             {
-                _adapter = new PendingListAdapter(this.Activity, _allPartyPendings, _partyRepository, _selectedParty);
+                _adapter = new PendingListAdapter(this.Activity, _pendingUsers, _partyRepository, _selectedParty);
                 _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
                 _partyPendingsListView.Adapter = _adapter;
             }

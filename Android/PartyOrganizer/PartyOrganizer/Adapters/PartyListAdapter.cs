@@ -27,14 +27,27 @@ namespace PartyOrganizer.Adapters
                 convertView = _context.LayoutInflater.Inflate(Resource.Layout.PartyRowView, null);
             }
 
-            convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = party.Name;
-            convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Host?.ToString()??"App user(in progress)";
+            FindViews(convertView, out TextView partyDescription, out TextView hostName, out ImageView partyImage);
 
-            Picasso.With(_context)
-                   .Load(party.Image)
-                   .Into(convertView.FindViewById<ImageView>(Resource.Id.partyImageView));
+            BindData(convertView, party, partyDescription, hostName, partyImage);
 
             return convertView;
+        }
+
+        private void BindData(View convertView, PartyLookup party, TextView partyDescription, TextView hostName, ImageView partyImage)
+        {
+            partyDescription.Text = party?.Name;
+            hostName.Text = party.Host?.ToString() ?? "App user(in progress)";
+            Picasso.With(_context)
+                   .Load(party?.Image)
+                   .Into(partyImage);
+        }
+
+        private static void FindViews(View convertView, out TextView partyDescription, out TextView hostName, out ImageView imageView)
+        {
+            partyDescription = convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView);
+            hostName = convertView.FindViewById<TextView>(Resource.Id.adminTextView);
+            imageView = convertView.FindViewById<ImageView>(Resource.Id.partyImageView);
         }
 
         public override int Count => _parties.Count;

@@ -37,7 +37,9 @@ namespace PartyOrganizer.Fragments
                 _allParties = receivedParties.ToList();
             else
                 _allParties = new List<PartyLookup>();
+
             _adapter = new PartyListAdapter(this.Activity, _allParties);
+
             _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
             _partyListView.Adapter = _adapter;
 
