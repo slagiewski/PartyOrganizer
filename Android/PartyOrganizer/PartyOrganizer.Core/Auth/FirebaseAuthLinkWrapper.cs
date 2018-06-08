@@ -10,7 +10,7 @@ namespace PartyOrganizer.Core.Auth
     public static class FirebaseAuthLinkWrapper
     {
         private const string APIKEY = "AIzaSyDERJNDUI8FYT_u_q8yGhwcKXok1xhcHKs";
-        private static string _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+        private static readonly string _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                                            "partyOrganizerDB.db");
         public static async Task<FirebaseAuthLink> GetAuthLink(FirebaseAuthType authType, string oauthAccessToken)
         {

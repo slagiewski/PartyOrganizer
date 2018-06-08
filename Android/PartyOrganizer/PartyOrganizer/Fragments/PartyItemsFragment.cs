@@ -18,9 +18,9 @@ namespace PartyOrganizer.Fragments
         private ItemListAdapter _adapter;
         private ListView _partyItemsListView;
         private Dictionary<string, PartyItem> _allPartyItems;
-        private IPartyRepositoryAsync _partyRepository;
+        private readonly IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
-        private FirebaseAuthLink _auth;
+        private readonly FirebaseAuthLink _auth;
 
         public PartyItemsFragment(Party party, IPartyRepositoryAsync partyRepository, FirebaseAuthLink auth)
         {

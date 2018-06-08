@@ -14,7 +14,6 @@ namespace PartyOrganizer.Fragments
     public class PartyInfoFragment : Android.Support.V4.App.Fragment
     {
         private Party _selectedParty;
-        private IPartyRepositoryAsync _partyRepository;
         private TextView _partyShortDescriptionTextView;
         private TextView _partyLongDescriptionTextView;
         private TextView _partyDateTextView;

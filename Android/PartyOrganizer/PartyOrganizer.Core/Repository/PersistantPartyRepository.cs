@@ -18,7 +18,7 @@ namespace PartyOrganizer.Core.Repository
         private readonly static string _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                                             "partyOrganizerDB.db");
 
-        private static readonly DateTime _lastConnectionCheck;
+       // private static readonly DateTime _lastConnectionCheck;
 
         public PersistantPartyRepository(FirebaseAuthLink authLink)
         {

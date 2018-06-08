@@ -3107,8 +3107,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b00e2
 			public const int partyOrganizerListView = 2131427554;
 			
-			// aapt resource value: 0x7f0b00e6
-			public const int partyPendingAcceptButton = 2131427558;
+			// aapt resource value: 0x7f0b00e5
+			public const int partyPendingAcceptButton = 2131427557;
 			
 			// aapt resource value: 0x7f0b00e3
 			public const int partyPendingImageView = 2131427555;
@@ -3116,8 +3116,8 @@ namespace PartyOrganizer
 			// aapt resource value: 0x7f0b00e4
 			public const int partyPendingNameTextView = 2131427556;
 			
-			// aapt resource value: 0x7f0b00e5
-			public const int partyPendingRefuseButton = 2131427557;
+			// aapt resource value: 0x7f0b00e6
+			public const int partyPendingRefuseButton = 2131427558;
 			
 			// aapt resource value: 0x7f0b00e7
 			public const int partyPendingsListView = 2131427559;

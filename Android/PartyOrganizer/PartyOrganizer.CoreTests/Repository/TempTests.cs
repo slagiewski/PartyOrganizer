@@ -15,7 +15,6 @@ namespace PartyOrganizer.CoreTests.Repository
         [TestMethod]
         public async Task GetLookupPartiesAsync()
         {
-            var id = "amXgDFj6WcOQkffgtN3pOJupXEz2";
             var parties = await repository.GetPartiesByUserId();
 
 

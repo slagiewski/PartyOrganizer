@@ -12,7 +12,7 @@ namespace PartyOrganizer.Adapters
     class PendingListAdapter : BaseAdapter<User>
     {
         private List<User> _pendingUsers;
-        private Party _party;
+        private readonly Party _party;
         private IPartyRepositoryAsync _partyRepository;
         private Activity _context;
 

@@ -7,7 +7,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp">
         <TextView
             android:id="@+id/partyItemNameTextView"
             android:layout_width="wrap_content"
@@ -23,11 +24,11 @@
             android:textSize="12dp"
             android:gravity="left" />
     </LinearLayout>
-  <View
+    <View
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
-  <EditText
+    <EditText
         android:id="@+id/partyItemTakeAmountEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,8 +39,8 @@
     <Button
         android:id="@+id/partyItemTakeAmountButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:textColor="@android:color/black"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
         android:textSize="12dp"
         android:text="Take" />
 </LinearLayout>
