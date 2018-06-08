@@ -49,7 +49,7 @@ namespace PartyOrganizer
             _partyTime = DateTime.UtcNow;
             _newPartyDateTimeTextView.Text = _partyTime.ToString();
 
-            _authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            _authLink = await FirebaseAuthLinkWrapper.GetAuthLink(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
             _partyRepository = new PersistantPartyRepository(_authLink);
 
             _productList = new List<PartyItem>();

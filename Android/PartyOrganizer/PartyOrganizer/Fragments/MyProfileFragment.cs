@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Auth;
+using PartyOrganizer.Core.Repository.Interfaces;
 using Square.Picasso;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
@@ -18,7 +20,13 @@ namespace PartyOrganizer.Fragments
         private TextView _nameTextView;
         private Button _addPartyButton;
         private Button _joinPartyButton;
-        private LoginButton _loginButton;        
+        private LoginButton _loginButton;
+        private readonly IPartyRepositoryAsync _partyRepository;
+
+        public MyProfileFragment(IPartyRepositoryAsync partyRepository)
+        {
+            _partyRepository = partyRepository;
+        }
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -43,14 +51,14 @@ namespace PartyOrganizer.Fragments
 
         private async Task BindData()
         {
-            var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            var authLink = await FirebaseAuthLinkWrapper.GetAuthLink(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
             
             if (authLink != null)
             {
                 _nameTextView.Text = authLink.User?.DisplayName;
 
                 Picasso.With(this.Context)
-                       .Load(authLink.User.PhotoUrl)
+                       .Load(authLink?.User.PhotoUrl)
                        .Into(_profileImage);
             }
                 
@@ -89,18 +97,18 @@ namespace PartyOrganizer.Fragments
 
             _joinPartyButton.Click += (s, e) =>
             {
-                AlertDialog.Builder alert = new AlertDialog.Builder(this.Activity);
+                var alert = new AlertDialog.Builder(this.Activity);
 
                 alert.SetTitle("Join party");
                 alert.SetMessage("Enter party id");
 
-                // Set an EditText view to get user input 
-                EditText input = new EditText(this.Activity);
+                var input = new EditText(this.Activity);
                 alert.SetView(input);
 
                 alert.SetPositiveButton("Join", (sx, ex) =>
-                {
-                    Console.WriteLine("something happended");
+                {   
+                    if (!String.IsNullOrWhiteSpace(input.Text))
+                        _partyRepository.Join(input.Text);
                 });
 
                 alert.Show();

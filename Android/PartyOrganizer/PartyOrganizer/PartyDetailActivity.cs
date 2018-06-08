@@ -27,7 +27,7 @@ namespace PartyOrganizer
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PartyDetailView);
 
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            var authLink = await FirebaseAuthLinkWrapper.GetAuthLink(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
             _partyRepository = new PersistantPartyRepository(authLink);
 
             var selectedPartyID = Intent.Extras.GetString("selectedPartyID");

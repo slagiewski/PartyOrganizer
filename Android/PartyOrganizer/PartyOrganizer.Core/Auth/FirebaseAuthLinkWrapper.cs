@@ -12,7 +12,7 @@ namespace PartyOrganizer.Core.Auth
         private const string APIKEY = "AIzaSyDERJNDUI8FYT_u_q8yGhwcKXok1xhcHKs";
         private static string _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                                            "partyOrganizerDB.db");
-        public static async Task<FirebaseAuthLink> Create(FirebaseAuthType authType, string oauthAccessToken)
+        public static async Task<FirebaseAuthLink> GetAuthLink(FirebaseAuthType authType, string oauthAccessToken)
         {
             if (CheckConnection())
             {

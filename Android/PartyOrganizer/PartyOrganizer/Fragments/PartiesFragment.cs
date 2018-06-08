@@ -22,6 +22,11 @@ namespace PartyOrganizer.Fragments
         private List<PartyLookup> _allParties;
         private IPartyRepositoryAsync _partyRepository;
 
+        public PartiesFragment(IPartyRepositoryAsync partyRepository)
+        {
+            _partyRepository = partyRepository;
+        }
+
         public override void OnCreate(Bundle savedInstanceState) =>
              base.OnCreate(savedInstanceState);
         
@@ -29,9 +34,7 @@ namespace PartyOrganizer.Fragments
         public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
-            var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
 
-            _partyRepository = new PersistantPartyRepository(authLink);
             var receivedParties = await _partyRepository.GetPartiesByUserId();
             if (receivedParties != null)
                 _allParties = receivedParties.ToList();
