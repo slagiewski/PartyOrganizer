@@ -40,12 +40,7 @@ namespace PartyOrganizer.Fragments
         {
             base.OnActivityCreated(savedInstanceState);
 
-            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            //_partyRepository = new WebPartyRepository(authLink);
-
-            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
-            _allPartyItems = _selectedParty.Content.Items; //_selectedParty.Content?.Items;
+            _allPartyItems = _selectedParty.Content?.Items;
 
             if(_allPartyItems != null)
             {

@@ -45,7 +45,7 @@ namespace PartyOrganizer.Core.Repository
             {
                 var partiesTable = db.GetCollection<Party>();
 
-                if (true)
+                if (CheckConnection())
                 {
                     var party = await _partyRepository.GetById(id);
                     if (party != null)
@@ -67,7 +67,7 @@ namespace PartyOrganizer.Core.Repository
             {
                 var partieslookupTable = db.GetCollection<PartyLookup>();
                 
-                if (true)
+                if (CheckConnection())
                 {
                     var parties = await _partyRepository.GetPartiesByUserId();
                     if (parties != null)
@@ -103,16 +103,7 @@ namespace PartyOrganizer.Core.Repository
             return _partyRepository.RefuseRequest(party, user);
         }
 
-        private bool CheckConnection()
-        {
-            // If offline - check if the time difference is below [5] seconds
-            // 
-            //var internetStatus = await CrossConnectivity.Current.IsReachable("www.google.com", 200);
-
-            var internetStatus = CrossConnectivity.Current.IsConnected;
-
-            return internetStatus;
-        }
+        private bool CheckConnection() => CrossConnectivity.Current.IsConnected;
 
         public Task<Party> UpdatePartyItem(Party party, KeyValuePair<string, PartyItem> partyItem, int amountToSubstract)
         {

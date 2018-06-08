@@ -50,7 +50,7 @@ namespace PartyOrganizer
             _newPartyDateTimeTextView.Text = _partyTime.ToString();
 
             _authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(_authLink);
+            _partyRepository = new PersistantPartyRepository(_authLink);
 
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);
@@ -93,7 +93,7 @@ namespace PartyOrganizer
                     var partyContent = new PartyContent()
                     {
                         Description = _newPartyDescriptionEditText.Text,
-                        Image = _authLink.User.PhotoUrl,
+                        Image = _authLink?.User.PhotoUrl,
                         Items = _productList.ToDictionary(k => Guid.NewGuid().ToString(), v => v),
                         Location = location,
                         Name = _newPartyNameEditText.Text,

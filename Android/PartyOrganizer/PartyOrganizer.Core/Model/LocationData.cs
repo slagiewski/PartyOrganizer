@@ -2,7 +2,6 @@
 
 namespace PartyOrganizer.Core.Model
 {
-
     public class LocationData
     {
         [JsonProperty("lat")]

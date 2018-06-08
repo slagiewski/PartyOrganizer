@@ -1,15 +1,10 @@
 ﻿using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Firebase.Xamarin.Auth;
 using PartyOrganizer.Adapters;
-using PartyOrganizer.Core.Auth;
 using PartyOrganizer.Core.Model.Party;
-using PartyOrganizer.Core.Repository;
-using PartyOrganizer.Core.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using Xamarin.Facebook;
 
 namespace PartyOrganizer.Fragments
 {
@@ -18,7 +13,6 @@ namespace PartyOrganizer.Fragments
         private MemberListAdapter _adapter;
         private ListView _partyMembersListView;
         private List<PartyMember> _allPartyMembers;
-        private IPartyRepositoryAsync _partyRepository;
         private readonly Party _selectedParty;
 
         public PartyMembersFragment(Party party)
@@ -35,11 +29,6 @@ namespace PartyOrganizer.Fragments
         {
             base.OnActivityCreated(savedInstanceState);
 
-            //var authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            //_partyRepository = new WebPartyRepository(authLink);
-
-            //var selectedPartyID = this.Activity.Intent.Extras.GetString("selectedPartyID");
-            //_selectedParty = await _partyRepository.GetById(selectedPartyID);
             _allPartyMembers = _selectedParty.Members.ToList();
 
             _adapter = new MemberListAdapter(this.Activity, _allPartyMembers);

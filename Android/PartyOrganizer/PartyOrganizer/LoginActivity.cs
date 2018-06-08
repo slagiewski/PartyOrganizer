@@ -41,6 +41,11 @@ namespace PartyOrganizer
                 
             SetContentView(Resource.Layout.LoginView);
 
+            if (Profile.CurrentProfile != null && AccessToken.CurrentAccessToken?.Token != null)
+            {
+                ChangeActivity();
+            }
+
             var button = FindViewById<LoginButton>(Resource.Id.login_button);
 
             mCallBackManager = CallbackManagerFactory.Create();
@@ -49,10 +54,7 @@ namespace PartyOrganizer
 
             button.RegisterCallback(mCallBackManager, this);
 
-            if (Profile.CurrentProfile != null && AccessToken.CurrentAccessToken?.Token != null)
-            {
-                ChangeActivity();
-            }
+            
 
             // resolve keyHash
 
