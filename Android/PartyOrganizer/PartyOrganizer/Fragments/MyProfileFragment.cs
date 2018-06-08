@@ -89,9 +89,21 @@ namespace PartyOrganizer.Fragments
 
             _joinPartyButton.Click += (s, e) =>
             {
-                var intent = new Intent();
-               // intent.SetClass(this.Context, typeof());
-                StartActivity(intent);
+                AlertDialog.Builder alert = new AlertDialog.Builder(this.Activity);
+
+                alert.SetTitle("Join party");
+                alert.SetMessage("Enter party id");
+
+                // Set an EditText view to get user input 
+                EditText input = new EditText(this.Activity);
+                alert.SetView(input);
+
+                alert.SetPositiveButton("Join", (sx, ex) =>
+                {
+                    Console.WriteLine("something happended");
+                });
+
+                alert.Show();
             };
         }
 
