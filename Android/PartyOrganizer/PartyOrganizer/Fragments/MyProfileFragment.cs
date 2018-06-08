@@ -14,7 +14,6 @@ namespace PartyOrganizer.Fragments
 {
     public class MyProfileFragment : Android.Support.V4.App.Fragment
     {
-        private ICallbackManager _callBackManager;
         private ImageView _profileImage;
         private TextView _nameTextView;
         private Button _addPartyButton;
@@ -39,11 +38,12 @@ namespace PartyOrganizer.Fragments
             HandleEvents();
             
             var authLink = await FirebaseAuthLinkWrapper.Create(Firebase.Xamarin.Auth.FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _nameTextView.Text = authLink.User.DisplayName;
+            _nameTextView.Text = authLink?.User?.DisplayName;
 
-            Picasso.With(this.Context)
-                   .Load(authLink.User.PhotoUrl)
-                   .Into(_profileImage);
+            if (authLink != null)
+                Picasso.With(this.Context)
+                       .Load(authLink.User.PhotoUrl)
+                       .Into(_profileImage);
         }
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)

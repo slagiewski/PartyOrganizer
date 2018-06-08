@@ -53,7 +53,6 @@ namespace PartyOrganizer.Core.Repository
                 Debug.WriteLine("Add error: " + ex.Message);
                 return null;
             }
-            
         }
 
         public Task<IEnumerable<Party>> GetAll()
@@ -199,7 +198,48 @@ namespace PartyOrganizer.Core.Repository
                 Debug.WriteLine("RefuseRequest Error: " + ex.Message);
                 return false;
             }
-            
+
+        }
+
+        public async Task<Party> UpdatePartyItem(Party party, KeyValuePair<string, PartyItem> partyItem, int amountToSubstract)
+        {
+            // Substract value from parties/partyId/content/items/id/amount
+            // Add partyItem to parties/partyId/members/userId/items
+            try
+            {
+                await _fb
+                      .Child("parties")
+                      .Child(party.Id)
+                      .Child("content")
+                      .Child("items")
+                      .Child(partyItem.Key)
+                      .PatchAsync<PartyItem>(new PartyItem
+                      {
+                          Amount = partyItem.Value.Amount - amountToSubstract,
+                          Name = partyItem.Value.Name
+                      });
+
+                await _fb
+                      .Child("parties")
+                      .Child(party.Id)
+                      .Child("members")
+                      .Child(_auth.User.LocalId)
+                      .Child("items")
+                      .Child(partyItem.Key)  
+                      .PutAsync<PartyItem>(new PartyItem
+                      {
+                          Amount = amountToSubstract + party.Members.FirstOrDefault(u => u.Id == _auth.User.LocalId).Items[partyItem.Key].Amount,
+                          Name = partyItem.Value.Name
+                      });
+
+                var newParty =  await this.GetById(party.Id);
+                return newParty;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("UpdatePartyItems error: " + ex.Message);
+                return null;
+            }
         }
 
         private async Task AddPartyMetaData(Party party, FirebaseObject<Party> firebaseObjectNewParty)
@@ -321,5 +361,7 @@ namespace PartyOrganizer.Core.Repository
             }
            
         }
+
+
     }
 }

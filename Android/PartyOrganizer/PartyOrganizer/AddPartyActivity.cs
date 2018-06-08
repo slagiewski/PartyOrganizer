@@ -14,6 +14,7 @@ using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Core.Auth;
 using Firebase.Xamarin.Auth;
 using Android.Content;
+using System.Linq;
 
 namespace PartyOrganizer
 {
@@ -49,7 +50,7 @@ namespace PartyOrganizer
             _newPartyDateTimeTextView.Text = _partyTime.ToString();
 
             _authLink = await FirebaseAuthLinkWrapper.Create(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
-            _partyRepository = new WebPartyRepository(_authLink);
+            _partyRepository = new PersistantPartyRepository(_authLink);
 
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);
@@ -92,8 +93,8 @@ namespace PartyOrganizer
                     var partyContent = new PartyContent()
                     {
                         Description = _newPartyDescriptionEditText.Text,
-                        Image = _authLink.User.PhotoUrl,
-                        Items = _productList,
+                        Image = _authLink?.User.PhotoUrl,
+                        Items = _productList.ToDictionary(k => Guid.NewGuid().ToString(), v => v),
                         Location = location,
                         Name = _newPartyNameEditText.Text,
                         Unix = unixTimestamp
@@ -101,7 +102,7 @@ namespace PartyOrganizer
 
                     var party = new Party()
                     {
-                        Content = partyContent,
+                        Content = partyContent
                     };
 
                     var newPartyId = await _partyRepository.Add(party);
@@ -121,13 +122,13 @@ namespace PartyOrganizer
 
             };                
 
-            _newPartyAddProductButton.Click += (object sender, EventArgs e) =>
+            _newPartyAddProductButton.Click += (s, e) =>
             {
                 try
                 {
                     var productName = _newPartyProductNameEditText.Text;
                     var productAmount = Int32.Parse(_newPartyProductAmountEditText.Text);
-                    var product = new PartyItem(productAmount, productName);
+                    var product = new PartyItem { Amount = productAmount, Name = productName };
                     _productList.Add(product);
                     _dataAdapter.NotifyDataSetChanged();
                 }
