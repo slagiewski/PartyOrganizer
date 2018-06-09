@@ -172,6 +172,10 @@ const styles = theme => ({
     width: 44,
     height: 44,
   },
+  messageBox: {
+    width: '100%',
+    padding: theme.spacing.unit * 2,
+  },
   speechBubble: {
     position: 'relative',
     background: '#00aabb',
@@ -317,7 +321,7 @@ class PartyPage extends React.Component{
 
   render() {
     if (!this.state.render) return <LoadingPage/>;    
-    const { classes, party, members, pending } = this.props;
+    const { classes, party, members, pending, uid } = this.props;
     const partyData = {
       ...party,
       date: moment.unix(party.unix).startOf('day'),
@@ -391,6 +395,28 @@ class PartyPage extends React.Component{
               }
             </Paper>
           </div>
+          <Paper>
+            <div className={classes.messageBox}>
+              <List>
+                  { 
+                    party.messages && party.messages.map((message) => {
+                      const isUser = message.uid === uid;
+                      return (
+                        <ListItem disableGutters style={{alignItems: 'flex-start'}}>
+                          <ListItemIcon>
+                            <Avatar alt="Host" src={members[message.uid].image} className={classes.avatar} />
+                          </ListItemIcon>
+                          <div className={classes.speechBubble}>
+                            <Typography color="inherit">{message.text}</Typography>                 
+                          </div>
+                        </ListItem>
+                      )
+                    })
+                  }
+              </List>
+              <TextField/>
+            </div>
+          </Paper>          
         </div>
         <div className={classes.guestsWrapper}>
           <Paper>
@@ -432,6 +458,7 @@ class PartyPage extends React.Component{
 }
 
 const mapStateToProps = (state) => state.party && ({
+  uid: state.auth.uid, 
   party: state.party.content,
   members: state.party.members,
   isHost: state.party.members && state.party.members[state.auth.uid].type === 'host',
