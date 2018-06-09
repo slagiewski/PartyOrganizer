@@ -29,6 +29,8 @@ import EditIcon from 'material-ui-icons/Edit';
 import ClearIcon from 'material-ui-icons/Clear';
 import ExpandIcon from 'material-ui-icons/ExpandMore';
 import LessIcon from 'material-ui-icons/ExpandLess';
+import DeleteIcon from 'material-ui-icons/Delete';
+import SendIcon from 'material-ui-icons/Send';
 
 const Member = withStyles( theme => ({
   wrapper: {
@@ -56,12 +58,13 @@ const Member = withStyles( theme => ({
   expand: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
     bottom: 0,
     left: 0,
     width: '100%',
-    backgroundColor: theme.palette.primary.main,
-    height: 20
+    backgroundColor: theme.palette.secondary.main,
+    height: 15
   },
   '@media (max-width: 600px)': {
     wrapper: {
@@ -124,7 +127,7 @@ const Member = withStyles( theme => ({
           <div>
             <Typography>{name} </Typography>
             <Button onClick={() => this.props.acceptPendingUser({ name: name.split(' ')[0], image: image, uid: uid })}>Accept</Button>
-            <Button>Decline</Button>        
+            <Button>Decline</Button>
           </div>
         </React.Fragment>
       </div>
@@ -157,6 +160,8 @@ const styles = theme => ({
   headline: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     padding: theme.spacing.unit*2
   },
   info: {
@@ -173,25 +178,24 @@ const styles = theme => ({
     height: 44,
   },
   messageWrapper: {
-
+    width: '100%',
+    paddingTop: theme.spacing.unit * 2,    
+    paddingBottom: theme.spacing.unit * 2,
+    backgroundColor: '#f7f7f7'    
   },
   messageBox: {
     width: '100%',
-    height: 300,
+    height: 200,
     overflow: 'auto',
-    paddingTop: theme.spacing.unit * 2,    
-    paddingBottom: theme.spacing.unit * 2,
-    backgroundColor: '#dedede'
   },
   speechBubble: {
     position: 'relative',
-    background: '#00aabb',
+    background: theme.palette.secondary.main,
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
     minHeight: 34,
     maxWidth: 'calc(100% - 70px)',
-    minWidth: 300,
     wordWrap: 'break-word',
     '&:after':{
       content: '""',
@@ -201,7 +205,7 @@ const styles = theme => ({
       width: 0,
       height: 0,
       border: '10px solid transparent',
-      borderRightColor: '#00aabb',
+      borderRightColor: theme.palette.secondary.main,
       borderLeft: 0,
       marginTop: '-10px',
       marginLeft: '-10px',
@@ -209,12 +213,12 @@ const styles = theme => ({
   },
   speechBubbleSelf: {
     position: 'relative',
-    background: '#00aabb',
+    background: theme.palette.primary.main,
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
     minWidth: 50,
-    maxWidth: 300,
+    maxWidth: '80%',
     wordWrap: 'break-word',
     '&:after':{
       content: '""',
@@ -224,7 +228,7 @@ const styles = theme => ({
       width: 0,
       height: 0,
       border: '15px solid transparent',
-      borderTopColor: '#00aabb',
+      borderTopColor: theme.palette.primary.main,
       borderBottom: 0,
       borderRight: 0,
       marginBottom: '-15px',
@@ -242,16 +246,17 @@ const styles = theme => ({
     width: 100
   },
   membersBar: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: '#fff'
   },
   pendingBar: {
-    backgroundColor: '#4dd0e1'
+    backgroundColor: '#7f5fce',
+    color: '#fff'
   },
   editIcon: {
     height: 40,
     width: 40,
-    color: '#00aabb',
+    color: theme.palette.secondary.main,
   },
   '@media (max-width: 1000px)': {
     root: {
@@ -377,7 +382,7 @@ class PartyPage extends React.Component{
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
             <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
-            <Button onClick={this.handleRemoveParty}>REMOVE PARTY (temporary)</Button>
+            <IconButton onClick={this.handleRemoveParty}><DeleteIcon className={classes.editIcon} style={{ color: '#f44336' }}/></IconButton>
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>
@@ -437,8 +442,8 @@ class PartyPage extends React.Component{
               }
             </Paper>
           </div>
-          <Paper className={classes.messageBox}>
-            <List>
+          <Paper className={classes.messageWrapper}>
+            <List className={classes.messageBox}>
                 { 
                   messages && Object.entries(messages).map((message) => {
                     console.log(message);
@@ -456,7 +461,7 @@ class PartyPage extends React.Component{
                         <ListItemIcon>
                           <Avatar alt="Host" src={members[message[1].uid].image} className={classes.avatar} />
                         </ListItemIcon>
-                        <div className={classes.speechBubble}>
+                        <div className={classes.speechBubble} style={{ maxWidth: '80%' }}>
                           <Typography color="inherit">{message[1].text}</Typography>                 
                         </div>
                       </ListItem>
@@ -475,7 +480,7 @@ class PartyPage extends React.Component{
                   InputProps={{ style:{ color: '#fff' } }}
                 />
                 <IconButton onClick={this.handleNewMessage}>
-                  <EditIcon/>
+                  <SendIcon style={{ color: '#fff' }}/>
                 </IconButton>
               </div>
             </div>

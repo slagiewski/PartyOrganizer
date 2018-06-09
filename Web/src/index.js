@@ -20,7 +20,7 @@ const theme = createMuiTheme({
       main: '#039be5',
     },
     secondary: {
-      main: '#e1f5fe',
+      main: '#21b4c3',
       light: '#fefefe'
     },
     error: {
