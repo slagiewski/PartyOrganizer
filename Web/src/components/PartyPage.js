@@ -20,7 +20,7 @@ import { Spring } from 'react-spring'
 // formatting
 import { pluralize } from '../utils/formatting';
 // actions
-import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty, newMessage } from '../actions/parties';
 // icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -147,7 +147,7 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   infoWrapper: {
-    width: '60%',
+    width: '50%',
     minWidth: 700
   },
   infoContent: {
@@ -160,21 +160,28 @@ const styles = theme => ({
     padding: theme.spacing.unit*2
   },
   info: {
-    width: '40%',
+    width: '50%',
     height: '100%',
     padding: theme.spacing.unit
   },
   items: {
-    width: '60%'    
+    width: '50%',
   },
   avatar: {
     zIndex: 1,    
     width: 44,
     height: 44,
   },
+  messageWrapper: {
+
+  },
   messageBox: {
     width: '100%',
-    padding: theme.spacing.unit * 2,
+    height: 300,
+    overflow: 'auto',
+    paddingTop: theme.spacing.unit * 2,    
+    paddingBottom: theme.spacing.unit * 2,
+    backgroundColor: '#dedede'
   },
   speechBubble: {
     position: 'relative',
@@ -184,6 +191,7 @@ const styles = theme => ({
     padding: 5,
     minHeight: 34,
     maxWidth: 'calc(100% - 70px)',
+    minWidth: 300,
     wordWrap: 'break-word',
     '&:after':{
       content: '""',
@@ -198,6 +206,34 @@ const styles = theme => ({
       marginTop: '-10px',
       marginLeft: '-10px',
     }
+  },
+  speechBubbleSelf: {
+    position: 'relative',
+    background: '#00aabb',
+    borderRadius: '.4em',
+    color: '#fff',
+    padding: 5,
+    minWidth: 50,
+    maxWidth: 300,
+    wordWrap: 'break-word',
+    '&:after':{
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      right: 10,
+      width: 0,
+      height: 0,
+      border: '15px solid transparent',
+      borderTopColor: '#00aabb',
+      borderBottom: 0,
+      borderRight: 0,
+      marginBottom: '-15px',
+      marginLeft: '-10px',
+    }
+  },
+  textField: {
+    width: 'calc(100% - 50px)',
+    color: '#fff'
   },
   guestsWrapper: {
     width: 300
@@ -247,7 +283,8 @@ class PartyPage extends React.Component{
     showItemSelect: false,
     amount: 1,
     render: false,
-    formOpen: false
+    formOpen: false,
+    text: ''
   }
 
   componentDidMount(){
@@ -319,9 +356,14 @@ class PartyPage extends React.Component{
       () => this.props.removeParty().then(() => this.props.history.push('/dashboard')));
   }
 
+  handleNewMessage = () => {
+    if (this.state.text.length > 0)
+      this.props.newMessage(this.state.text).then(() => this.setState({ text: '' }));
+  }
+
   render() {
     if (!this.state.render) return <LoadingPage/>;    
-    const { classes, party, members, pending, uid } = this.props;
+    const { classes, party, members, pending, uid, messages } = this.props;
     const partyData = {
       ...party,
       date: moment.unix(party.unix).startOf('day'),
@@ -395,26 +437,47 @@ class PartyPage extends React.Component{
               }
             </Paper>
           </div>
-          <Paper>
-            <div className={classes.messageBox}>
-              <List>
-                  { 
-                    party.messages && party.messages.map((message) => {
-                      const isUser = message.uid === uid;
-                      return (
-                        <ListItem disableGutters style={{alignItems: 'flex-start'}}>
-                          <ListItemIcon>
-                            <Avatar alt="Host" src={members[message.uid].image} className={classes.avatar} />
-                          </ListItemIcon>
-                          <div className={classes.speechBubble}>
-                            <Typography color="inherit">{message.text}</Typography>                 
-                          </div>
-                        </ListItem>
-                      )
-                    })
-                  }
-              </List>
-              <TextField/>
+          <Paper className={classes.messageBox}>
+            <List>
+                { 
+                  messages && Object.entries(messages).map((message) => {
+                    console.log(message);
+                    const isUser = message[1].uid === uid;
+                    return isUser ? 
+                    (
+                      <ListItem key={message[0]} disableGutters style={{ justifyContent: 'flex-end' }}>
+                        <div className={classes.speechBubbleSelf}>
+                          <Typography color="inherit">{message[1].text}</Typography>   
+                        </div>
+                      </ListItem>
+                    ) :
+                    (
+                      <ListItem key={message[0]} disableGutters style={{ alignItems: 'flex-start' }}>
+                        <ListItemIcon>
+                          <Avatar alt="Host" src={members[message[1].uid].image} className={classes.avatar} />
+                        </ListItemIcon>
+                        <div className={classes.speechBubble}>
+                          <Typography color="inherit">{message[1].text}</Typography>                 
+                        </div>
+                      </ListItem>
+                    )
+                  })
+                }
+            </List>
+            <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+              <div className={classes.speechBubbleSelf}>
+                <TextField 
+                  className={classes.textField} 
+                  label="Write something" 
+                  value={this.state.text}
+                  onChange={(e) => this.setState({ text: e.target.value })}                
+                  multiline
+                  InputProps={{ style:{ color: '#fff' } }}
+                />
+                <IconButton onClick={this.handleNewMessage}>
+                  <EditIcon/>
+                </IconButton>
+              </div>
             </div>
           </Paper>          
         </div>
@@ -461,6 +524,7 @@ const mapStateToProps = (state) => state.party && ({
   uid: state.auth.uid, 
   party: state.party.content,
   members: state.party.members,
+  messages: state.party.messages,
   isHost: state.party.members && state.party.members[state.auth.uid].type === 'host',
   pending: state.party.members ? (state.party.members[state.auth.uid].type === 'host' && (state.party.pending || false)) : false
 });
@@ -469,6 +533,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
   acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  newMessage: (text) => dispatch(newMessage(ownProps.match.params.id, text)),
   removeParty: () => dispatch(removeParty(ownProps.match.params.id)),
   clearData: () => dispatch(clearData())
 })
