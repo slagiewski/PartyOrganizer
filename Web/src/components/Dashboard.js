@@ -114,6 +114,7 @@ const NewUserDashboard = withStyles( theme =>({
   buttonHollow: {
     alignSelf: 'center',
     marginTop: 30,
+    color: theme.palette.secondary.light,
     border: `4px solid ${theme.palette.secondary.light}`,
     borderRadius: 15,
     width: 200,
@@ -134,32 +135,38 @@ const NewUserDashboard = withStyles( theme =>({
   },
   '@media (max-width: 600px)': {
     wrapper: {
-      background: 'linear-gradient(180deg, pink 50%, cyan 50%)'      
+      background: `linear-gradient(180deg, ${theme.palette.primary.main} 50%, ${theme.palette.secondary.light} 50%)`    
     },
     contentLeft: {
       display: 'flex',
-      height: '50%',
+      justifyContent: 'center',       
       width: '100%',
-      position: 'absolute',
+      height: '45%',            
       left: 0,
       top: 0
     },
     contentRight: {
       display: 'flex',
-      flexDirection: 'column',    
+      justifyContent: 'center', 
       width: '100%',
-      height: '50%',      
-      position: 'absolute',
+      height: '55%',      
       right: 0,
+      top: '45%'
     },
+    headline: {
+      fontSize: '2rem'
+    },
+    subTitle: {
+      fontSize: '1.5rem'
+    }
   }
 }))(withTheme()(({ classes, theme, openDialog, openForm })=>{
     return (
       <div className={classes.wrapper}>
         <div className={classes.contentLeft}>
           <div >
-            <Typography variant="display3" color="inherit">Create a new party,</Typography>
-            <Typography variant="display1" color="inherit">add guests, assign duties and throw the <span style={{color:'#333'}}>best</span> party!</Typography>            
+            <Typography variant="display3" color="inherit" className={classes.headline}>Create a new party,</Typography>
+            <Typography variant="display1" color="inherit" className={classes.subTitle}>add guests, assign duties and throw the <span style={{color:'#333'}}>best</span> party!</Typography>            
           </div>
           <Button variant="flat" color="secondary" className={classes.buttonHollow} style={{marginRight: 70}} onClick={openForm}>
             <Typography variant="title" color="inherit">Party up!</Typography>            
@@ -170,8 +177,8 @@ const NewUserDashboard = withStyles( theme =>({
             <Typography variant="title" color="inherit">Let's dance!</Typography>
           </Button>
           <div>
-            <Typography variant="display3">Join an <span style={{color: theme.palette.primary.main}}>existing</span> party,</Typography>        
-            <Typography variant="display1">tell your mates what you're bringing and have a chat!</Typography>    
+            <Typography variant="display3" className={classes.headline}>Join an <span style={{color: theme.palette.primary.main}}>existing</span> party,</Typography>        
+            <Typography variant="display1" className={classes.subTitle}>tell your mates what you're bringing and have a chat!</Typography>    
           </div>
         </div>
       </div>
@@ -215,7 +222,6 @@ const styles = theme => ({
   wrapper: {
     height: '100%',
     width: '100%',
-    //backgroundColor: '#bdd9dc'
   },
   content: {
     display: 'flex',
