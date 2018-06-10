@@ -164,6 +164,17 @@ export const editPartyItems = (partyID, itemID, chosenAmount, subtract = true) =
   }
 }
 
+export const newMessage = (partyID, text) => {
+  return (dispatch, getState) => {
+    const message = {
+      text,
+      uid: getState().auth.uid
+    }
+
+    return database.ref(`parties/${partyID}/messages`).push(message);
+  }
+}
+
 export const requestAccess = (partyID) => {
   return (dispatch, getState) => {
     const state = getState().auth;

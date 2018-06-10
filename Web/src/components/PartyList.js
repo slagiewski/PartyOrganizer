@@ -11,7 +11,8 @@ const styles = theme => ({
     width: 500,
     minHeight: 400,
     height: '80vh',
-    overflow: 'auto'
+    overflowY: 'auto',
+    overflowX: 'hidden'
   }
 });
 

@@ -20,7 +20,7 @@ import { Spring } from 'react-spring'
 // formatting
 import { pluralize } from '../utils/formatting';
 // actions
-import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty, newMessage } from '../actions/parties';
 // icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -29,6 +29,10 @@ import EditIcon from 'material-ui-icons/Edit';
 import ClearIcon from 'material-ui-icons/Clear';
 import ExpandIcon from 'material-ui-icons/ExpandMore';
 import LessIcon from 'material-ui-icons/ExpandLess';
+import DeleteIcon from 'material-ui-icons/Delete';
+import SendIcon from 'material-ui-icons/Send';
+
+const hostOverlay = () => ({})
 
 const Member = withStyles( theme => ({
   wrapper: {
@@ -56,12 +60,13 @@ const Member = withStyles( theme => ({
   expand: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
     bottom: 0,
     left: 0,
     width: '100%',
-    backgroundColor: theme.palette.primary.main,
-    height: 20
+    backgroundColor: theme.palette.secondary.main,
+    height: 15
   },
   '@media (max-width: 600px)': {
     wrapper: {
@@ -124,7 +129,7 @@ const Member = withStyles( theme => ({
           <div>
             <Typography>{name} </Typography>
             <Button onClick={() => this.props.acceptPendingUser({ name: name.split(' ')[0], image: image, uid: uid })}>Accept</Button>
-            <Button>Decline</Button>        
+            <Button>Decline</Button>
           </div>
         </React.Fragment>
       </div>
@@ -147,7 +152,7 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   infoWrapper: {
-    width: '60%',
+    width: '50%',
     minWidth: 700
   },
   infoContent: {
@@ -157,28 +162,38 @@ const styles = theme => ({
   headline: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     padding: theme.spacing.unit*2
   },
   info: {
-    width: '40%',
+    width: '50%',
     height: '100%',
     padding: theme.spacing.unit
   },
   items: {
-    width: '60%'    
+    width: '50%',
   },
   avatar: {
     zIndex: 1,    
     width: 44,
     height: 44,
   },
+  messageWrapper: {
+    paddingTop: theme.spacing.unit * 2,    
+    paddingBottom: theme.spacing.unit * 3,
+    backgroundColor: '#f7f7f7'    
+  },
   messageBox: {
-    width: '100%',
-    padding: theme.spacing.unit * 2,
+    height: 200,
+    overflow: 'auto',
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    marginBottom: 15
   },
   speechBubble: {
     position: 'relative',
-    background: '#00aabb',
+    background: theme.palette.secondary.main,
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
@@ -193,11 +208,46 @@ const styles = theme => ({
       width: 0,
       height: 0,
       border: '10px solid transparent',
-      borderRightColor: '#00aabb',
+      borderRightColor: theme.palette.secondary.main,
       borderLeft: 0,
       marginTop: '-10px',
       marginLeft: '-10px',
     }
+  },
+  speechBubbleSelf: {
+    position: 'relative',
+    background: theme.palette.primary.main,
+    borderRadius: '.4em',
+    color: '#fff',
+    padding: 5,
+    minWidth: 50,
+    maxWidth: '80%',
+    wordWrap: 'break-word',
+    '&:after':{
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      right: 10,
+      width: 0,
+      height: 0,
+      border: '15px solid transparent',
+      borderTopColor: theme.palette.primary.main,
+      borderBottom: 0,
+      borderRight: 0,
+      marginBottom: '-15px',
+      marginLeft: '-10px',
+    }
+  },
+  textField: {
+    width: 'calc(100% - 50px)',
+    color: '#fff'
+  },
+  emptyMessageBox: {
+    display: 'flex',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#d1d1d1'
   },
   guestsWrapper: {
     width: 300
@@ -206,16 +256,17 @@ const styles = theme => ({
     width: 100
   },
   membersBar: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: '#fff'
   },
   pendingBar: {
-    backgroundColor: '#4dd0e1'
+    backgroundColor: '#7f5fce',
+    color: '#fff'
   },
   editIcon: {
     height: 40,
     width: 40,
-    color: '#00aabb',
+    color: theme.palette.secondary.main,
   },
   '@media (max-width: 1000px)': {
     root: {
@@ -247,7 +298,8 @@ class PartyPage extends React.Component{
     showItemSelect: false,
     amount: 1,
     render: false,
-    formOpen: false
+    formOpen: false,
+    text: ''
   }
 
   componentDidMount(){
@@ -319,9 +371,14 @@ class PartyPage extends React.Component{
       () => this.props.removeParty().then(() => this.props.history.push('/dashboard')));
   }
 
+  handleNewMessage = () => {
+    if (this.state.text.length > 0)
+      this.props.newMessage(this.state.text).then(() => this.setState({ text: '' }));
+  }
+
   render() {
     if (!this.state.render) return <LoadingPage/>;    
-    const { classes, party, members, pending, uid } = this.props;
+    const { classes, party, members, pending, uid, messages } = this.props;
     const partyData = {
       ...party,
       date: moment.unix(party.unix).startOf('day'),
@@ -335,7 +392,7 @@ class PartyPage extends React.Component{
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
             <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
-            <Button onClick={this.handleRemoveParty}>REMOVE PARTY (temporary)</Button>
+            <IconButton onClick={this.handleRemoveParty}><DeleteIcon className={classes.editIcon} style={{ color: '#f44336' }}/></IconButton>
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>
@@ -395,26 +452,52 @@ class PartyPage extends React.Component{
               }
             </Paper>
           </div>
-          <Paper>
-            <div className={classes.messageBox}>
-              <List>
-                  { 
-                    party.messages && party.messages.map((message) => {
-                      const isUser = message.uid === uid;
-                      return (
-                        <ListItem disableGutters style={{alignItems: 'flex-start'}}>
-                          <ListItemIcon>
-                            <Avatar alt="Host" src={members[message.uid].image} className={classes.avatar} />
-                          </ListItemIcon>
-                          <div className={classes.speechBubble}>
-                            <Typography color="inherit">{message.text}</Typography>                 
-                          </div>
-                        </ListItem>
-                      )
-                    })
-                  }
-              </List>
-              <TextField/>
+          <Paper className={classes.messageWrapper}>
+            <List className={classes.messageBox}>
+                { 
+                  messages ? 
+                  Object.entries(messages).map((message) => {
+                    console.log(message);
+                    const isUser = message[1].uid === uid;
+                    return isUser ? 
+                    (
+                      <ListItem key={message[0]} disableGutters style={{ justifyContent: 'flex-end' }}>
+                        <div className={classes.speechBubbleSelf}>
+                          <Typography color="inherit">{message[1].text}</Typography>   
+                        </div>
+                      </ListItem>
+                    ) :
+                    (
+                      <ListItem key={message[0]} disableGutters style={{ alignItems: 'flex-start' }}>
+                        <ListItemIcon>
+                          <Avatar alt="Host" src={members[message[1].uid].image} className={classes.avatar} />
+                        </ListItemIcon>
+                        <div className={classes.speechBubble} style={{ maxWidth: '80%' }}>
+                          <Typography color="inherit">{message[1].text}</Typography>                 
+                        </div>
+                      </ListItem>
+                    )
+                  }) :
+                  <Typography className={classes.emptyMessageBox} variant="display1">
+                    No messages yet
+                  </Typography>
+                }
+            </List>
+            <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+              <div className={classes.speechBubbleSelf} style={{ display: 'flex', alignItems: 'flex-end', marginRight: 5, width: 400 }}>
+                <TextField 
+                  className={classes.textField} 
+                  label="Write something" 
+                  value={this.state.text}
+                  onChange={(e) => this.setState({ text: e.target.value })}                
+                  multiline
+                  InputProps={{ style:{ color: '#fff' } }}
+                  inputProps={ {maxlength: 280 }}
+                />
+                <IconButton onClick={this.handleNewMessage}>
+                  <SendIcon style={{ color: '#fff' }}/>
+                </IconButton>
+              </div>
             </div>
           </Paper>          
         </div>
@@ -461,6 +544,7 @@ const mapStateToProps = (state) => state.party && ({
   uid: state.auth.uid, 
   party: state.party.content,
   members: state.party.members,
+  messages: state.party.messages,
   isHost: state.party.members && state.party.members[state.auth.uid].type === 'host',
   pending: state.party.members ? (state.party.members[state.auth.uid].type === 'host' && (state.party.pending || false)) : false
 });
@@ -469,6 +553,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
   acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  newMessage: (text) => dispatch(newMessage(ownProps.match.params.id, text)),
   removeParty: () => dispatch(removeParty(ownProps.match.params.id)),
   clearData: () => dispatch(clearData())
 })

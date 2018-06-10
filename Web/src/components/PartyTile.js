@@ -12,12 +12,12 @@ const styles = theme => ({
     alignItems: 'center',
     margin: theme.spacing.unit,
     padding: theme.spacing.unit,
-    border: `5px solid #FFEB3B`,
+    border: `5px solid ${theme.palette.secondary.main}`,
     borderLeft: 'none',
     borderRight: 'none',    
     borderRadius: 20,
-    backgroundColor: '#424242',
-    color: '#FFEB3B',
+    backgroundColor: '#4c4d5f',
+    color: '#fff',
   },
   content: {
     zIndex: 1
@@ -34,7 +34,7 @@ const styles = theme => ({
     width: 200,
     height: '100%',
     cursor: 'pointer',
-    backgroundColor: '#20232f',
+    backgroundColor: theme.palette.secondary.main,
     clipPath: 'circle(40%)'
   }
 });
