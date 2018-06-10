@@ -197,6 +197,7 @@ const styles = theme => ({
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
+    minWidth: 30,    
     minHeight: 34,
     maxWidth: 'calc(100% - 70px)',
     wordWrap: 'break-word',
@@ -220,7 +221,7 @@ const styles = theme => ({
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
-    minWidth: 50,
+    minWidth: 30,
     maxWidth: '80%',
     wordWrap: 'break-word',
     '&:after':{

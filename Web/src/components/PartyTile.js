@@ -18,6 +18,10 @@ const styles = theme => ({
     borderRadius: 20,
     backgroundColor: '#4c4d5f',
     color: '#fff',
+    transition: 'transform 0.2s ease-out',
+    '&:hover': {
+      transform: 'scale(1.05)',
+    }
   },
   content: {
     zIndex: 1

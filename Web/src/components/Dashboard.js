@@ -215,7 +215,7 @@ const styles = theme => ({
   wrapper: {
     height: '100%',
     width: '100%',
-    backgroundColor: '#fff'
+    //backgroundColor: '#bdd9dc'
   },
   content: {
     display: 'flex',
@@ -225,16 +225,25 @@ const styles = theme => ({
   flex: {
     flex: 1,
   },
-  controlPaper: {
-    marginBottom: theme.spacing.unit*2
-  },
   controlTile: {
     display: 'flex',
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     padding: theme.spacing.unit*2,
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: '15px 0 0 15px',
+    marginBottom: theme.spacing.unit*2,    
+    color: '#fff',
+    boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+    '&hover': {
+      backgroundColor: theme.palette.secondary.light
     }
+  },
+  icon: {
+    backgroundColor: '#fff',
+    color: theme.palette.secondary.main,
+    marginRight: 10
   }
 });
 
@@ -275,28 +284,23 @@ class Dashboard extends React.Component {
       <div className={classes.wrapper}>
         <div className={classes.content}>
           <div>
-            <Paper className={classes.controlPaper}>
-              <div className={classes.controlTile} onClick={this.formOpen}>
-                <Avatar>
-                  <AddIcon/>
-                </Avatar>
-                <Typography>Throw a party</Typography>        
-              </div>
-            
-            </Paper>
-            <Paper className={classes.controlPaper}>
-              <div className={classes.controlTile} onClick={this.dialogOpen}>
-                <Avatar>
-                  <JoinIcon/>
-                </Avatar> 
-                <Typography>Join a party</Typography>
-              </div>     
-            </Paper>            
+            <Button className={classes.controlTile} onClick={this.formOpen}>
+              <Avatar className={classes.icon}>
+                <AddIcon/>
+              </Avatar>
+              <Typography color="inherit">Throw a party</Typography>                    
+            </Button>
+            <Button className={classes.controlTile} onClick={this.dialogOpen}>
+              <Avatar className={classes.icon}>
+                <JoinIcon/>
+              </Avatar> 
+              <Typography color="inherit">Join a party</Typography> 
+            </Button>            
           </div>
           <PartyList/>
-          <Paper>
+          {/* <Paper>
             Coming up
-          </Paper>
+          </Paper> */}
         </div>  
       </div>
     )
