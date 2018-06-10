@@ -32,6 +32,8 @@ import LessIcon from 'material-ui-icons/ExpandLess';
 import DeleteIcon from 'material-ui-icons/Delete';
 import SendIcon from 'material-ui-icons/Send';
 
+const hostOverlay = () => ({})
+
 const Member = withStyles( theme => ({
   wrapper: {
     display: 'flex',
@@ -178,15 +180,16 @@ const styles = theme => ({
     height: 44,
   },
   messageWrapper: {
-    width: '100%',
     paddingTop: theme.spacing.unit * 2,    
-    paddingBottom: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 3,
     backgroundColor: '#f7f7f7'    
   },
   messageBox: {
-    width: '100%',
     height: 200,
     overflow: 'auto',
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    marginBottom: 15
   },
   speechBubble: {
     position: 'relative',
@@ -238,6 +241,13 @@ const styles = theme => ({
   textField: {
     width: 'calc(100% - 50px)',
     color: '#fff'
+  },
+  emptyMessageBox: {
+    display: 'flex',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#d1d1d1'
   },
   guestsWrapper: {
     width: 300
@@ -445,7 +455,8 @@ class PartyPage extends React.Component{
           <Paper className={classes.messageWrapper}>
             <List className={classes.messageBox}>
                 { 
-                  messages && Object.entries(messages).map((message) => {
+                  messages ? 
+                  Object.entries(messages).map((message) => {
                     console.log(message);
                     const isUser = message[1].uid === uid;
                     return isUser ? 
@@ -466,11 +477,14 @@ class PartyPage extends React.Component{
                         </div>
                       </ListItem>
                     )
-                  })
+                  }) :
+                  <Typography className={classes.emptyMessageBox} variant="display1">
+                    No messages yet
+                  </Typography>
                 }
             </List>
             <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-              <div className={classes.speechBubbleSelf}>
+              <div className={classes.speechBubbleSelf} style={{ display: 'flex', alignItems: 'flex-end', marginRight: 5, width: 400 }}>
                 <TextField 
                   className={classes.textField} 
                   label="Write something" 
@@ -478,6 +492,7 @@ class PartyPage extends React.Component{
                   onChange={(e) => this.setState({ text: e.target.value })}                
                   multiline
                   InputProps={{ style:{ color: '#fff' } }}
+                  inputProps={ {maxlength: 280 }}
                 />
                 <IconButton onClick={this.handleNewMessage}>
                   <SendIcon style={{ color: '#fff' }}/>

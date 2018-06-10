@@ -3,6 +3,7 @@ body {
   padding: 0;
   height: 100vh;
   font-family: sans-serif;
+  background-color: #ffe6ad24;
 }
 #root {
   height: 100%;
