@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:background="@drawable/CustomBorder">
+<LinearLayout 
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    android:background="@drawable/CustomBorder">
-  <ImageView
-      android:id="@+id/partyMemberImageView"
+    >
+    <ImageView
+        android:id="@+id/partyMemberImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:padding="5dp"
@@ -31,4 +38,22 @@
             android:textSize="12dp"
             android:gravity="left" />
     </LinearLayout>
+  
+    
+ </LinearLayout>
+  <TextView
+            android:id="@+id/partyMemberProductTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="14dp"
+            android:gravity="center"
+            android:text="Items to take"/>
+  <TextView
+          android:id="@+id/partyMemberProductsToTakeTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textColor="@android:color/black"
+          android:textSize="12dp"
+          android:gravity="left"/>
 </LinearLayout>
