@@ -51,8 +51,13 @@ export const ItemsPanel = withStyles((theme)=>({
 
   onNewItem = () => {
     const { name, amount } = this.state;
-    if (name.length > 0)
+    if (name.length > 0) {
       this.props.onNewItem({ name, amount });
+      this.setState({
+        name: '',
+        amount: 1
+      });
+    }
   }
 
   handleChange = name => event => {

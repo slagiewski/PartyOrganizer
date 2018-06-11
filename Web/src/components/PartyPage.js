@@ -311,6 +311,11 @@ class PartyPage extends React.Component{
 
   componentDidMount(){
     this.props.getPartyData(this.props.match.params.id);
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate(){
+    this.scrollToBottom();    
   }
 
   componentWillUnmount(){
@@ -363,6 +368,11 @@ class PartyPage extends React.Component{
       this.props.editPartyItems(selectedItemID, amount);
       this.setState({ showItemSelect: false })
     }
+  }
+
+  scrollToBottom = () => {
+    if (this.messagesEnd)
+      this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
   formOpen = () => {
@@ -496,6 +506,7 @@ class PartyPage extends React.Component{
                     No messages yet
                   </Typography>
                 }
+              <div ref={(el) => { this.messagesEnd = el; }}></div>
             </List>
             <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
               <div className={classes.speechBubbleSelf} style={{ display: 'flex', alignItems: 'flex-end', marginRight: 5, width: 400 }}>
