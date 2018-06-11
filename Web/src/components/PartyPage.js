@@ -20,7 +20,7 @@ import { Spring } from 'react-spring'
 // formatting
 import { pluralize } from '../utils/formatting';
 // actions
-import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty, newMessage } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty, newMessage, declinePendingUser } from '../actions/parties';
 // icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -100,6 +100,7 @@ const Member = withStyles( theme => ({
                 dense
                 divider
                 disableGutters
+                key={item}
               >
                 {items[item].name} x{items[item].amount}
                 {
@@ -134,7 +135,7 @@ const Member = withStyles( theme => ({
           <div>
             <Typography>{name} </Typography>
             <Button onClick={() => this.props.acceptPendingUser({ name: name.split(' ')[0], image: image, uid: uid })}>Accept</Button>
-            <Button>Decline</Button>
+            <Button onClick={() => this.props.declinePendingUser(uid)}>Decline</Button>
           </div>
         </React.Fragment>
       </div>
@@ -438,7 +439,7 @@ class PartyPage extends React.Component{
               </Map>
             </Paper>
             <Paper className={classes.items}>
-              <ItemList fixed={true} order={party.order} items={party.items} onItemSelect={this.showItemSelect}/>
+              <ItemList fixed={true} order={party.order || []} items={party.items || {}} onItemSelect={this.showItemSelect}/>
               {
                 this.state.showItemSelect && 
                 (
@@ -471,7 +472,6 @@ class PartyPage extends React.Component{
                 { 
                   messages ? 
                   Object.entries(messages).map((message) => {
-                    console.log(message);
                     const isUser = message[1].uid === uid;
                     return isUser ? 
                     (
@@ -506,7 +506,7 @@ class PartyPage extends React.Component{
                   onChange={(e) => this.setState({ text: e.target.value })}                
                   multiline
                   InputProps={{ style:{ color: '#fff' } }}
-                  inputProps={ {maxlength: 280 }}
+                  inputProps={ {maxLength: 280 }}
                 />
                 <IconButton onClick={this.handleNewMessage}>
                   <SendIcon style={{ color: '#fff' }}/>
@@ -528,6 +528,7 @@ class PartyPage extends React.Component{
                               isMember={false}
                               uid={user}
                               acceptPendingUser={this.props.acceptPendingUser}
+                              declinePendingUser={this.props.declinePendingUser}                              
                               key={user} 
                               name={pending[user].name} 
                               image={pending[user].image}
@@ -572,7 +573,8 @@ const mapStateToProps = (state) => state.party && ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
-  acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  acceptPendingUser: (user) => dispatch(acceptPendingUser(ownProps.match.params.id, user)),
+  declinePendingUser: (uid) => dispatch(declinePendingUser(ownProps.match.params.id, uid)),  
   newMessage: (text) => dispatch(newMessage(ownProps.match.params.id, text)),
   removeParty: () => dispatch(removeParty(ownProps.match.params.id)),
   clearData: () => dispatch(clearData())

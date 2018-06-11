@@ -40,11 +40,7 @@ const styles = theme => ({
 
 class LoginPage extends React.Component {
     onLogin = (e) => {
-        e.preventDefault();
-        const username = this.username.value;
-        const password = this.password.value;
-        this.props.startLogin({username, password});
-
+        this.props.startLogin();
     }
     render () {
         const { classes } = this.props;
@@ -56,7 +52,10 @@ class LoginPage extends React.Component {
                     <Typography className={classes.header} align="center" variant="display1">Party Planner</Typography>
                     <Divider/>
                     <List component="nav">
-                        <form onSubmit={this.onLogin}>
+                        <div className={classes.buttonWrapper}>
+                            <Button variant="raised" size="large" color="primary" onClick={this.onLogin}>Login with Facebook</Button>
+                        </div>
+                        <form>
                             {error && (
                             <ListItem>
                                 Error // temp
@@ -66,19 +65,16 @@ class LoginPage extends React.Component {
                                 <ListItemIcon>
                                     <LoginIcon />
                                 </ListItemIcon>
-                                <TextField defaultValue={"admin"} inputRef={el => this.username = el} label="Username" fullWidth error={error}/>
+                                <TextField inputRef={el => this.username = el} label="Username" fullWidth error={error}/>
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
                                     <PasswordIcon />
                                 </ListItemIcon>
-                                <TextField defaultValue={"admin"}  inputRef={el => this.password = el} label="Password" fullWidth type="password" error={error}/>
-                            </ListItem>
-                            <ListItem>
-                                <Button variant="raised" size="large" color="primary">Login with Facebook</Button>
+                                <TextField inputRef={el => this.password = el} label="Password" fullWidth type="password" error={error}/>
                             </ListItem>
                             <div className={classes.buttonWrapper}>
-                                <Button type="submit" variant="raised" size="large" color="primary">Login</Button>
+                                <Button variant="raised" size="large" color="primary">Login</Button>
                             </div>
                         </form>
                     </List>
