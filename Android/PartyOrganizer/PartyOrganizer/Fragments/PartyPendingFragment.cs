@@ -15,9 +15,7 @@ namespace PartyOrganizer.Fragments
 {
     public class PartyPendingFragment : Android.Support.V4.App.Fragment
     {
-        private PendingListAdapter _adapter;
         private ListView _partyPendingsListView;
-        private List<Core.Model.Member.User> _pendingUsers;
         private readonly IPartyRepositoryAsync _partyRepository;
         private readonly FirebaseAuthLink _authLink;
         private readonly Party _selectedParty;
@@ -38,13 +36,11 @@ namespace PartyOrganizer.Fragments
         {
             base.OnActivityCreated(savedInstanceState);
 
-            _pendingUsers = _selectedParty.Pending?.ToList();
-
-            if (_pendingUsers != null)
+            if (_selectedParty.Pending != null)
             {
-                _adapter = new PendingListAdapter(this.Activity, _pendingUsers, _partyRepository, _selectedParty, _authLink);
+                var adapter = new PendingListAdapter(this.Activity, _partyRepository, _selectedParty, _authLink);
                 _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
-                _partyPendingsListView.Adapter = _adapter;
+                _partyPendingsListView.Adapter = adapter;
             }
             
         }

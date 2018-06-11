@@ -75,6 +75,7 @@ namespace PartyOrganizer
         {
             var intent = new Intent();
             intent.SetClass(this, typeof(MenuActivity));
+            Finish();
             StartActivity(intent);
         }
     }

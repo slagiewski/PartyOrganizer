@@ -67,14 +67,35 @@ namespace PartyOrganizer.Adapters
 
                     if (!String.IsNullOrWhiteSpace(_partyItemNameTextView.Text) && amount > 0 && amount <= _party.Content.Items[partyItem.Key].Amount)
                     {
-                        _partyRepository.UpdatePartyItem(this._party, partyItem, amount);
+                        if (_partyRepository.UpdatePartyItem(this._party, partyItem, amount) == null)
+                            throw new Exception();
+                    }
+                    else
+                    {
+                        throw new FormatException();
                     }
                 }
                 catch (Exception ex)
                 {
+                    if (ex is FormatException)
+                        ShowDialog("Invalid amount!");
+                    else
+                        ShowDialog("Error occurred!");
                     Debug.WriteLine("TakeAmount error: " + ex.Message);
                 }
             };
+        }
+
+        private void ShowDialog(string message)
+        {
+            var alert = new AlertDialog.Builder(_context);
+
+            alert.SetTitle("Party Items");
+            alert.SetMessage(message);
+
+            alert.SetPositiveButton("Ok", (sx, ex) => { });
+
+            alert.Show();
         }
 
         public override int Count => _partyItems.Count;

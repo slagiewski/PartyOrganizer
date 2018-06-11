@@ -219,6 +219,13 @@ namespace PartyOrganizer.Core.Repository
                           Name = partyItem.Value.Name
                       });
 
+                var partyMember = party.Members.FirstOrDefault(u => u.Id == _auth.User.LocalId);
+                var userCurrentItemAmount = 0;
+                if (partyMember.Items?.ContainsKey(partyItem.Key) ?? false)
+                {
+                    userCurrentItemAmount = partyMember.Items[partyItem.Key].Amount;
+                }
+                 
                 await _fb
                       .Child("parties")
                       .Child(party.Id)
@@ -228,7 +235,7 @@ namespace PartyOrganizer.Core.Repository
                       .Child(partyItem.Key)  
                       .PutAsync<PartyItem>(new PartyItem
                       {
-                          Amount = amountToSubstract + party.Members.FirstOrDefault(u => u.Id == _auth.User.LocalId).Items[partyItem.Key].Amount,
+                          Amount = amountToSubstract + userCurrentItemAmount,
                           Name = partyItem.Value.Name
                       });
 

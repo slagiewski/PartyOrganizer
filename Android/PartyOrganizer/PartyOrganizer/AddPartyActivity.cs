@@ -36,7 +36,7 @@ namespace PartyOrganizer
         private TextView _newPartyDateTimeTextView;
         private EditText _newPartyProductNameEditText;
         private EditText _newPartyProductAmountEditText;
-        private ListView _newPartyProductListView;        
+        private ListView _newPartyProductListView;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -55,7 +55,7 @@ namespace PartyOrganizer
             _productList = new List<PartyItem>();
             _dataAdapter = new ProductsListAdapter(this, _productList);
 
-            _newPartyProductListView.Adapter = _dataAdapter;           
+            _newPartyProductListView.Adapter = _dataAdapter;
         }
 
         private void FindViews()
@@ -74,30 +74,26 @@ namespace PartyOrganizer
 
         private void HandleEvents()
         {
-            _newPartyAddButton.Click += async (object sender, EventArgs e) =>
+            _newPartyAddButton.Click += async (s, e) =>
             {
-                // 1. Validate
-                // 2. Add to the DB
-                // 3. Show success/failure info
-                // 4. Return to the previous activity
-
                 try
-                {
+                {   
                     var location = new LocationData()
                     {
-                        Name = _newPartyLocationEditText.Text
+                        Name = ValidateTextView(_newPartyLocationEditText)
                     };
 
-                    var unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                    var unixTimestamp = (Int32)(_partyTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                     // Create model wrapper that'll provide proper validation
                     var partyContent = new PartyContent()
                     {
-                        Description = _newPartyDescriptionEditText.Text,
-                        Image = _authLink?.User.PhotoUrl,
-                        Items = _productList.ToDictionary(k => Guid.NewGuid().ToString(), v => v),
+                        Description = ValidateTextView(_newPartyDescriptionEditText),
+                        Image = _authLink?.User?.PhotoUrl,
+                        Items = _productList?.ToDictionary(k => Guid.NewGuid().ToString(), v => v),
                         Location = location,
-                        Name = _newPartyNameEditText.Text,
-                        Unix = unixTimestamp
+                        Name = ValidateTextView(_newPartyNameEditText),
+                        Unix = unixTimestamp,
+                        Order = Enumerable.Range(0, _productList.Count)
                     };
 
                     var party = new Party()
@@ -109,38 +105,61 @@ namespace PartyOrganizer
 
                     if (newPartyId != null)
                     {
-                        var intent = new Intent();
-                        intent.SetClass(this, typeof(MenuActivity));
-                        StartActivity(intent);
+                        ShowDialog("Party's been added successfully", (sx, ex) =>
+                        {
+                            var intent = new Intent();
+                            intent.SetClass(this, typeof(MenuActivity));
+                            Finish();
+                            StartActivity(intent);
+                        });
                     }
-                    
+
                 }
                 catch (Exception ex)
                 {
+                    ShowDialog("Error occurred");
                     Console.WriteLine(ex.Message);
                 }
 
-            };                
+            };
 
             _newPartyAddProductButton.Click += (s, e) =>
             {
                 try
                 {
                     var productName = _newPartyProductNameEditText.Text;
+                    if (String.IsNullOrWhiteSpace(productName) || productName.Length < 3)
+                    {
+                        throw new FormatException();
+                    }
                     var productAmount = Int32.Parse(_newPartyProductAmountEditText.Text);
+                    if (productAmount < 1)
+                        throw new InvalidCastException();
+
                     var product = new PartyItem { Amount = productAmount, Name = productName };
                     _productList.Add(product);
                     _dataAdapter.NotifyDataSetChanged();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
+                    if (ex is FormatException)
+                    {
+                        ShowDialog("Product name should be min 3 letters long");
+                    }
+                    else
+                        if (ex is InvalidCastException)
+                    {
+                        ShowDialog("Product amount should be greater than 0");
+                    }
+                    else
+                    {
+                        ShowDialog("Error occurred");
+                    }
                     Console.WriteLine(ex.Message);
                 }
-                
             };
 
-            _newPartySetDateTimeButton.Click += (object sender, EventArgs e) =>
+            _newPartySetDateTimeButton.Click += (s, e) =>
             {
                 var year = DateTime.UtcNow.Year;
                 var month = DateTime.UtcNow.Month;
@@ -151,10 +170,23 @@ namespace PartyOrganizer
             };
         }
 
+        private void ShowDialog(string message, EventHandler<DialogClickEventArgs> action = null)
+        {
+            var alert = new AlertDialog.Builder(this);
+
+            alert.SetTitle("Add Party");
+            alert.SetMessage(message);
+            alert.SetCancelable(false);
+            alert.SetPositiveButton("Ok", action);
+            alert.Show();
+        }
+
+
+
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
             _partyTime = new DateTime(year, month, dayOfMonth);
-            
+
             var hourOfDay = DateTime.UtcNow.Hour;
             var minute = DateTime.UtcNow.Minute;
 
@@ -166,6 +198,18 @@ namespace PartyOrganizer
         {
             _partyTime = new DateTime(_partyTime.Year, _partyTime.Month, _partyTime.Day, hourOfDay, minute, 0);
             _newPartyDateTimeTextView.Text = _partyTime.ToString();
+        }
+
+        private string ValidateTextView(TextView textView)
+        {
+            if (!String.IsNullOrWhiteSpace(textView.Text) && textView.Text.Length > 2)
+            {
+                return textView.Text;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }

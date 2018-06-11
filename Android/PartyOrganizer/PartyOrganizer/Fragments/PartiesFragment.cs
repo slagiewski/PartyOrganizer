@@ -63,7 +63,6 @@ namespace PartyOrganizer.Fragments
                 var intent = new Intent();
                 intent.SetClass(this.Activity, typeof(PartyDetailActivity));
                 intent.PutExtra("selectedPartyID", party.Id);
-
                 StartActivityForResult(intent, 100);
             };
 
