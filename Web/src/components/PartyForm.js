@@ -352,7 +352,7 @@ class PartyForm extends React.Component{
           <div className={classes.bar}>
             <Typography align="center" color="inherit" variant="display1">Party Creator</Typography>          
           </div>
-          <DialogContent style={{height: 620}}>
+          <DialogContent style={{height: 620, marginTop: 70}}>
             <div style={{display: 'flex', justifyContent: 'center', marginBottom: 30}}>
               <Stepper activeStep={this.state.activeStep} className={classes.stepper}>
                 <Step>
