@@ -65,6 +65,8 @@ namespace PartyOrganizer.Adapters
 
             if (_authLink.User.LocalId != GetHost()?.Id)
             {
+                partyPendingAcceptButton.Visibility = Android.Views.ViewStates.Invisible;
+                partyPendingRefuseButton.Visibility = Android.Views.ViewStates.Invisible;
                 partyPendingAcceptButton.Enabled = false;
                 partyPendingRefuseButton.Enabled = false;
             }
