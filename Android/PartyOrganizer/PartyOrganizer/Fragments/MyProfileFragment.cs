@@ -20,7 +20,7 @@ namespace PartyOrganizer.Fragments
         private TextView _nameTextView;
         private Button _addPartyButton;
         private Button _joinPartyButton;
-        private LoginButton _loginButton;
+        private LoginButton _logoutButton;
         private readonly IPartyRepositoryAsync _partyRepository;
 
         public MyProfileFragment(IPartyRepositoryAsync partyRepository)
@@ -60,8 +60,7 @@ namespace PartyOrganizer.Fragments
                 Picasso.With(this.Context)
                        .Load(authLink?.User.PhotoUrl)
                        .Into(_profileImage);
-            }
-                
+            }       
         }
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
@@ -75,7 +74,7 @@ namespace PartyOrganizer.Fragments
             _nameTextView = this.View.FindViewById<TextView>(Resource.Id.userTextView);
             _addPartyButton = this.View.FindViewById<Button>(Resource.Id.addPartyButton);
             _joinPartyButton = this.View.FindViewById<Button>(Resource.Id.joinPartyButton);
-            _loginButton = this.View.FindViewById<LoginButton>(Resource.Id.loginProfileButton);
+            _logoutButton = this.View.FindViewById<LoginButton>(Resource.Id.loginProfileButton);
         }
 
         private void HandleEvents()
@@ -87,11 +86,12 @@ namespace PartyOrganizer.Fragments
                 StartActivity(intent);
             };
 
-            _loginButton.Click += (s, e) =>
+            _logoutButton.Click += (s, e) =>
             {
                 LoginManager.Instance.LogOut();
                 var intent = new Intent();
                 intent.SetClass(this.Context, typeof(LoginActivity));
+                Activity.Finish();
                 StartActivity(intent);
             };
 

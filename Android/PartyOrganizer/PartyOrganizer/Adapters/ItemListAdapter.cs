@@ -8,6 +8,7 @@ using Android.Widget;
 using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using Plugin.Connectivity;
 
 namespace PartyOrganizer.Adapters
 {
@@ -55,7 +56,17 @@ namespace PartyOrganizer.Adapters
             _partyItemAmountTextView = convertView.FindViewById<TextView>(Resource.Id.partyItemAmountTextView);
             _partyItemTakeAmountEditText = convertView.FindViewById<EditText>(Resource.Id.partyItemTakeAmountEditText);
             _partyItemTakeAmountButton = convertView.FindViewById<Button>(Resource.Id.partyItemTakeAmountButton);
+            if (!CheckConnection())
+            {
+                _partyItemTakeAmountEditText.Visibility = Android.Views.ViewStates.Invisible;
+                _partyItemTakeAmountButton.Visibility = Android.Views.ViewStates.Invisible;
+                _partyItemTakeAmountEditText.Enabled = false;
+                _partyItemTakeAmountButton.Enabled = false;
+            }
+
         }
+
+        private bool CheckConnection() => CrossConnectivity.Current.IsConnected;
 
         private void HandleEvents(TextView _partyItemNameTextView, EditText _partyItemTakeAmountEditText, Button _partyItemTakeAmountButton, KeyValuePair<string, PartyItem> partyItem)
         {
@@ -67,14 +78,35 @@ namespace PartyOrganizer.Adapters
 
                     if (!String.IsNullOrWhiteSpace(_partyItemNameTextView.Text) && amount > 0 && amount <= _party.Content.Items[partyItem.Key].Amount)
                     {
-                        _partyRepository.UpdatePartyItem(this._party, partyItem, amount);
+                        if (_partyRepository.UpdatePartyItem(this._party, partyItem, amount) == null)
+                            throw new Exception();
+                    }
+                    else
+                    {
+                        throw new FormatException();
                     }
                 }
                 catch (Exception ex)
                 {
+                    if (ex is FormatException)
+                        ShowDialog("Invalid amount!");
+                    else
+                        ShowDialog("Error occurred!");
                     Debug.WriteLine("TakeAmount error: " + ex.Message);
                 }
             };
+        }
+
+        private void ShowDialog(string message)
+        {
+            var alert = new AlertDialog.Builder(_context);
+
+            alert.SetTitle("Party Items");
+            alert.SetMessage(message);
+
+            alert.SetPositiveButton("Ok", (sx, ex) => { });
+
+            alert.Show();
         }
 
         public override int Count => _partyItems.Count;
