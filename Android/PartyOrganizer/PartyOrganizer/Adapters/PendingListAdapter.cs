@@ -6,6 +6,7 @@ using Android.Widget;
 using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using Plugin.Connectivity;
 using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
@@ -63,7 +64,7 @@ namespace PartyOrganizer.Adapters
             partyPendingRefuseButton = convertView.FindViewById<Button>(Resource.Id.partyPendingRefuseButton);
             partyPendingAcceptButton = convertView.FindViewById<Button>(Resource.Id.partyPendingAcceptButton);
 
-            if (_authLink.User.LocalId != GetHost()?.Id)
+            if (!CheckConnection() || _authLink.User.LocalId != GetHost()?.Id )
             {
                 partyPendingAcceptButton.Visibility = Android.Views.ViewStates.Invisible;
                 partyPendingRefuseButton.Visibility = Android.Views.ViewStates.Invisible;
@@ -71,6 +72,8 @@ namespace PartyOrganizer.Adapters
                 partyPendingRefuseButton.Enabled = false;
             }
         }
+
+        private bool CheckConnection() => CrossConnectivity.Current.IsConnected;
 
         private Core.Model.Member.User GetHost() => _party.Members.FirstOrDefault(u => u.Type.ToLower() == "host");
 

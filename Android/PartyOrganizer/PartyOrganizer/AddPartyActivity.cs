@@ -181,8 +181,6 @@ namespace PartyOrganizer
             alert.Show();
         }
 
-
-
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
             _partyTime = new DateTime(year, month, dayOfMonth);

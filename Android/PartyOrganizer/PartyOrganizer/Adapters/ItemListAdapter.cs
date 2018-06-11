@@ -8,6 +8,7 @@ using Android.Widget;
 using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using Plugin.Connectivity;
 
 namespace PartyOrganizer.Adapters
 {
@@ -55,7 +56,17 @@ namespace PartyOrganizer.Adapters
             _partyItemAmountTextView = convertView.FindViewById<TextView>(Resource.Id.partyItemAmountTextView);
             _partyItemTakeAmountEditText = convertView.FindViewById<EditText>(Resource.Id.partyItemTakeAmountEditText);
             _partyItemTakeAmountButton = convertView.FindViewById<Button>(Resource.Id.partyItemTakeAmountButton);
+            if (!CheckConnection())
+            {
+                _partyItemTakeAmountEditText.Visibility = Android.Views.ViewStates.Invisible;
+                _partyItemTakeAmountButton.Visibility = Android.Views.ViewStates.Invisible;
+                _partyItemTakeAmountEditText.Enabled = false;
+                _partyItemTakeAmountButton.Enabled = false;
+            }
+
         }
+
+        private bool CheckConnection() => CrossConnectivity.Current.IsConnected;
 
         private void HandleEvents(TextView _partyItemNameTextView, EditText _partyItemTakeAmountEditText, Button _partyItemTakeAmountButton, KeyValuePair<string, PartyItem> partyItem)
         {
