@@ -23,8 +23,7 @@ namespace PartyOrganizer.Adapters
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
-        {
-            var partyMember = _partyMembers[position];
+        {       
 
             if (convertView == null)
             {
@@ -40,6 +39,8 @@ namespace PartyOrganizer.Adapters
 
         private void BindData(int position)
         {
+            var partyMember = _partyMembers[position];
+
             Picasso.With(_context)
                    .Load(partyMember.Image)
                    .Into(_partyMemberImageView);
