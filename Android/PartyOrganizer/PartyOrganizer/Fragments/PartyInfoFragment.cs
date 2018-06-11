@@ -2,12 +2,7 @@
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Firebase.Xamarin.Auth;
-using PartyOrganizer.Core.Auth;
 using PartyOrganizer.Core.Model.Party;
-using PartyOrganizer.Core.Repository;
-using PartyOrganizer.Core.Repository.Interfaces;
-using Xamarin.Facebook;
 
 namespace PartyOrganizer.Fragments
 {
@@ -18,6 +13,7 @@ namespace PartyOrganizer.Fragments
         private TextView _partyLongDescriptionTextView;
         private TextView _partyDateTextView;
         private TextView _partyLocationTextView;
+        private TextView _partyIdTextView;
 
         public PartyInfoFragment(Party party)
         {
@@ -48,6 +44,7 @@ namespace PartyOrganizer.Fragments
             _partyLongDescriptionTextView = this.Activity.FindViewById<TextView>(Resource.Id.partyLongDescriptionTextView);
             _partyDateTextView = this.Activity.FindViewById<TextView>(Resource.Id.partyDateTextView);
             _partyLocationTextView = this.Activity.FindViewById<TextView>(Resource.Id.partyLocationTextView);
+            _partyIdTextView = this.Activity.FindViewById<TextView>(Resource.Id.partyIdTextView);
         }
 
         private void BindData()
@@ -56,6 +53,7 @@ namespace PartyOrganizer.Fragments
             _partyLongDescriptionTextView.Text = "Szczegółowe informacje:\n\n" + _selectedParty.Content.Description;
             _partyLocationTextView.Text = _selectedParty.Content.Location.ToString();
             _partyDateTextView.Text = DateTimeOffset.FromUnixTimeSeconds(_selectedParty.Content.Unix).ToString();
+            _partyIdTextView.Text = _selectedParty.Id;
         }
     }
 }

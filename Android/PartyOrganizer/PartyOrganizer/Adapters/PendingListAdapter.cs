@@ -1,28 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Android.App;
 using Android.Views;
 using Android.Widget;
-using PartyOrganizer.Core.Model.Member;
+using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
 using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
-    class PendingListAdapter : BaseAdapter<User>
+    class PendingListAdapter : BaseAdapter<Core.Model.Member.User>
     {
-        private List<User> _pendingUsers;
+        private List<Core.Model.Member.User> _pendingUsers;
         private readonly Party _party;
+        private readonly FirebaseAuthLink _authLink;
         private IPartyRepositoryAsync _partyRepository;
         private Activity _context;
 
-        public PendingListAdapter(Activity context, List<User> pendingUsers,
-            IPartyRepositoryAsync partyRepository, Party party)
+        public PendingListAdapter(Activity context, List<Core.Model.Member.User> pendingUsers,
+            IPartyRepositoryAsync partyRepository, Party party, FirebaseAuthLink authLink)
         {
             this._context = context;
             _pendingUsers = pendingUsers;
             _partyRepository = partyRepository;
             _party = party;
+            _authLink = authLink;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -44,7 +47,7 @@ namespace PartyOrganizer.Adapters
             return convertView;
         }
 
-        private void BindData(User pendingUser, ImageView partyPendingImageView, TextView partyPendingNameTextView)
+        private void BindData(Core.Model.Member.User pendingUser, ImageView partyPendingImageView, TextView partyPendingNameTextView)
         {
             Picasso.With(_context)
                    .Load(pendingUser.Image)
@@ -53,15 +56,27 @@ namespace PartyOrganizer.Adapters
             partyPendingNameTextView.Text = pendingUser.Name;
         }
 
-        private static void FindViews(View convertView, out ImageView partyPendingImageView, out TextView partyPendingNameTextView, out Button partyPendingRefuseButton, out Button partyPendingAcceptButton)
+        private void FindViews(View convertView, out ImageView partyPendingImageView, out TextView partyPendingNameTextView, out Button partyPendingRefuseButton, out Button partyPendingAcceptButton)
         {
             partyPendingImageView = convertView.FindViewById<ImageView>(Resource.Id.partyPendingImageView);
             partyPendingNameTextView = convertView.FindViewById<TextView>(Resource.Id.partyPendingNameTextView);
             partyPendingRefuseButton = convertView.FindViewById<Button>(Resource.Id.partyPendingRefuseButton);
             partyPendingAcceptButton = convertView.FindViewById<Button>(Resource.Id.partyPendingAcceptButton);
+
+            if (_authLink.User.LocalId != GetHost()?.Id)
+            {
+                partyPendingAcceptButton.Enabled = false;
+                partyPendingRefuseButton.Enabled = false;
+            }
         }
 
-        private void HandleEvents(User pendingUser, Button partyPendingRefuseButton, Button partyPendingAcceptButton)
+        private Core.Model.Member.User GetHost()
+        {
+            var host = _party.Members.FirstOrDefault(u => u.Type.ToLower() == "host");
+            return host;
+        }
+
+        private void HandleEvents(Core.Model.Member.User pendingUser, Button partyPendingRefuseButton, Button partyPendingAcceptButton)
         {
             partyPendingRefuseButton.Click += (s, e) =>
             {
@@ -76,7 +91,7 @@ namespace PartyOrganizer.Adapters
 
         public override int Count => _pendingUsers.Count;
 
-        public override User this[int position] => _pendingUsers[position];
+        public override Core.Model.Member.User this[int position] => _pendingUsers[position];
 
         public override long GetItemId(int position) => position;
     }

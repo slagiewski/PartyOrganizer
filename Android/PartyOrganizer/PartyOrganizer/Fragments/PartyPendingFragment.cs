@@ -42,7 +42,7 @@ namespace PartyOrganizer.Fragments
 
             if (_pendingUsers != null)
             {
-                _adapter = new PendingListAdapter(this.Activity, _pendingUsers, _partyRepository, _selectedParty);
+                _adapter = new PendingListAdapter(this.Activity, _pendingUsers, _partyRepository, _selectedParty, _authLink);
                 _partyPendingsListView = this.View.FindViewById<ListView>(Resource.Id.partyPendingsListView);
                 _partyPendingsListView.Adapter = _adapter;
             }

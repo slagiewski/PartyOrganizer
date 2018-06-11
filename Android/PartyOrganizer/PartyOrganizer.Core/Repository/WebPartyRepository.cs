@@ -169,7 +169,7 @@ namespace PartyOrganizer.Core.Repository
 
                 await MoveFromPending(party, newPartyMember);
 
-                await AddToLookup(party, newPartyMember);
+                await AddUserToLookup(party, newPartyMember);
 
                 return true;
             }
@@ -292,30 +292,29 @@ namespace PartyOrganizer.Core.Repository
            
         }
 
-        private async Task AddToLookup(Party party, PartyMember newPartyMember)
+        private async Task AddUserToLookup(Party party, PartyMember newPartyMember)
         {
             try
-            {
+            {   
                 await _fb
                       .Child("users")
-                      .Child(party.Id)
-                      .Child("partiesMeta")
                       .Child(newPartyMember.Id)
+                      .Child("partiesMeta")
+                      .Child(party.Id)
                       .PutAsync<PartyLookup>(new PartyLookup
                       {
                           Name = party.Content.Name,
-                          Host = _auth.User.DisplayName,
-                          Image = _auth.User.PhotoUrl,
+                          Host = party.Members.FirstOrDefault(u => u.Type.ToLower() == "host")?.Name,
+                          Image = party.Content.Image,
                           Unix = party.Content.Unix,
                           Location = party.Content.Location.Name
                       });
             }
             catch
             {
-                Debug.WriteLine("AddToLookup error");
+                Debug.WriteLine("AddUserToLookup error");
                 throw;
             }
-            
         }
 
         private async Task MoveFromPending(Party party, PartyMember partyMember)

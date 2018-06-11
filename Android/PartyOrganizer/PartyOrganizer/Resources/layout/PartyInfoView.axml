@@ -6,47 +6,56 @@
     android:background="#ffffff"
     android:minWidth="25px"
     android:minHeight="25px">
-  <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="#ffffff"
-      android:minWidth="25px"
-      android:minHeight="25px">
-    <TextView
-        android:id="@+id/partyShortDescriptionTextView"
-        android:text="Short Description"
-        android:textStyle="bold"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="13dp" />
-    <TextView
-        android:id="@+id/partyLongDescriptionTextView"
-        android:text="Long Description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="11dp" />
-    <TextView
-        android:id="@+id/partyDateTextView"
-        android:text="Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
-    <TextView
-        android:id="@+id/partyLocationTextView"
-        android:text="Location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
-  </LinearLayout>
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:minWidth="25px"
+        android:minHeight="25px">
+        <TextView
+            android:id="@+id/partyShortDescriptionTextView"
+            android:text="Short Description"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="13dp" />
+        <TextView
+            android:id="@+id/partyLongDescriptionTextView"
+            android:text="Long Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="11dp" />
+        <TextView
+            android:id="@+id/partyDateTextView"
+            android:text="Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
+        <TextView
+            android:id="@+id/partyLocationTextView"
+            android:text="Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
+        <TextView
+            android:id="@+id/partyIdTextView"
+            android:text="Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
+    </LinearLayout>
 </ScrollView>
