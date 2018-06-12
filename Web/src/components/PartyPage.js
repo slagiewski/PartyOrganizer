@@ -371,8 +371,8 @@ class PartyPage extends React.Component{
   }
 
   scrollToBottom = () => {
-    if (this.messagesEnd)
-      this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  //  if (this.messagesEnd)
+     // this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
   formOpen = () => {
