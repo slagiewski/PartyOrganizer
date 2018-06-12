@@ -24,7 +24,8 @@ namespace PartyOrganizer.Adapters
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
-        {       
+        {
+            var partyMember = _partyMembers[position];
 
             if (convertView == null)
             {
@@ -45,9 +46,9 @@ namespace PartyOrganizer.Adapters
             _partyMemberNameTextView.Text = partyMember.Name;
             _partyMemberHostTextView.Text = partyMember.Type;
 
-            if (_partyMembers[position].Items != null)
+            if (partyMember?.Items != null)
             {
-                foreach (System.Collections.Generic.KeyValuePair<string, PartyItem> item in _partyMembers[position].Items)
+                foreach (System.Collections.Generic.KeyValuePair<string, PartyItem> item in partyMember.Items)
                 {
                     _partyMembersProductsTextView.Text += item.Value.Name + " x" + item.Value.Amount + "\n";
                 }
