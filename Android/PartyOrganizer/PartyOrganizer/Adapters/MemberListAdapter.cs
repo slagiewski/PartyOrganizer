@@ -15,6 +15,7 @@ namespace PartyOrganizer.Adapters
         private ImageView _partyMemberImageView;
         private TextView _partyMemberNameTextView;
         private TextView _partyMemberHostTextView;
+        private TextView _partyMembersProductsTextView;
 
         public MemberListAdapter(PartyMembersFragment context, List<PartyMember> partyMembers) : base()
         {
@@ -23,8 +24,7 @@ namespace PartyOrganizer.Adapters
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
-        {
-            var partyMember = _partyMembers[position];
+        {       
 
             if (convertView == null)
             {
@@ -44,6 +44,14 @@ namespace PartyOrganizer.Adapters
                         .Into(_partyMemberImageView);
             _partyMemberNameTextView.Text = partyMember.Name;
             _partyMemberHostTextView.Text = partyMember.Type;
+
+            if (_partyMembers[position].Items != null)
+            {
+                foreach (System.Collections.Generic.KeyValuePair<string, PartyItem> item in _partyMembers[position].Items)
+                {
+                    _partyMembersProductsTextView.Text += item.Value.Name + " x" + item.Value.Amount + "\n";
+                }
+            }
         }
 
         public override int Count => _partyMembers.Count;
@@ -58,6 +66,7 @@ namespace PartyOrganizer.Adapters
             _partyMemberNameTextView = converView.FindViewById<TextView>(Resource.Id.partyMemberNameTextView);
             _partyMemberHostTextView = converView.FindViewById<TextView>(Resource.Id.partyMemberHostTextView);
             _partyMemberImageView = converView.FindViewById<ImageView>(Resource.Id.partyMemberImageView);
+            _partyMembersProductsTextView = converView.FindViewById<TextView>(Resource.Id.partyMemberProductsToTakeTextView);
         }
     }
 }

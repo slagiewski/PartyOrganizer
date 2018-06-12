@@ -13,6 +13,7 @@ namespace PartyOrganizer.Fragments
     {
         private MemberListAdapter _adapter;
         private ListView _partyMembersListView;
+        
         private List<PartyMember> _allPartyMembers;
         private Party _selectedParty;
         private PartyDetailActivity _context;
