@@ -5,6 +5,7 @@ using PartyOrganizer.Adapters;
 using PartyOrganizer.Core.Model.Party;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PartyOrganizer.Fragments
 {
@@ -13,10 +14,12 @@ namespace PartyOrganizer.Fragments
         private MemberListAdapter _adapter;
         private ListView _partyMembersListView;
         private List<PartyMember> _allPartyMembers;
-        private readonly Party _selectedParty;
+        private Party _selectedParty;
+        private PartyDetailActivity _context;
 
-        public PartyMembersFragment(Party party)
+        public PartyMembersFragment(PartyDetailActivity context, Party party)
         {
+            _context = context;
             _selectedParty = party;
         }
 
@@ -31,7 +34,7 @@ namespace PartyOrganizer.Fragments
 
             _allPartyMembers = _selectedParty.Members.ToList();
 
-            _adapter = new MemberListAdapter(this.Activity, _allPartyMembers);
+            _adapter = new MemberListAdapter(this, _allPartyMembers);
             _partyMembersListView = this.View.FindViewById<ListView>(Resource.Id.partyMembersListView);
             _partyMembersListView.Adapter = _adapter;
         }
@@ -39,6 +42,23 @@ namespace PartyOrganizer.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             return inflater.Inflate(Resource.Layout.PartyMembersView, container, false);
+        }
+
+        public async Task NotifyDataChanged()
+        {
+            await _context.Refresh();
+        }
+
+        public void Refresh(Party party)
+        {
+            _selectedParty = party;
+            _allPartyMembers.Clear();
+            foreach (var item in _selectedParty.Members)
+            {
+                _allPartyMembers.Add(item);
+            }
+
+            _adapter.NotifyDataSetChanged();
         }
     }
 }

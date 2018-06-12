@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -14,10 +15,12 @@ namespace PartyOrganizer.Fragments
         private TextView _partyDateTextView;
         private TextView _partyLocationTextView;
         private TextView _partyIdTextView;
+        private PartyDetailActivity _context;
 
-        public PartyInfoFragment(Party party)
+        public PartyInfoFragment(PartyDetailActivity context, Party party)
         {
             _selectedParty = party;
+            _context = context;
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -38,6 +41,17 @@ namespace PartyOrganizer.Fragments
             return inflater.Inflate(Resource.Layout.PartyInfoView, container, false);
         }
 
+        public async Task NotifyDataChanged()
+        {
+            await _context.Refresh();
+        }
+
+        public void Refresh(Party party)
+        {
+            _selectedParty = party;
+            BindData();
+        }
+
         private void FindViews()
         {
             _partyShortDescriptionTextView = this.Activity.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView);
@@ -50,10 +64,11 @@ namespace PartyOrganizer.Fragments
         private void BindData()
         {
             _partyShortDescriptionTextView.Text = _selectedParty.Content?.Name;
-            _partyLongDescriptionTextView.Text = "Szczegółowe informacje:\n\n" + _selectedParty.Content?.Description;
+            _partyLongDescriptionTextView.Text = _selectedParty.Content?.Description;
             _partyLocationTextView.Text = _selectedParty.Content?.Location.ToString();
             _partyDateTextView.Text = DateTimeOffset.FromUnixTimeSeconds(_selectedParty.Content.Unix).ToString();
             _partyIdTextView.Text = _selectedParty.Id;
         }
+
     }
 }

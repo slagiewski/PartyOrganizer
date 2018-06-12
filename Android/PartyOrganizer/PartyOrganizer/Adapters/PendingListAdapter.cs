@@ -6,6 +6,7 @@ using Android.Widget;
 using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using PartyOrganizer.Fragments;
 using Plugin.Connectivity;
 using Square.Picasso;
 
@@ -14,16 +15,16 @@ namespace PartyOrganizer.Adapters
     class PendingListAdapter : BaseAdapter<Core.Model.Member.User>
     {
         private List<Core.Model.Member.User> _pendingUsers;
-        private readonly Party _party;
+        private Party _party;
         private readonly FirebaseAuthLink _authLink;
         private IPartyRepositoryAsync _partyRepository;
-        private Activity _context;
+        private PartyPendingFragment _context;
 
-        public PendingListAdapter(Activity context, IPartyRepositoryAsync partyRepository,
+        public PendingListAdapter(PartyPendingFragment context, List<Core.Model.Member.User> pendingUsers, IPartyRepositoryAsync partyRepository,
                                   Party party, FirebaseAuthLink authLink)
         {
             this._context = context;
-            _pendingUsers = party.Pending.ToList();
+            _pendingUsers = pendingUsers;
             _partyRepository = partyRepository;
             _party = party;
             _authLink = authLink;
@@ -31,26 +32,31 @@ namespace PartyOrganizer.Adapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            var pendingUser = _pendingUsers[position];
-
-            if (convertView == null)
+            if (_pendingUsers != null)
             {
-                convertView = _context.LayoutInflater.Inflate(Resource.Layout.PartyPendingRowView, null);
+                var pendingUser = _pendingUsers[position];
+
+                if (convertView == null)
+                {
+                    convertView = _context.LayoutInflater.Inflate(Resource.Layout.PartyPendingRowView, null);
+                }
+
+                FindViews(convertView, out ImageView partyPendingImageView, out TextView partyPendingNameTextView,
+                                       out Button partyPendingRefuseButton, out Button partyPendingAcceptButton);
+
+                HandleEvents(pendingUser, partyPendingRefuseButton, partyPendingAcceptButton);
+
+                BindData(pendingUser, partyPendingImageView, partyPendingNameTextView);
+
+                return convertView;
             }
 
-            FindViews(convertView, out ImageView partyPendingImageView, out TextView partyPendingNameTextView,
-                                   out Button partyPendingRefuseButton, out Button partyPendingAcceptButton);
-
-            HandleEvents(pendingUser, partyPendingRefuseButton, partyPendingAcceptButton);
-
-            BindData(pendingUser, partyPendingImageView, partyPendingNameTextView);
-
-            return convertView;
+            return null;
         }
 
         private void BindData(Core.Model.Member.User pendingUser, ImageView partyPendingImageView, TextView partyPendingNameTextView)
         {
-            Picasso.With(_context)
+            Picasso.With(_context.Activity)
                    .Load(pendingUser.Image)
                    .Into(partyPendingImageView);
 
@@ -82,14 +88,18 @@ namespace PartyOrganizer.Adapters
             partyPendingRefuseButton.Click += (s, e) =>
             {
                 
-                var alert = new AlertDialog.Builder(this._context);
+                var alert = new AlertDialog.Builder(_context.Activity);
 
                 alert.SetTitle("Refuse request");
                 alert.SetMessage("Do you really want to delete this request?");
 
                 alert.SetPositiveButton("Yes", async (sx, ex) =>
                 {
-                    await _partyRepository.RefuseRequest(_party, pendingUser);
+                    var result = await _partyRepository.RefuseRequest(_party, pendingUser);
+                    if (result)
+                    {
+                        await _context.NotifyDataChanged();
+                    }
                 });
 
                 alert.SetNegativeButton("No", (sx, ex) => { });
@@ -99,11 +109,15 @@ namespace PartyOrganizer.Adapters
 
             partyPendingAcceptButton.Click += async (s, e) =>
             {
-                await _partyRepository.AcceptRequest(_party, pendingUser);
+                var result = await _partyRepository.AcceptRequest(_party, pendingUser);
+                if (result)
+                {
+                    await _context.NotifyDataChanged();
+                }
             };
         }
 
-        public override int Count => _pendingUsers.Count;
+        public override int Count => _pendingUsers?.Count ?? 0;
 
         public override Core.Model.Member.User this[int position] => _pendingUsers[position];
 

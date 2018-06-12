@@ -8,6 +8,7 @@ using Android.Widget;
 using Firebase.Xamarin.Auth;
 using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository.Interfaces;
+using PartyOrganizer.Fragments;
 using Plugin.Connectivity;
 
 namespace PartyOrganizer.Adapters
@@ -18,9 +19,9 @@ namespace PartyOrganizer.Adapters
         private readonly IPartyRepositoryAsync _partyRepository;
         private readonly Party _party;
         private readonly FirebaseAuthLink _authLink;
-        private Activity _context;
+        private PartyItemsFragment _context;
 
-        public ItemListAdapter(Activity context, Dictionary<string, PartyItem> partyItems,
+        public ItemListAdapter(PartyItemsFragment context, Dictionary<string, PartyItem> partyItems,
             IPartyRepositoryAsync partyRepository, Party party, FirebaseAuthLink authLink) : base()
         {
             _context = context;
@@ -70,7 +71,7 @@ namespace PartyOrganizer.Adapters
 
         private void HandleEvents(TextView _partyItemNameTextView, EditText _partyItemTakeAmountEditText, Button _partyItemTakeAmountButton, KeyValuePair<string, PartyItem> partyItem)
         {
-            _partyItemTakeAmountButton.Click += (s, e) =>
+            _partyItemTakeAmountButton.Click += async (s, e) =>
             {
                 try
                 {
@@ -80,6 +81,8 @@ namespace PartyOrganizer.Adapters
                     {
                         if (_partyRepository.UpdatePartyItem(this._party, partyItem, amount) == null)
                             throw new Exception();
+                        else
+                            await _context.NotifyDataChanged();
                     }
                     else
                     {
@@ -99,7 +102,7 @@ namespace PartyOrganizer.Adapters
 
         private void ShowDialog(string message)
         {
-            var alert = new AlertDialog.Builder(_context);
+            var alert = new AlertDialog.Builder(_context.Activity);
 
             alert.SetTitle("Party Items");
             alert.SetMessage(message);

@@ -2,6 +2,7 @@
 using Android.Views;
 using Android.Widget;
 using PartyOrganizer.Core.Model.Party;
+using PartyOrganizer.Fragments;
 using Square.Picasso;
 using System.Collections.Generic;
 
@@ -9,13 +10,13 @@ namespace PartyOrganizer.Adapters
 {
     class MemberListAdapter : BaseAdapter<PartyMember>
     {        
-        private Activity _context;
+        private PartyMembersFragment _context;
         private List<PartyMember> _partyMembers;
         private ImageView _partyMemberImageView;
         private TextView _partyMemberNameTextView;
         private TextView _partyMemberHostTextView;
 
-        public MemberListAdapter(Activity context, List<PartyMember> partyMembers) : base()
+        public MemberListAdapter(PartyMembersFragment context, List<PartyMember> partyMembers) : base()
         {
             _context = context;
             _partyMembers = partyMembers;
@@ -31,14 +32,18 @@ namespace PartyOrganizer.Adapters
             }
 
             FindViews(convertView);
-
-            Picasso.With(_context)
-                   .Load(partyMember.Image)
-                   .Into(_partyMemberImageView);
-            _partyMemberNameTextView.Text = partyMember.Name;
-            _partyMemberHostTextView.Text = partyMember.Type;            
+            BindData(partyMember);
 
             return convertView;
+        }
+
+        private void BindData(PartyMember partyMember)
+        {
+            Picasso.With(_context.Activity)
+                        .Load(partyMember.Image)
+                        .Into(_partyMemberImageView);
+            _partyMemberNameTextView.Text = partyMember.Name;
+            _partyMemberHostTextView.Text = partyMember.Type;
         }
 
         public override int Count => _partyMembers.Count;

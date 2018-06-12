@@ -9,6 +9,7 @@ using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Facebook;
 
 namespace PartyOrganizer.Fragments
@@ -21,9 +22,11 @@ namespace PartyOrganizer.Fragments
         private readonly IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
         private readonly FirebaseAuthLink _auth;
+        private PartyDetailActivity _context;
 
-        public PartyItemsFragment(Party party, IPartyRepositoryAsync partyRepository, FirebaseAuthLink auth)
+        public PartyItemsFragment(PartyDetailActivity context, Party party, IPartyRepositoryAsync partyRepository, FirebaseAuthLink auth)
         {
+            _context = context;
             _selectedParty = party;
             _partyRepository = partyRepository;
             _auth = auth;
@@ -44,7 +47,7 @@ namespace PartyOrganizer.Fragments
 
             if(_allPartyItems != null)
             {
-                _adapter = new ItemListAdapter(this.Activity, _allPartyItems, _partyRepository, _selectedParty, _auth);
+                _adapter = new ItemListAdapter(this, _allPartyItems, _partyRepository, _selectedParty, _auth);
                 _partyItemsListView = this.View.FindViewById<ListView>(Resource.Id.partyItemsListView);
                 _partyItemsListView.Adapter = _adapter;
             }
@@ -53,6 +56,23 @@ namespace PartyOrganizer.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             return inflater.Inflate(Resource.Layout.PartyItemsView, container, false);
+        }
+
+        public async Task NotifyDataChanged()
+        {
+            await _context.Refresh();
+        }
+
+        public void Refresh(Party party)
+        {
+            _selectedParty = party;
+            _allPartyItems.Clear();
+            foreach (var item in _selectedParty.Content.Items)
+            {
+                _allPartyItems.Add(item.Key, item.Value);
+            }
+
+            _adapter.NotifyDataSetChanged();
         }
     }
 }

@@ -10,6 +10,8 @@ using PartyOrganizer.Core.Repository.Interfaces;
 using PartyOrganizer.Fragments;
 using Xamarin.Facebook;
 using System.Collections.Generic;
+using PartyOrganizer.Core.Model.Party;
+using System.Threading.Tasks;
 
 namespace PartyOrganizer
 {
@@ -20,7 +22,18 @@ namespace PartyOrganizer
         private PartyItemsFragment _partyItemsFragment;
         private PartyMembersFragment _partyMembersFragment;
         private PartyPendingFragment _partyPendingFragment;
-        private IPartyRepositoryAsync _partyRepository;      
+        private IPartyRepositoryAsync _partyRepository;
+        private Party _selectedParty;
+
+        public async Task Refresh()
+        {
+            _selectedParty = await _partyRepository.GetById(_selectedParty.Id);
+
+            _partyInfoFragment.Refresh(_selectedParty);
+            _partyItemsFragment.Refresh(_selectedParty);
+            _partyMembersFragment.Refresh(_selectedParty);
+            _partyPendingFragment.Refresh(_selectedParty);
+        }
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -31,9 +44,9 @@ namespace PartyOrganizer
             _partyRepository = new PersistantPartyRepository(authLink);
 
             var selectedPartyID = Intent.Extras.GetString("selectedPartyID");
-            var party = await _partyRepository.GetById(selectedPartyID);
+            _selectedParty = await _partyRepository.GetById(selectedPartyID);
 
-            CreateFragments(authLink, party);
+            CreateFragments(authLink, _selectedParty);
 
             var viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
             viewPager.Adapter = new ViewPagerFragmentsAdapter(SupportFragmentManager,
@@ -48,10 +61,10 @@ namespace PartyOrganizer
 
         private void CreateFragments(FirebaseAuthLink authLink, Core.Model.Party.Party party)
         {
-            _partyInfoFragment = new PartyInfoFragment(party);
-            _partyItemsFragment = new PartyItemsFragment(party, _partyRepository, authLink);
-            _partyMembersFragment = new PartyMembersFragment(party);
-            _partyPendingFragment = new PartyPendingFragment(party, _partyRepository, authLink);
+            _partyInfoFragment = new PartyInfoFragment(this, party);
+            _partyItemsFragment = new PartyItemsFragment(this, party, _partyRepository, authLink);
+            _partyMembersFragment = new PartyMembersFragment(this, party);
+            _partyPendingFragment = new PartyPendingFragment(this, party, _partyRepository, authLink);
         }
     }
 }
