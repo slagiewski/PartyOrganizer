@@ -31,7 +31,8 @@
                 android:layout_marginRight="20dp"
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
-                android:inputType="text" />
+                android:inputType="text"
+                android:background="#FFE5B4" />
             <TextView
                 android:id="@+id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
@@ -49,7 +50,8 @@
                 android:layout_marginRight="20dp"
                 android:inputType="textMultiLine"
                 android:textSize="10sp"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:background="#FFE5B4" />
             <TextView
                 android:id="@+id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
@@ -67,7 +69,8 @@
                 android:layout_marginRight="20dp"
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
-                android:inputType="text" />
+                android:inputType="text"
+                android:background="#FFE5B4" />
             <TextView
                 android:id="@+id/newPartyDateDescTextView"
                 android:layout_height="wrap_content"
@@ -141,7 +144,8 @@
                     android:textSize="9sp"
                     android:textColor="@android:color/black"
                     android:inputType="text"
-                    android:text="" />
+                    android:text=""
+                    android:background="#FFE5B4" />
                 <EditText
                     android:id="@+id/newPartyProductAmountEditText"
                     android:layout_height="wrap_content"
@@ -149,7 +153,8 @@
                     android:textSize="9sp"
                     android:textColor="@android:color/black"
                     android:inputType="number"
-                    android:text="" />
+                    android:text=""
+                    android:background="#FFE5B4" />
             </LinearLayout>
             <Button
                 android:id="@+id/newPartyAddProductButton"
@@ -160,7 +165,7 @@
             <ListView
                 android:id="@+id/newPartyProductsListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="200dp" />
             <Button
                 android:id="@+id/newPartyAddButton"
                 android:layout_height="match_parent"
