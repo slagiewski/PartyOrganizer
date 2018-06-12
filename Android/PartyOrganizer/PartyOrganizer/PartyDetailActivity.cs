@@ -1,61 +1,70 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Widget;
-using PartyOrganizer.Core.Model;
+using Android.Support.V4.View;
+using Android.Support.V4.App;
+using Firebase.Xamarin.Auth;
+using PartyOrganizer.Adapters;
+using PartyOrganizer.Core.Auth;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
-using PartyOrganizer.Utility;
-using Square.Picasso;
+using PartyOrganizer.Fragments;
+using Xamarin.Facebook;
+using System.Collections.Generic;
+using PartyOrganizer.Core.Model.Party;
+using System.Threading.Tasks;
 
 namespace PartyOrganizer
 {
     [Activity(Label = "Party", MainLauncher = false)]
-    public class PartyDetailActivity : Activity
+    public class PartyDetailActivity : FragmentActivity
     {
-        private IPartyRepository _partyRepository;
+        private PartyInfoFragment _partyInfoFragment;
+        private PartyItemsFragment _partyItemsFragment;
+        private PartyMembersFragment _partyMembersFragment;
+        private PartyPendingFragment _partyPendingFragment;
+        private IPartyRepositoryAsync _partyRepository;
         private Party _selectedParty;
 
-        private ImageView _partyAvatarImageView;
-        private TextView _partyShortDescriptionTextView;
-        private TextView _partyLongDescriptionTextView;
-        private TextView _partyAdminTextView;
-        private TextView _partyLocationTextView;
-        private TextView _partyDateTextView;
+        public async Task Refresh()
+        {
+            _selectedParty = await _partyRepository.GetById(_selectedParty.Id);
 
-        protected override void OnCreate(Bundle savedInstanceState)
+            _partyInfoFragment.Refresh(_selectedParty);
+            _partyItemsFragment.Refresh(_selectedParty);
+            _partyMembersFragment.Refresh(_selectedParty);
+            _partyPendingFragment.Refresh(_selectedParty);
+        }
+
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PartyDetailView);
-            _partyRepository = new PartyRepository();
-            var selectedPartyID = Intent.Extras.GetInt("selectedPartyID");
-            _selectedParty = _partyRepository.GetByID(selectedPartyID);
 
-            FindViews();
+            var authLink = await FirebaseAuthLinkWrapper.GetAuthLink(FirebaseAuthType.Facebook, AccessToken.CurrentAccessToken.Token);
+            _partyRepository = new PersistantPartyRepository(authLink);
 
-            BindData();
+            var selectedPartyID = Intent.Extras.GetString("selectedPartyID");
+            _selectedParty = await _partyRepository.GetById(selectedPartyID);
+
+            CreateFragments(authLink, _selectedParty);
+
+            var viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
+            viewPager.Adapter = new ViewPagerFragmentsAdapter(SupportFragmentManager,
+                new List<Android.Support.V4.App.Fragment>
+                {
+                    _partyInfoFragment,
+                    _partyItemsFragment,
+                    _partyMembersFragment,
+                    _partyPendingFragment
+                });
         }
 
-        private void FindViews()
+        private void CreateFragments(FirebaseAuthLink authLink, Core.Model.Party.Party party)
         {
-            _partyAvatarImageView = FindViewById<ImageView>(Resource.Id.partyAvatarImageView);
-            _partyShortDescriptionTextView = FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView);
-            _partyLongDescriptionTextView = FindViewById<TextView>(Resource.Id.partyLongDescriptionTextView);
-            _partyAdminTextView = FindViewById<TextView>(Resource.Id.partyAdminTextView);
-            _partyLocationTextView = FindViewById<TextView>(Resource.Id.partyLocationTextView);
-            _partyDateTextView = FindViewById<TextView>(Resource.Id.partyDateTextView);
+            _partyInfoFragment = new PartyInfoFragment(this, party);
+            _partyItemsFragment = new PartyItemsFragment(this, party, _partyRepository, authLink);
+            _partyMembersFragment = new PartyMembersFragment(this, party);
+            _partyPendingFragment = new PartyPendingFragment(this, party, _partyRepository, authLink);
         }
-
-        private void BindData()
-        {
-            Picasso.With(this)
-                   .Load("https://openclipart.org/image/800px/svg_to_png/" + _selectedParty.ImagePath)
-                   .Into(_partyAvatarImageView);
-            _partyShortDescriptionTextView.Text = _selectedParty.Name;
-            _partyLongDescriptionTextView.Text ="Szczegółowe informacje:\n\n" + _selectedParty.Description;
-            _partyAdminTextView.Text = _selectedParty.Admin?.ToString()??"App user (in progress)";
-            _partyLocationTextView.Text = _selectedParty.Location;
-            _partyDateTextView.Text = _selectedParty.Date.ToString("dd/MM/yyyy hh:mm"); ;
-        }
-
     }
 }

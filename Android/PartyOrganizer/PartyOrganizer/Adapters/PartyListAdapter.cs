@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
 using Android.App;
-using Android.Graphics;
 using Android.Views;
 using Android.Widget;
-using PartyOrganizer.Core.Model;
-using PartyOrganizer.Utility;
+using PartyOrganizer.Core.Model.Party;
 using Square.Picasso;
 
 namespace PartyOrganizer.Adapters
 {
-    class PartyListAdapter : BaseAdapter<Party>
+    class PartyListAdapter : BaseAdapter<PartyLookup>
     {
-        private List<Party> _parties;
+        private List<PartyLookup> _parties;
         private Activity _context;
 
-        public PartyListAdapter(Activity context, List<Party> parties)
+        public PartyListAdapter(Activity context, List<PartyLookup> parties)
         {
             _context = context;
             _parties = parties;
@@ -29,27 +27,34 @@ namespace PartyOrganizer.Adapters
                 convertView = _context.LayoutInflater.Inflate(Resource.Layout.PartyRowView, null);
             }
 
-            convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView).Text = party.Name;
-            convertView.FindViewById<TextView>(Resource.Id.dateTextView).Text = party.Date.ToString("dd/MM/yyyy hh:mm");
-            convertView.FindViewById<TextView>(Resource.Id.adminTextView).Text = party.Admin?.ToString()??"App user(in progress)";
+            FindViews(convertView, out TextView partyDescription, out TextView hostName, out ImageView partyImage);
 
-            Picasso.With(_context)
-                   .Load("https://openclipart.org/image/800px/svg_to_png/" + party.ImagePath)
-                   .Into(convertView.FindViewById<ImageView>(Resource.Id.partyImageView));
-
-            //using (var imageBitmap = ImageHelper.GetImageBitmapFromUrl("https://openclipart.org/image/800px/svg_to_png/" + party.ImagePath))
-            //{
-            //    convertView.FindViewById<ImageView>(Resource.Id.partyImageView).SetImageBitmap(imageBitmap);
-            //}
+            BindData(convertView, party, partyDescription, hostName, partyImage);
 
             return convertView;
         }
 
+        private void BindData(View convertView, PartyLookup party, TextView partyDescription, TextView hostName, ImageView partyImage)
+        {
+            partyDescription.Text = party?.Name;
+            hostName.Text = party.Host?.ToString() ?? "App user(in progress)";
+            Picasso.With(_context)
+                   .Load(party?.Image)
+                   .Into(partyImage);
+        }
+
+        private static void FindViews(View convertView, out TextView partyDescription, out TextView hostName, out ImageView imageView)
+        {
+            partyDescription = convertView.FindViewById<TextView>(Resource.Id.partyShortDescriptionTextView);
+            hostName = convertView.FindViewById<TextView>(Resource.Id.adminTextView);
+            imageView = convertView.FindViewById<ImageView>(Resource.Id.partyImageView);
+        }
+
         public override int Count => _parties.Count;
 
-        public override Party this[int position] => _parties[position];
+        public override PartyLookup this[int position] => _parties[position];
 
         public override long GetItemId(int position) =>
-            _parties[position].ID;
+            position;
     }
 }

@@ -1,47 +1,56 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Android.App;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using Firebase.Xamarin.Auth;
 using PartyOrganizer.Adapters;
-using PartyOrganizer.Core.Model;
+using PartyOrganizer.Core.Auth;
+using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Core.Repository;
 using PartyOrganizer.Core.Repository.Interfaces;
+using Xamarin.Facebook;
 
 namespace PartyOrganizer.Fragments
 {
     public class PartiesFragment : Android.Support.V4.App.Fragment
     {
+        private PartyListAdapter _adapter;
         private ListView _partyListView;
-        private List<Party> _allParties;
-        private IPartyRepository _partyRepository;
+        private List<PartyLookup> _allParties;
+        private IPartyRepositoryAsync _partyRepository;
 
-        public override void OnCreate(Bundle savedInstanceState)
+        public PartiesFragment(IPartyRepositoryAsync partyRepository)
         {
-            base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
+            _partyRepository = partyRepository;
         }
 
-        public override void OnActivityCreated(Bundle savedInstanceState)
+        public override void OnCreate(Bundle savedInstanceState) =>
+             base.OnCreate(savedInstanceState);
+        
+
+        public override async void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
+            var receivedParties = await _partyRepository.GetPartiesByUserId();
+            if (receivedParties != null)
+                _allParties = receivedParties.ToList();
+            else
+                _allParties = new List<PartyLookup>();
+
+            _adapter = new PartyListAdapter(this.Activity, _allParties);
+
             _partyListView = this.View.FindViewById<ListView>(Resource.Id.partyOrganizerListView);
-
-            _partyRepository = new PartyRepository();
-
-            _allParties = _partyRepository.GetAll().ToList();
-
-            _partyListView.Adapter = new PartyListAdapter(this.Activity, _allParties);
+            _partyListView.Adapter = _adapter;
 
             HandleEvents();
         }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
             return inflater.Inflate(Resource.Layout.PartyOrganizerView, container, false);
         }
 
@@ -53,10 +62,22 @@ namespace PartyOrganizer.Fragments
 
                 var intent = new Intent();
                 intent.SetClass(this.Activity, typeof(PartyDetailActivity));
-                intent.PutExtra("selectedPartyID", party.ID);
-
+                intent.PutExtra("selectedPartyID", party.Id);
                 StartActivityForResult(intent, 100);
             };
+
+            // TODO
+
+            //_refreshButton.Click += async (s, e) =>
+            //{
+            //    await Refresh();
+            //};
+        }
+
+        public async Task Refresh()
+        {
+            _allParties = (await _partyRepository.GetPartiesByUserId()).ToList();
+            _adapter.NotifyDataSetChanged();
         }
     }
 }

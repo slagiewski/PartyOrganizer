@@ -20,8 +20,5 @@ namespace PartyOrganizer.Adapters
 
         public override Java.Lang.ICharSequence GetPageTitleFormatted(int position) =>
             new Java.Lang.String(_fragments[position].GetType().Name.Replace("Fragment",""));
-
-            
-        
     }
 }

@@ -1,67 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainScrollView"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:minWidth="25px"
-    android:minHeight="25px">
-  <LinearLayout
-    android:orientation="vertical"
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewpager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:minWidth="25px"
-    android:minHeight="25px">
-    <ImageView
-        android:id="@+id/partyAvatarImageView"
-        android:layout_height="150dp"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp" />
-    <TextView
-        android:id="@+id/partyShortDescriptionTextView"
-        android:text="Short Description"
-        android:textStyle="bold"
+    android:layout_height="match_parent">
+    <android.support.v4.view.PagerTabStrip
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="13dp" />
-    <TextView
-        android:id="@+id/partyAdminTextView"
-        android:text="Admin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
-    <TextView
-        android:id="@+id/partyLocationTextView"
-        android:text="Location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
-    <TextView
-        android:id="@+id/partyDateTextView"
-        android:text="Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
-    <TextView
-        android:id="@+id/partyLongDescriptionTextView"
-        android:text="Long Description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="12dp" />
-  </LinearLayout>
-  
-  
-</ScrollView>
+        android:layout_gravity="top"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textColor="#fff" />
+</android.support.v4.view.ViewPager>
