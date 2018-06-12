@@ -66,13 +66,18 @@ namespace PartyOrganizer.Fragments
         public void Refresh(Party party)
         {
             _selectedParty = party;
-            _allPartyItems.Clear();
-            foreach (var item in _selectedParty.Content.Items)
+            if (_adapter != null)
             {
-                _allPartyItems.Add(item.Key, item.Value);
-            }
+                _allPartyItems.Clear();
+                _adapter.NotifyDataSetChanged();
+                foreach (var item in _selectedParty.Content.Items ?? Enumerable.Empty<KeyValuePair<string, PartyItem>>())
+                {
+                    _allPartyItems.Add(item.Key, item.Value);
+                }
 
-            _adapter.NotifyDataSetChanged();
+                _adapter.NotifyDataSetChanged();
+            }
+            
         }
     }
 }
