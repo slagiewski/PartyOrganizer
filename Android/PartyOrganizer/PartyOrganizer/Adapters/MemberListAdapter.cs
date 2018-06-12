@@ -5,6 +5,7 @@ using PartyOrganizer.Core.Model.Party;
 using PartyOrganizer.Fragments;
 using Square.Picasso;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PartyOrganizer.Adapters
 {
@@ -46,13 +47,13 @@ namespace PartyOrganizer.Adapters
             _partyMemberNameTextView.Text = partyMember.Name;
             _partyMemberHostTextView.Text = partyMember.Type;
 
-            if (partyMember?.Items != null)
+            _partyMembersProductsTextView.Text = "";
+
+            foreach (var item in partyMember.Items ?? Enumerable.Empty<KeyValuePair<string, PartyItem>>())
             {
-                foreach (System.Collections.Generic.KeyValuePair<string, PartyItem> item in partyMember.Items)
-                {
-                    _partyMembersProductsTextView.Text += item.Value.Name + " x" + item.Value.Amount + "\n";
-                }
+                _partyMembersProductsTextView.Text += item.Value.Name + " x" + item.Value.Amount + "\n";
             }
+            
         }
 
         public override int Count => _partyMembers.Count;
