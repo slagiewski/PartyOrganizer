@@ -20,7 +20,7 @@ import { Spring } from 'react-spring'
 // formatting
 import { pluralize } from '../utils/formatting';
 // actions
-import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty, newMessage } from '../actions/parties';
+import { editPartyItems, getPartyData, acceptPendingUser, clearData, removeParty, newMessage, declinePendingUser } from '../actions/parties';
 // icons
 import TimeIcon from 'material-ui-icons/AccessTime';
 import LocationIcon from 'material-ui-icons/LocationOn';
@@ -86,7 +86,7 @@ const Member = withStyles( theme => ({
   }
 
   render(){
-    const { classes, items, isMember, name, image, type, uid } = this.props;
+    const { classes, items, isMember, name, image, type, uid, isOwner } = this.props;
 
     const member = ({ height }) => (
       <div className={classes.wrapper} style={{ height }}>
@@ -100,13 +100,19 @@ const Member = withStyles( theme => ({
                 dense
                 divider
                 disableGutters
+                key={item}
               >
                 {items[item].name} x{items[item].amount}
-                <ListItemSecondaryAction>
-                  <IconButton className={classes.iconButton} aria-label="Clear" onClick={() => this.props.editPartyItems(item, items[item].amount, false)}>
-                    <ClearIcon style={{fontSize: 15}}/>
-                  </IconButton>
-                </ListItemSecondaryAction>
+                {
+                  isOwner &&
+                  (
+                  <ListItemSecondaryAction>
+                    <IconButton className={classes.iconButton} aria-label="Clear" onClick={() => this.props.editPartyItems(item, items[item].amount, false)}>
+                      <ClearIcon style={{fontSize: 15}}/>
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                  )
+                }
               </ListItem>
             )}
             </List>      
@@ -129,7 +135,7 @@ const Member = withStyles( theme => ({
           <div>
             <Typography>{name} </Typography>
             <Button onClick={() => this.props.acceptPendingUser({ name: name.split(' ')[0], image: image, uid: uid })}>Accept</Button>
-            <Button>Decline</Button>
+            <Button onClick={() => this.props.declinePendingUser(uid)}>Decline</Button>
           </div>
         </React.Fragment>
       </div>
@@ -197,6 +203,7 @@ const styles = theme => ({
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
+    minWidth: 30,    
     minHeight: 34,
     maxWidth: 'calc(100% - 70px)',
     wordWrap: 'break-word',
@@ -220,7 +227,7 @@ const styles = theme => ({
     borderRadius: '.4em',
     color: '#fff',
     padding: 5,
-    minWidth: 50,
+    minWidth: 30,
     maxWidth: '80%',
     wordWrap: 'break-word',
     '&:after':{
@@ -304,6 +311,11 @@ class PartyPage extends React.Component{
 
   componentDidMount(){
     this.props.getPartyData(this.props.match.params.id);
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate(){
+    this.scrollToBottom();    
   }
 
   componentWillUnmount(){
@@ -358,6 +370,11 @@ class PartyPage extends React.Component{
     }
   }
 
+  scrollToBottom = () => {
+  //  if (this.messagesEnd)
+     // this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
   formOpen = () => {
     this.setState({ formOpen: true })
   }
@@ -378,7 +395,7 @@ class PartyPage extends React.Component{
 
   render() {
     if (!this.state.render) return <LoadingPage/>;    
-    const { classes, party, members, pending, uid, messages } = this.props;
+    const { classes, party, members, pending, uid, messages, isHost } = this.props;
     const partyData = {
       ...party,
       date: moment.unix(party.unix).startOf('day'),
@@ -391,8 +408,15 @@ class PartyPage extends React.Component{
         <div className={classes.infoWrapper}>
           <Paper className={classes.headline}>
             <Typography align="center" variant="display3">{party.name}</Typography>
-            <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
-            <IconButton onClick={this.handleRemoveParty}><DeleteIcon className={classes.editIcon} style={{ color: '#f44336' }}/></IconButton>
+            {
+              isHost &&
+              (
+                <React.Fragment>
+                  <IconButton onClick={this.formOpen}><EditIcon className={classes.editIcon}/></IconButton>
+                  <IconButton onClick={this.handleRemoveParty}><DeleteIcon className={classes.editIcon} style={{ color: '#f44336' }}/></IconButton>
+                </React.Fragment>
+              )
+            }
           </Paper>
           <div className={classes.infoContent}>
             <Paper className={classes.info}>
@@ -425,30 +449,31 @@ class PartyPage extends React.Component{
               </Map>
             </Paper>
             <Paper className={classes.items}>
-              <ItemList fixed={true} order={party.order} items={party.items} onItemSelect={this.showItemSelect}/>
-              {this.state.showItemSelect && 
-              (
-              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'baseline'}}>
-                <Typography color="primary" variant="body2" style={{marginRight: 10}}>{party.items[this.state.selectedItemID].name}:</Typography>
-                <TextField 
-                  type="text" 
-                  value={this.state.amount} 
-                  onChange={this.handleChangeInput('amount')} 
-                  className={classes.amountInput}
-                  InputProps = {{ endAdornment: 
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="Max amount"
-                        onClick={this.getMaxAmount}
-                      >
-                        <MaxAmountIcon/>
-                      </IconButton>
-                  </InputAdornment>
-                  } }
-                />
-                <Button color="primary" onClick={this.editItemsAmount}>Got it!</Button>
-              </div>
-              )
+              <ItemList fixed={true} order={party.order || []} items={party.items || {}} onItemSelect={this.showItemSelect}/>
+              {
+                this.state.showItemSelect && 
+                (
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'baseline'}}>
+                    <Typography color="primary" variant="body2" style={{marginRight: 10}}>{party.items[this.state.selectedItemID].name}:</Typography>
+                    <TextField 
+                      type="text" 
+                      value={this.state.amount} 
+                      onChange={this.handleChangeInput('amount')} 
+                      className={classes.amountInput}
+                      InputProps = {{ endAdornment: 
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="Max amount"
+                            onClick={this.getMaxAmount}
+                          >
+                            <MaxAmountIcon/>
+                          </IconButton>
+                      </InputAdornment>
+                      } }
+                    />
+                    <Button color="primary" onClick={this.editItemsAmount}>Got it!</Button>
+                  </div>
+                )
               }
             </Paper>
           </div>
@@ -457,7 +482,6 @@ class PartyPage extends React.Component{
                 { 
                   messages ? 
                   Object.entries(messages).map((message) => {
-                    console.log(message);
                     const isUser = message[1].uid === uid;
                     return isUser ? 
                     (
@@ -482,6 +506,7 @@ class PartyPage extends React.Component{
                     No messages yet
                   </Typography>
                 }
+              <div ref={(el) => { this.messagesEnd = el; }}></div>
             </List>
             <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
               <div className={classes.speechBubbleSelf} style={{ display: 'flex', alignItems: 'flex-end', marginRight: 5, width: 400 }}>
@@ -492,7 +517,7 @@ class PartyPage extends React.Component{
                   onChange={(e) => this.setState({ text: e.target.value })}                
                   multiline
                   InputProps={{ style:{ color: '#fff' } }}
-                  inputProps={ {maxlength: 280 }}
+                  inputProps={ {maxLength: 280 }}
                 />
                 <IconButton onClick={this.handleNewMessage}>
                   <SendIcon style={{ color: '#fff' }}/>
@@ -504,26 +529,33 @@ class PartyPage extends React.Component{
         <div className={classes.guestsWrapper}>
           <Paper>
             {
-              pending &&
-              <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
+              Object.keys(pending).length > 0 && isHost &&
+              (
+                <React.Fragment>
+                  <Typography color="inherit" variant="title" align="center" className={classes.pendingBar}>{Object.keys(pending).length} pending</Typography>
+                  <div style={{display: 'flex', flexWrap: 'wrap'}}>               
+                    {Object.keys(pending).map((user)=>{
+                      return <Member 
+                              isMember={false}
+                              uid={user}
+                              acceptPendingUser={this.props.acceptPendingUser}
+                              declinePendingUser={this.props.declinePendingUser}                              
+                              key={user} 
+                              name={pending[user].name} 
+                              image={pending[user].image}
+                            />
+                    })}
+                  
+                  </div>
+                </React.Fragment>
+              )
             }
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>                        
-              {Object.keys(pending).map((user)=>{
-                return <Member 
-                        isMember={false}
-                        uid={user}
-                        acceptPendingUser={this.props.acceptPendingUser}
-                        key={user} 
-                        name={pending[user].name} 
-                        image={pending[user].image}
-                      />
-              })}
-            </div>
             <Typography color="inherit" variant="title" align="center" className={classes.membersBar}>{pluralize('member', Object.keys(members).length)}</Typography>  
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               {Object.keys(members).map((member)=>{
                 return <Member 
                         isMember={true}
+                        isOwner={member === uid}
                         key={member} 
                         editPartyItems={this.props.editPartyItems}
                         type={members[member].type}
@@ -552,7 +584,8 @@ const mapStateToProps = (state) => state.party && ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   editPartyItems: (itemID, amount, subtract) => dispatch(editPartyItems(ownProps.match.params.id, itemID, amount, subtract)),
   getPartyData: (id) => dispatch(getPartyData(id)),
-  acceptPendingUser: (uid) => dispatch(acceptPendingUser(ownProps.match.params.id, uid)),
+  acceptPendingUser: (user) => dispatch(acceptPendingUser(ownProps.match.params.id, user)),
+  declinePendingUser: (uid) => dispatch(declinePendingUser(ownProps.match.params.id, uid)),  
   newMessage: (text) => dispatch(newMessage(ownProps.match.params.id, text)),
   removeParty: () => dispatch(removeParty(ownProps.match.params.id)),
   clearData: () => dispatch(clearData())

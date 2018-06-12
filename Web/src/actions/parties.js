@@ -1,4 +1,3 @@
-import uuid from 'uuid';
 import database from '../firebase';
 
 export const addParty = (id, party) => ({
@@ -136,11 +135,6 @@ export const getPartyData = (id) => {
   }
 }
 
-const updateItem = (updatedItem) => ({
-  type: 'UPDATE_ITEM',
-  ...updatedItem
-});
-
 export const editPartyItems = (partyID, itemID, chosenAmount, subtract = true) => {
   return (dispatch, getState) => {
     const state = getState();
@@ -190,7 +184,7 @@ export const requestAccess = (partyID) => {
 const acceptUser = (user) => ({
   type: 'ACCEPT_USER',
   ...user
-})
+});
 
 export const acceptPendingUser = (partyID, user) => {
   return (dispatch) => {
@@ -208,5 +202,11 @@ export const acceptPendingUser = (partyID, user) => {
 
       return database.ref().update(updates).then(()=> dispatch(acceptUser(user)));      
     });
+  }
+}
+
+export const declinePendingUser = (partyID, uid) => {
+  return (dispatch) => {
+    return database.ref(`parties/${partyID}/pending/${uid}`).remove();      
   }
 }

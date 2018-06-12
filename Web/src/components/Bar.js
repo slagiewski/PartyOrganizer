@@ -71,7 +71,6 @@ class Bar extends React.Component{
               open={open}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleClose}>Profile</MenuItem>
               <MenuItem onClick={this.props.logout}>Log out</MenuItem>
             </Menu>
           </div>

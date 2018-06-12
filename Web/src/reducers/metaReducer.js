@@ -9,7 +9,6 @@ export default (state = {}, action) => {
       return action.parties;
     case 'REMOVE_META_PARTY':
       const { [action.id]: depracated, ...rest } = state;
-      console.log(depracated);
       return rest;
     default:
       return state;

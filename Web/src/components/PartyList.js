@@ -10,6 +10,7 @@ const styles = theme => ({
   paper: {
     width: 500,
     minHeight: 400,
+    borderRadius: '0 0 15px 15px',
     height: '80vh',
     overflowY: 'auto',
     overflowX: 'hidden'
