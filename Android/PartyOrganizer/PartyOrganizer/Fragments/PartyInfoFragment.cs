@@ -50,7 +50,7 @@ namespace PartyOrganizer.Fragments
         private void BindData()
         {
             _partyShortDescriptionTextView.Text = _selectedParty.Content?.Name;
-            _partyLongDescriptionTextView.Text = "Szczegółowe informacje:\n\n" + _selectedParty.Content?.Description;
+            _partyLongDescriptionTextView.Text = _selectedParty.Content?.Description;
             _partyLocationTextView.Text = _selectedParty.Content?.Location.ToString();
             _partyDateTextView.Text = DateTimeOffset.FromUnixTimeSeconds(_selectedParty.Content.Unix).ToString();
             _partyIdTextView.Text = _selectedParty.Id;

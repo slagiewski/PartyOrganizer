@@ -21,7 +21,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textColor="@android:color/black"
-            android:textSize="13dp" />
+            android:gravity="center"
+            android:background="#ffcccccc"
+            android:textSize="18dp" />
+        <TextView
+            android:id="@+id/partyDescriptionTextView"
+            android:text="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:background="#ffcccccc"
+            android:textColor="@android:color/black"
+            android:textSize="11dp"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/partyLongDescriptionTextView"
             android:text="Long Description"
@@ -30,6 +43,18 @@
             android:layout_margin="10dp"
             android:textColor="@android:color/black"
             android:textSize="11dp" />
+        <TextView
+            android:id="@+id/partyDescDateTextView"
+            android:text="Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            android:background="#ffcccccc"
+            android:gravity="center" />
         <TextView
             android:id="@+id/partyDateTextView"
             android:text="Date"
@@ -40,6 +65,18 @@
             android:textColor="@android:color/black"
             android:textSize="12dp" />
         <TextView
+            android:id="@+id/partyDescLocationTextView"
+            android:text="Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@android:color/black"
+            android:background="#ffcccccc"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+        <TextView
             android:id="@+id/partyLocationTextView"
             android:text="Location"
             android:layout_width="match_parent"
@@ -47,7 +84,19 @@
             android:layout_margin="10dp"
             android:layout_marginBottom="5dp"
             android:textColor="@android:color/black"
-            android:textSize="12dp" />
+            android:textSize="11dp" />
+        <TextView
+            android:id="@+id/partyDescIdTextView"
+            android:text="Share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="#ffcccccc" />
         <TextView
             android:id="@+id/partyIdTextView"
             android:text="Location"
@@ -56,6 +105,6 @@
             android:layout_margin="10dp"
             android:layout_marginBottom="5dp"
             android:textColor="@android:color/black"
-            android:textSize="12dp" />
+            android:textSize="11dp" />
     </LinearLayout>
 </ScrollView>
