@@ -32,7 +32,7 @@
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
                 android:inputType="text"
-                android:background="#FFE5B4" />
+                android:background="#ffcccccc" />
             <TextView
                 android:id="@+id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:inputType="textMultiLine"
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
-                android:background="#FFE5B4" />
+                android:background="#ffcccccc" />
             <TextView
                 android:id="@+id/newPartyLocationTextView"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:textSize="10sp"
                 android:textColor="@android:color/black"
                 android:inputType="text"
-                android:background="#FFE5B4" />
+                android:background="#ffcccccc" />
             <TextView
                 android:id="@+id/newPartyDateDescTextView"
                 android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                     android:textColor="@android:color/black"
                     android:inputType="text"
                     android:text=""
-                    android:background="#FFE5B4" />
+                    android:background="#ffcccccc" />
                 <EditText
                     android:id="@+id/newPartyProductAmountEditText"
                     android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                     android:textColor="@android:color/black"
                     android:inputType="number"
                     android:text=""
-                    android:background="#FFE5B4" />
+                    android:background="#ffcccccc" />
             </LinearLayout>
             <Button
                 android:id="@+id/newPartyAddProductButton"
